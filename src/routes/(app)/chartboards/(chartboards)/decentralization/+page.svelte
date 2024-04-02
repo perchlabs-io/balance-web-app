@@ -33,6 +33,8 @@
 <main>
 	<!-- <Overlay /> -->
 
+	<!-- This is a test comment to confirm automated deployment is working correctly -->
+
 	<LevChart {curMAVData} {selectedData} {maxEpochData} {minEpochData} {poolGroupData}/>
 
 	<KeffChart {keffData}/>
