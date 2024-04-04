@@ -8,6 +8,10 @@
 <svelte:head>
 	<title>Articles</title>
 	<meta content="List of {data.posts.length} articles." name="description" />
+	<meta
+    property="og:image"
+    content="https://balance-social-image.vercel.app/api/og?title=Articles"
+  	/>
 </svelte:head>
 
 <Heading>Articles</Heading>
