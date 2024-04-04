@@ -24,6 +24,10 @@
 
 <svelte:head>
 	<title>About</title>
+	<meta
+    property="og:image"
+    content="https://balance-social-image.vercel.app/api/og"
+  	/>
 </svelte:head>
 
 <Heading>About</Heading>

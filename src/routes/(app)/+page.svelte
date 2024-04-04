@@ -87,6 +87,10 @@
 
 <svelte:head>
 	<title>{siteTitle}</title>
+	<meta
+    property="og:image"
+    content="https://balance-social-image.vercel.app/api/og"
+  	/>
 
 	<meta content={siteDescription} name="description" />
 
