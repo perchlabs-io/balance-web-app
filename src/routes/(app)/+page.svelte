@@ -89,22 +89,22 @@
 	<title>{siteTitle}</title>
 	<meta
     property="og:image"
-    content="https://balance-social-image.vercel.app/api/static"
+    content="https://balance-social-image.vercel.app/api/og?title=Cardano Blockchain Analytics"
   	/>
 
-	<!-- <meta content={siteDescription} name="description" />
+	<meta content={siteDescription} name="description" />
 
 	<meta content={siteTitle} property="og:title" />
 	<meta content={siteImage} property="og:image" />
 	<meta content={siteUrl} property="og:url" />
 	<meta content={siteDescription} property="og:description" />
-	<meta content={siteName} property="og:site_name" /> -->
+	<meta content={siteName} property="og:site_name" />
 
-	<!-- <meta content={twitterHandle} name="twitter:creator" />
+	<meta content={twitterHandle} name="twitter:creator" />
 	<meta content="summary_large_image" name="twitter:card" />
 	<meta content={siteTitle} name="twitter:title" />
 	<meta content={siteDescription} name="twitter:description" />
-	<meta content={siteImage} name="twitter:image" /> -->
+	<meta content={siteImage} name="twitter:image" />
 </svelte:head>
 
 
