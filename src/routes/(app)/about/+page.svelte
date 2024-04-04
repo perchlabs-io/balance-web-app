@@ -26,7 +26,7 @@
 	<title>About</title>
 	<meta
     property="og:image"
-    content="https://balance-social-image.vercel.app/api/emoji"
+    content="https://balance-social-image.vercel.app/api/og?title=About"
   	/>
 	
 </svelte:head>
