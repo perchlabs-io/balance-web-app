@@ -95,7 +95,7 @@
 	<meta content={siteDescription} name="description" />
 
 	<meta content={siteTitle} property="og:title" />
-	<meta content={siteImage} property="og:image" />
+	<!-- <meta content={siteImage} property="og:image" /> -->
 	<meta content={siteUrl} property="og:url" />
 	<meta content={siteDescription} property="og:description" />
 	<meta content={siteName} property="og:site_name" />
