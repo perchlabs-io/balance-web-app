@@ -25,6 +25,10 @@
 
 <svelte:head>
 	<title>FAQ</title>
+	<meta
+    property="og:image"
+    content="https://balance-social-image.vercel.app/api/og?title=FAQ"
+  	/>
 </svelte:head>
 
 <Heading>FAQ</Heading>
