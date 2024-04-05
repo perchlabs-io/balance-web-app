@@ -25,11 +25,15 @@
 
 <svelte:head>
 	<title>{data.frontmatter.title}</title>
+	<meta
+    property="og:image"
+    content="https://balance-social-image.vercel.app/api/og?title={data.frontmatter.title}"
+  	/>
 
 	<meta content={data.frontmatter.description} name="description" />
 
 	<meta content={data.frontmatter.title} property="og:title" />
-	<meta content={image} property="og:image" />
+	<!-- <meta content={image} property="og:image" /> -->
 	<meta content={siteUrl} property="og:url" />
 	<meta content={data.frontmatter.description} property="og:description" />
 	<meta content={siteName} property="og:site_name" />
@@ -38,7 +42,7 @@
 	<meta content="summary_large_image" name="twitter:card" />
 	<meta content={data.frontmatter.title} name="twitter:title" />
 	<meta content={data.frontmatter.description} name="twitter:description" />
-	<meta content={image} name="twitter:image" />
+	<!-- <meta content={image} name="twitter:image" /> -->
 </svelte:head>
 
 <Clipboard />
