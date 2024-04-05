@@ -9,12 +9,12 @@ export const postImage = 'https://balance-social-image.vercel.app/'
 export const twitterHandle = '@BalanceData22'
 export const twitter = 'https://twitter.com/BalanceData22'
 export const youtube = ''
-export const github = 'https://github.com/Balance-Analytics'
+export const github = 'https://github.com/perchlabs-io'
 export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'
 
 export const api = 'https://api.github.com'
-export const owner = 'Balance-Analytics-io'
-export const repo = 'BALANCE_Media_Preview'
+export const owner = 'perchlabs-io'
+export const repo = 'balance-media'
 export const path = 'posts'
 
 export const categories = {
