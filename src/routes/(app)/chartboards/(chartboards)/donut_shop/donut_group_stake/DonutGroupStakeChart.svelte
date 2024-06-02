@@ -308,7 +308,7 @@
 						{:else}
 							<path 
 								d = {hoveredData == d ? arc_pop_out(d) : arc(d)}
-								fill={(stateCenter == true && d.data.mavgroup == "true") ? "hsla(294, 100%, 45%, 1)" : (stateCenter == true && d.data.mavgroup == "false") ? "grey" : ($colorTheme == '☀️ Daylight') ? colorsDay(Math.pow((d.data.prctstake/max_mav_prctstake),1)) : colorsNight(d.data.prctstake**0.6)}
+								fill={(stateCenter == true && d.data.mavgroup == "true") ? "hsla(294, 100%, 45%, 1)" : (stateCenter == true && d.data.mavgroup == "false") ? "grey" : ($colorTheme == '☀️ Daylight') ? colorsDay(Math.pow((d.data.prctstake/max_mav_prctstake),1)) : colorsNight(Math.pow((d.data.prctstake/max_mav_prctstake),1))}
 								stroke= {"hsla(0% 0% 0% 0%)"}
 								stroke-width= .1%
 								on:mouseover={() => { pieSectionMouseOver(Event, d)  }}
