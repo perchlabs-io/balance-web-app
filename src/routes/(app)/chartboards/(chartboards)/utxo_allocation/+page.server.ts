@@ -1,4 +1,4 @@
-import { getUTxOAllocationData, getUTxOAllocationDeltaData, getUTxOAllocationTotalData, getEpochData } from '$lib/api/balance'
+import { getUTxOAllocationData, getUTxOAllocationDeltaData, getUTxOAllocationTotalData, getEpochData } from '$lib/api/balance.server'
 
 
 export const load = async () => {

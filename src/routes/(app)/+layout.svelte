@@ -6,7 +6,7 @@
 	import { ArrowUpIcon } from '@rgossiaux/svelte-heroicons/outline'
 
 	
-	import { supabaseClient } from '$lib/supabase'
+	import { supabaseClient } from '$lib/supabase.ts'
 	import { invalidate } from '$app/navigation'
 	import { onMount } from 'svelte'
 	
