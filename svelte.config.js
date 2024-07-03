@@ -1,7 +1,9 @@
-import adapter from '@sveltejs/adapter-auto';
+// import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 import preprocess from 'svelte-preprocess';
-
+import adapter from '@sveltejs/adapter-vercel';
+ 
+// This function can run for a maximum of 5 seconds
 
 
 
@@ -12,7 +14,9 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			maxDuration: 60,
+		  }),
 	},
 
 	
