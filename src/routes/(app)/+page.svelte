@@ -22,6 +22,8 @@
 		twitter,
 		twitterHandle,
 	} from '$lib/api/config'
+
+	
 	export let data: PageServerData
 	
 	if (browser) {
