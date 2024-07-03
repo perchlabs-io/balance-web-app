@@ -1,4 +1,4 @@
-import { getChartData, getMAVData, getEpochData, getKeffData, getGroupListData } from '$lib/api/balance'
+import { getChartData, getMAVData, getEpochData, getKeffData, getGroupListData } from '$lib/api/balance.server'
 
 
 export const load = async () => {

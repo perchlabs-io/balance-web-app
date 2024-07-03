@@ -1,4 +1,4 @@
-import { getGroupStakeDonutData, getMAVData, getEpochData } from '$lib/api/balance'
+import { getGroupStakeDonutData, getMAVData, getEpochData } from '$lib/api/balance.server'
 
 
 export const load = async () => {
