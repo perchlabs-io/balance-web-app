@@ -1,4 +1,4 @@
-import { PUBLIC_BALANCE_API_TOKEN } from '$env/static/public';
+import { BALANCE_API_TOKEN } from '$env/static/private';
 
 
 export async function getChartData() {
@@ -9,7 +9,7 @@ export async function getChartData() {
                 headers: {
                   
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                  'Authorization': `Bearer ${BALANCE_API_TOKEN}`
                 }
                 
               });
@@ -39,7 +39,7 @@ export async function getStakeFlowData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -69,7 +69,7 @@ export async function getMAVData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -100,7 +100,7 @@ export async function getGroupStakeDonutData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -132,7 +132,7 @@ export async function getUTxOAllocationData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -163,7 +163,7 @@ export async function getUTxOAllocationDeltaData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -194,7 +194,7 @@ export async function getUTxOAllocationTotalData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -225,7 +225,7 @@ export async function getUTxORPDelegatedData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -256,7 +256,7 @@ export async function getEpochData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -288,7 +288,7 @@ export async function getKeffData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
@@ -319,7 +319,7 @@ export async function getGroupListData() {
               headers: {
                 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PUBLIC_BALANCE_API_TOKEN}`
+                'Authorization': `Bearer ${BALANCE_API_TOKEN}`
               }
               
             });
