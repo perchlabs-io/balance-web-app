@@ -1,8 +1,6 @@
 import { getChartData, getMAVData, getEpochData, getKeffData, getGroupListData } from '$lib/api/balance.server'
 
 
-export const ssr = false
-
 export const load = async () => {
 	
 
