@@ -15,7 +15,7 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			maxDuration: 60,
+			maxDuration: 120,
 			memory: 3008,
 		  }),
 	},
