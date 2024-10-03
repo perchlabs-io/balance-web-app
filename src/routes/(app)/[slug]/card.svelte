@@ -1,19 +1,18 @@
 <script lang="ts">
-	import {
-		ArrowNarrowRightIcon,
-		MailIcon,
-		PencilAltIcon,
-	} from '@rgossiaux/svelte-heroicons/outline'
+	
 	import Newsletter from '$lib/shared/ui/newsletter.svelte'
 	import { twitter, matrix } from '$lib/api/config'
-	import Heart from '@rgossiaux/svelte-heroicons/outline/Heart'
+	import Icon from '@iconify/svelte';
+	
 	export let preset: 'delegate' | 'matrix' | 'newsletter'
 </script>
 
 {#if preset === 'delegate'}
 	<div class="card">
 		<div class="decorative">
-			<Heart width="24" height="24" aria-hidden="true" />
+			
+			<Icon icon="mdi:heart-outline" width="26px"/>
+			
 		</div>
 		<span class="title">Delegate</span>
 		<p class="text">
@@ -28,7 +27,8 @@
 {#if preset === 'matrix'}
 	<div class="card">
 		<div class="decorative">
-			<PencilAltIcon width="24" height="24" aria-hidden="true" />
+			
+			<Icon icon="ph:note-pencil" width="26px"/>
 		</div>
 
 		<span class="title">Join The Discussion</span>
@@ -39,7 +39,7 @@
 		<a class="link" href={matrix} target="_blank" rel="noreferrer">
 			<span>Join BALANCE Matrix Server</span>
 
-			<ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" />
+			
 		</a>
 	</div>
 {/if}
@@ -47,7 +47,8 @@
 {#if preset === 'newsletter'}
 	<div class="card">
 		<div class="decorative">
-			<MailIcon width="24" height="24" aria-hidden="true" />
+			
+			<Icon icon="octicon:mail-24" width="22px"/>
 		</div>
 		<span class="title">Subscribe to our Newsletter</span>
 		<Newsletter />

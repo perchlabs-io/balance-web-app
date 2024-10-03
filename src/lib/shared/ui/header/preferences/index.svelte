@@ -1,20 +1,56 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import {
-		Popover,
-		PopoverButton,
-		PopoverPanel,
-	} from '@rgossiaux/svelte-headlessui'
-	import { CogIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import Themes from './themes.svelte'
+	// import Themes from './themes.svelte'
 	import Reading from './reading.svelte'
-	import Dyslexic from './dyslexic.svelte'
+	// import Dyslexic from './dyslexic.svelte'
 	import Reset from './reset.svelte'
-	import { sounds } from '$lib/stores/sfx'
+	import Icon from '@iconify/svelte';
 </script>
 
+
 <div class="container">
-	<Popover let:open class="popover">
+
+	<button popovertarget="settings" class="button">
+		<Icon icon="fluent:settings-32-regular" width="100%" />
+		
+		
+	</button>
+
+	<div id="settings" popover class="popover">
+		
+		  
+			<!-- <div class="menu">
+					
+				<span class="title">Chart Boards</span>
+				<ul>
+					{#each Object.entries(chartBoards) as [slug, chartboard]}
+						<li>
+							<a href="/chartboards/{slug}">{chartboard}</a>
+						</li>
+					{/each}
+				</ul>
+			</div> -->
+
+			<div class="preferences">
+						
+
+				<span class="title">Preferences</span>
+
+				<div class="options">
+					
+					<Reading />
+					
+					<Reset />
+				</div>
+			</div>
+		
+	</div>
+
+	
+</div>	
+
+<div class="container">
+	<!-- <Popover let:open class="popover">
 		
 		<PopoverButton aria-label="Preferences" class="icon" >
 			
@@ -23,28 +59,10 @@
 		</PopoverButton>
 		
 		{#if open}
-			<div transition:fade={{ duration: 100 }}>
+			<div transition:fade|global={{ duration: 100 }}>
 				<PopoverPanel class="popover-panel" static>
 					<div class="preferences">
-						<svg
-							width="24"
-							height="24"
-							class="arrow"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								id="inside"
-								d="M23 24H1L11.0909 1.98341C11.4474 1.20562 12.5526 1.20562 12.9091 1.98341L23 24Z"
-								fill="none"
-							/>
-							<path
-								id="outside"
-								d="M12.8944 1.78885L24 24H23L12.9021 2.88628C12.5396 2.12822 11.4604 2.12822 11.0979 2.88628L1 24H0L11.1056 1.78885C11.4741 1.05181 12.5259 1.0518 12.8944 1.78885Z"
-								fill="none"
-							/>
-						</svg>
+						
 
 						<span class="title">Preferences</span>
 
@@ -58,34 +76,43 @@
 				</PopoverPanel>
 			</div>
 		{/if}
-	</Popover>
+	</Popover> -->
 </div>
 
 <style>
-	.container {
-		width: 35px;
-		height: 35px;
-		z-index: 10;
-	}
-	.container :global(.popover) {
-		height: 100%;
-		position: relative;
-	}
+	.container  {
+        height: 100%;
+		position: relative; 
+		anchor-name: --anchor_1;
+		
 
-	.container :global(.popover-panel) {
-		position: absolute;
-		top: 50px;
-		right: -15px;
-		z-index: 10;
 	}
+	
+	.popover {
+		position-anchor: --anchor_1;
+		position-area: bottom;
+		transform: translateX(-183.5px);
+		margin-top: 12px;
+		border-width: 0px;
+		background-color: var(--ba-clr-menu-bg);
+		display: none;
+		opacity: 0;
+		transition:
+			opacity 300ms,
+			display 300ms allow-discrete,
+			overlay 500ms allow-discrete;
 
-	.container :global(.icon) {
-		padding: 5%;
-		transition: all 0.3s ease-in-out;
+		&:popover-open {
+		display: block;
+		opacity: 1;
+  		}
 		
 	}
 	
-	
+	.button {
+		width: 30px;
+		margin-top: 2px;
+	}
 
 	.preferences {
 		
@@ -93,15 +120,10 @@
 		padding: var(--spacing-24);
 		
 		box-shadow: var(--shadow-md);
+
+		
 	}
-	.preferences .arrow {
-		position: absolute;
-		top: -23px;
-		right: 22px;
-	}
-	.preferences .arrow #inside {
-		fill: var(--ba-clr-menu-bg);
-	}
+	
 	
 	.preferences .title {
 		display: block;
@@ -110,6 +132,7 @@
 		font-weight: 500;
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
+		color: var(--clr-txt);
 	}
 	.preferences .options {
 		font-weight: 500;
@@ -141,22 +164,34 @@
 		}
 	}
 	@media (max-width: 650px) {
-		.container {
-			width: 24px;
-			height: 24px;
-			z-index: 10;
+		.container  {
+			height: 100%;
+			
+			position: relative; 
+			anchor-name: --anchor_1;
+
+		
+
 		}
-		.preferences .arrow {
-			position: absolute;
-			top: -23px;
-			right: 45px;
+
+		.popover {
+			position-anchor: --anchor_1;
+			position-area: bottom;
+			transform: translateX(-106.5px);
+			margin-top: 12px;
+			border-width: 0px;
+			background-color: var(--ba-clr-menu-bg);
+			display: none;
+			opacity: 0;
+			
+			
 		}
-		.container :global(.popover-panel) {
-			position: absolute;
-			top: 50px;
-			right: -45px;
-			z-index: 10;
+		
+		.button {
+			width: 25px;
+			margin-top: 6px;
 		}
+		
 		.preferences .title {
 			display: block;
 			padding-bottom: var(--spacing-24);
@@ -172,4 +207,6 @@
 			
 		}
 	}
+
+	
 </style>

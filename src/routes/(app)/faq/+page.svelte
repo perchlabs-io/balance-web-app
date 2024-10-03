@@ -2,10 +2,10 @@
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import {fade} from 'svelte/transition'
 	import Question from './components/Question.svelte';
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	// import Overlay from '$lib/shared/ui/overlay.svelte'
 	
 	import faq from './components/faqs';
-	import type { dataset_dev } from 'svelte/internal'
+	// import type { dataset_dev } from 'svelte/internal'
 	const title = 'SvelteKit FAQ Page with SEO';
 	
 	const faqGen = faq['general']

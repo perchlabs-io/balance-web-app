@@ -1,8 +1,0 @@
-{
-    "crons": [
-      {
-        "path": "/api/mavdataupdate",
-        "schedule": "0 17 */5 * *"
-      }
-    ]
-  }

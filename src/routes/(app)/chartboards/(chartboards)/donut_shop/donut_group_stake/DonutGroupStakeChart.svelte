@@ -247,7 +247,7 @@
    
     <button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
     {#if showContent === chartTitle}
-    <p class="chartdetail" transition:slide={{ duration: 200 }}>
+    <p class="chartdetail" transition:slide|global={{ duration: 200 }}>
         {chartInfo}
         
     </p>

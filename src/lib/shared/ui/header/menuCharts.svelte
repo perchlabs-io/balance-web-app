@@ -1,98 +1,81 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import {
-		Popover,
-		PopoverButton,
-		PopoverPanel,
-	} from '@rgossiaux/svelte-headlessui'
+	import Icon from '@iconify/svelte';
 	
-	import { ChartBarIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import { sounds } from '$lib/stores/sfx'
+	
 	import { chartBoards } from '$lib/api/config'
 </script>
 
+
+	
 <div class="container">
-	<Popover let:open class="popover">
-		<PopoverButton aria-label="Chart Boards" class="icon" >
+
+		<button popovertarget="menu" class="button">
+			<Icon icon="cil:chart" width="100%" />
 			
-			<ChartBarIcon width="29" height="29" />
-		</PopoverButton>
+		</button>
 
-		{#if open}
-			<div transition:fade={{ duration: 100 }}>
-				<PopoverPanel class="popover-panel" static>
-					<div class="menu">
-						<svg
-							width="24"
-							height="24"
-							class="arrow"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								id="inside"
-								d="M23 24H1L11.0909 1.98341C11.4474 1.20562 12.5526 1.20562 12.9091 1.98341L23 24Z"
-								fill="none"
-							/>
-							<path
-								id="outside"
-								d="M12.8944 1.78885L24 24H23L12.9021 2.88628C12.5396 2.12822 11.4604 2.12822 11.0979 2.88628L1 24H0L11.1056 1.78885C11.4741 1.05181 12.5259 1.0518 12.8944 1.78885Z"
-								fill="none"
-							/>
-						</svg>
+		<div id="menu" popover class="popover">
+			
+		  	
+				<div class="menu">
+						
+					<span class="title">Chart Boards</span>
+					<ul>
+						{#each Object.entries(chartBoards) as [slug, chartboard]}
+							<li>
+								<a href="/chartboards/{slug}">{chartboard}</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			
+		</div>
 
-						<span class="title">Chart Boards</span>
-						<ul>
-							{#each Object.entries(chartBoards) as [slug, chartboard]}
-								<li>
-									<a href="/chartboards/{slug}">{chartboard}</a>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				</PopoverPanel>
-			</div>
-		{/if}
-	</Popover>
-</div>
+		
+</div>	
+
 
 <style>
-	.container {
-		width: 35px;
-		height: 35px;
-	}
-	.container :global(.popover) {
-		height: 100%;
-		position: relative;
-	}
-	.container :global(.popover-panel) {
-		position: absolute;
-		top: 50px;
-		right: -10px;
-		z-index: 10;
-	}
-	.container :global(.icon) {
-		padding: 5%;
-		transition: all 0.3s ease-out;
-		
+	
+	.container  {
+        height: 100%;
+		position: relative; 
+		anchor-name: --anchor_1;
+
 	}
 	
+	.popover {
+		position-anchor: --anchor_1;
+		position-area: bottom;
+		transform: translateX(-97.5px);
+		margin-top: 12.5px;
+		border-width: 0px;
+		background-color: var(--ba-clr-menu-bg);
+		display: none;
+		opacity: 0;
+		transition:
+			opacity 300ms,
+			display 300ms allow-discrete,
+			overlay 500ms allow-discrete;
+
+		&:popover-open {
+		display: block;
+		opacity: 1;
+  		}
+		
+	}
+
+	.button {
+		width: 29px;
+	}
+
 	.menu {
 		width: max-content;
-		
-		background: var(--ba-clr-menu-bg);
+		background-color: var(--ba-clr-menu-bg);
 		padding: var(--spacing-24);
+		border-width: 0px;
 		
-		box-shadow: var(--shadow-md);
-	}
-	.menu .arrow {
-		position: absolute;
-		top: -23px;
-		right: 16px;
-	}
-	.menu .arrow #inside {
-		fill: var(--ba-clr-menu-bg);
 	}
 	
 	.menu .title {
@@ -102,6 +85,7 @@
 		font-weight: 500;
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
+		color: var(--clr-txt);
 	}
 	.menu a {
 		font-weight: inherit;
@@ -119,6 +103,7 @@
 		grid-auto-flow: column;
 		margin-top: var(--spacing-24);
 	}
+
 	@media (min-width: 650px) {
 		.menu ul {
 			grid-template-rows: repeat(4, 1fr);
@@ -126,22 +111,32 @@
 	}
 	
 	@media (max-width: 650px) {
-		.container {
+		.container  {
+			height: 100%;
+			
+			position: relative; 
+			anchor-name: --anchor_1;
+
+		}
+
+		.popover {
+			position-anchor: --anchor_1;
+			position-area: bottom;
+			transform: translateX(-100.5px);
+			margin-top: 12px;
+			border-width: 0px;
+			background-color: var(--ba-clr-menu-bg);
+			display: none;
+			opacity: 0;
+			
+			
+		}
+		
+		.button {
 			width: 24px;
-			height: 24px;
-			z-index: 10;
+			margin-top: 5px;
 		}
-		.menu .arrow {
-			position: absolute;
-			top: -23px;
-			right: 12px;
-		}
-		.container :global(.popover-panel) {
-			position: absolute;
-			top: 50px;
-			right: -12px;
-			z-index: 10;
-		}
+		
 		.menu .title {
 			display: block;
 			padding-bottom: var(--spacing-24);
@@ -157,4 +152,6 @@
 			
 		}
 	}
+  
+	
 </style>

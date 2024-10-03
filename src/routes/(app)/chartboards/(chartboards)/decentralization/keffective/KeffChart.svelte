@@ -2,8 +2,9 @@
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import { scaleLog, scaleLinear, scaleTime } from "d3-scale";
 	import Line_Keff from "./components/Line.svelte";
-	import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
+	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
 	import { windowWidth, windowHeight, colorTheme } from '$lib/stores/mychart';
+	import Icon from '@iconify/svelte';
 
 	export let keffData : any;
 	
@@ -86,7 +87,7 @@
 		
 		<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 		{#if showContent === chartTitle}
-		<p class="chartdetail" transition:slide={{ duration: 200 }}>
+		<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 			{chartInfo}
 			
 		</p>
@@ -98,7 +99,7 @@
 	<section class="inputbox" >
 		
 		<div class="mavlegend">
-			<h4>K-Effective</h4><ChartPieIcon style="color:{KEFF_COLOR};"  width="17" /><h4>K-Effective / 2</h4><ChartPieIcon style="color:{KEFF2_COLOR};" width="17" /><h4>MAV</h4><ChartPieIcon style="color:{MAV_COLOR};" width="17" />
+			<h4>K-Effective</h4><Icon icon="fa:pie-chart" style="color:{KEFF_COLOR};"  width="17" /><h4>K-Effective / 2</h4><Icon icon="fa:pie-chart" style="color:{KEFF2_COLOR};" width="17" /><h4>MAV</h4><Icon icon="fa:pie-chart" style="color:{MAV_COLOR};" width="17" />
 		</div>
 		
 

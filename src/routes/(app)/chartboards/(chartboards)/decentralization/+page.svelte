@@ -2,7 +2,7 @@
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import KeffChart from "./keffective/KeffChart.svelte";
 	import LevChart from "./stakevleverage/LevChart.svelte";
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	// import Overlay from '$lib/shared/ui/overlay.svelte'
 	
 	
 	export let data : any;

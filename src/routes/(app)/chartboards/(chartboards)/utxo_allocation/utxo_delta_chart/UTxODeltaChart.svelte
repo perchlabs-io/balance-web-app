@@ -18,7 +18,8 @@
 	import { select } from "d3-selection";
 	import { zoom, zoomIdentity } from "d3-zoom";
 	import { fade, scale, slide } from 'svelte/transition';
-	import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
+	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
+	import Icon from '@iconify/svelte';
 	
 
     
@@ -560,7 +561,7 @@
 	
 	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 	{#if showContent === chartTitle}
-	<p class="chartdetail" transition:slide={{ duration: 200 }}>
+	<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 		{chartInfo}
 		
 	</p>
@@ -572,33 +573,33 @@
   <section class="button-container">
 	
     {#if deltaShowDelegated === true}
-        <button class="linechartdetailbuttons_delegated_active" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><ChartPieIcon style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated_active" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_delegated" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><ChartPieIcon style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowRPDelegated === true}
-        <button class="linechartdetailbuttons_rpdelegated_active" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><ChartPieIcon style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated_active" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_rpdelegated" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><ChartPieIcon style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowNotDelegated === true}
-        <button class="linechartdetailbuttons_notdelegated_active"type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><ChartPieIcon style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated_active"type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_notdelegated" type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><ChartPieIcon style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated" type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowNeverDelegated === true}
-        <button class="linechartdetailbuttons_neverdelegated_active" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><ChartPieIcon style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated_active" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_neverdelegated" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><ChartPieIcon style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
 	{#if deltaShowCommercial === true}
-        <button class="linechartdetailbuttons_commercial_active" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><ChartPieIcon style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial_active" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_commercial" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><ChartPieIcon style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart"style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {/if}
 	
   </section>
