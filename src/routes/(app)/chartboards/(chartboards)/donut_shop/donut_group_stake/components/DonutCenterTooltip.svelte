@@ -95,10 +95,10 @@
     <text class="tooltip-detail" x={width/2} y={height/2+offsetHeader*(scaleFactor)} font-size={40*scaleFactor} text-anchor="middle">Stake {data.data.prctstake}%</text>
     <text class="tooltip-detail" x={width/2} y={height/2+40*(scaleFactor)*2} font-size={20*scaleFactor} text-anchor="middle">{hoveredDataSubLabel}</text>
   {:else }
-    <text in:fade={{ delay: 500, duration: 1000 }} x={width/2} y={height/2} font-size={60*scaleFactor} text-anchor="middle" fill="var(--clr-txt" font-weight="bold">MAV: {latestEpochMAV}</text>
-    <text in:fade={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+60*(scaleFactor)} font-size={40*scaleFactor} text-anchor="middle" fill="var(--clr-txt" font-weight="bold">Epoch {latestEpoch}</text>
-    <text in:fade={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+140*(scaleFactor)} font-size={20*scaleFactor} text-anchor="middle" fill="var(--clr-txt" fill-opacity="0.5" font-style="italic">BalanceAnalytics.io</text>
-    <text in:fade={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+170*(scaleFactor)} font-size={20*scaleFactor} text-anchor="middle" fill="var(--clr-txt" fill-opacity="0.5" font-style="italic">BALNC Pool</text>
+    <text in:fade|global={{ delay: 500, duration: 1000 }} x={width/2} y={height/2} font-size={60*scaleFactor} text-anchor="middle" fill="var(--clr-txt" font-weight="bold">MAV: {latestEpochMAV}</text>
+    <text in:fade|global={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+60*(scaleFactor)} font-size={40*scaleFactor} text-anchor="middle" fill="var(--clr-txt" font-weight="bold">Epoch {latestEpoch}</text>
+    <text in:fade|global={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+140*(scaleFactor)} font-size={20*scaleFactor} text-anchor="middle" fill="var(--clr-txt" fill-opacity="0.5" font-style="italic">BalanceAnalytics.io</text>
+    <text in:fade|global={{ delay: 500, duration: 1000 }} x={width/2} y={height/2+170*(scaleFactor)} font-size={20*scaleFactor} text-anchor="middle" fill="var(--clr-txt" fill-opacity="0.5" font-style="italic">BALNC Pool</text>
 
   {/if}
 

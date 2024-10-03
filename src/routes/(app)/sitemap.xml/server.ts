@@ -11,7 +11,7 @@ export const GET: RequestHandler = async () => {
 		'uses',
 		'faq',
 		'about',
-		'pool'
+		'pool',
 		...Object.keys(categories).map((category) => `categories/${category}`),
 		...(await getPostsData()).map((post) => post.slug),
 	]

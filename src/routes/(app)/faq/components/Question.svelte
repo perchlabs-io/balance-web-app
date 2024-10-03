@@ -24,10 +24,10 @@
 	<div {id} class="inputbox" on:mouseleave={handleQAClose}>
 		<button class="question" type="button" on:click={() => handleClick(question)}>{question}</button>
 		{#if showContent === question}
-		<p class="answer" transition:slide={{ duration: 400 }}>
+		<p class="answer" transition:slide|global={{ duration: 400 }}>
 			{answer}
 		</p>
-		<a class="hyperlink" transition:slide={{ duration: 400 }} href={link1url} target="_blank" rel="noopener noreferrer">{link1text}</a>
+		<a class="hyperlink" transition:slide|global={{ duration: 400 }} href={link1url} target="_blank" rel="noopener noreferrer">{link1text}</a>
 		
 		{/if}
 	</div>

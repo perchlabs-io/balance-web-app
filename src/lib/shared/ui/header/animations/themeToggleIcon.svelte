@@ -19,8 +19,8 @@
   <button on:click={onClick} aria-expanded={auto} aria-label={ariaLabel}>
 		<svg
 			class:auto
-            width="28" 
-            height="28"
+            width="32" 
+            height="32"
             aria-hidden="true" 
             viewBox="0 0 24 24" 
             
@@ -67,11 +67,16 @@
 	  display: flex;
 	  align-items: center;
 	  overflow: hidden;
-	  padding: 8%;
+	  padding: 1%;
+	  border-width: 0px;
+	  margin-top: -2px;
+	  
+	  
 	}
   
 	svg {
 	  transition: transform var(--transition-duration);
+	  color: var(--clr-txt);
 	}
   
 	.top {
@@ -123,6 +128,23 @@
 		transform: translateX(-7px);
 	}
 
+	@media (max-width: 650px) {
+
+		button {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			padding: 6%;
+			border-width: 0px;
+			margin-top: 3px;
+			
+			
+		}
+
+
+	}
+
 	@supports (cx: 1) {
 		.dark .moon > circle {
 			transform: translateX(0);
@@ -131,6 +153,9 @@
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
+
+		
+
 		svg .sun {
 			transition: transform var(--transition-duration-long)
 				var(--ease-elastic-3);

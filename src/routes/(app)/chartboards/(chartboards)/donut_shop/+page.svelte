@@ -2,7 +2,7 @@
 
 	// imports
 	import Heading from '$lib/shared/ui/heading.svelte'
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	// import Overlay from '$lib/shared/ui/overlay.svelte'
 	
 	// define donut charts on page
 	import DonutGroupStakeChart from './donut_group_stake/DonutGroupStakeChart.svelte'

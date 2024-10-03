@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, setHeaders }) => {
 	
 
 	if (!categories[params.category]) {
-		throw error(404)
+		error(404);
 	}
 
 	const posts = await getPostsByCategory(params.category)

@@ -27,7 +27,7 @@
     
   </script>
  
-    <div class='tooltip' bind:clientWidth={innerWidth} in:fade={{ duration: 300 }} out:fade={{ duration: 200 }}  style="position: absolute;
+    <div class='tooltip' bind:clientWidth={innerWidth} in:fade|global={{ duration: 300 }} out:fade|global={{ duration: 200 }}  style="position: absolute;
       top: {yScaleZoom ? yScaleZoom(data.y) + 5 : yScale(data.y) + 5}px;
       left: {$windowWidth > 650 ? (data.x > 20 ? (xScaleZoom ? xScaleZoom(data.x) - 158 : xScale(data.x) - 158) : (xScaleZoom ? xScaleZoom(data.x) + 75 : xScale(data.x) + 75)) : (data.x > 20 ? (xScaleZoom ? xScaleZoom(data.x) - 158 : xScale(data.x) - 158) : (xScaleZoom ? xScaleZoom(data.x) + 35 : xScale(data.x) + 35))}px"
     >
