@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	// import Themes from './themes.svelte'
+	import Themes from './themes.svelte'
 	import Reading from './reading.svelte'
 	// import Dyslexic from './dyslexic.svelte'
 	import Reset from './reset.svelte'
