@@ -39,16 +39,12 @@
 <style>
 	.container  {
         height: 100%;
-		position: relative; 
-		anchor-name: --anchor_1;
+		
 		
 	}
 	
 	[popover] {
-		position-anchor: --anchor_1;
-		position-area: bottom;
-		transform: translateX(-183.5px);
-		margin-top: 13.5px;
+		inset: 7.9rem 9.6rem auto auto;
 		border-width: 0px;
 		background-color: var(--ba-clr-menu-bg);
 		display: none;
@@ -122,8 +118,8 @@
 		}
 
 		[popover] {
-			inset: .1rem auto auto auto;
-			transform: translateX(-126px);
+			inset: 7.2rem 1.6rem auto auto;
+			
 			border-width: 0px;
 			background-color: var(--ba-clr-menu-bg);
 			display: none;
