@@ -1,76 +1,46 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
 	import Icon from '@iconify/svelte';
+	import { Popover } from "bits-ui";
 	
 	
 	import { chartBoards } from '$lib/api/config'
+	
 </script>
 
 
+<Popover.Root>
 	
-<div class="container">
-
-		<button popovertarget="menu" class="button">
-			<Icon icon="cil:chart" width="100%" />
-			
-		</button>
-
-		<div id="menu" popover="auto" >
-			
-		  	
-				<div class="menu">
-						
-					<span class="title">Chart Boards</span>
-					<ul>
-						{#each Object.entries(chartBoards) as [slug, chartboard]}
-							<li>
-								<a href="/chartboards/{slug}">{chartboard}</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			
-		</div>
-
+	<Popover.Trigger>
+	<div class="container">
+		<Icon icon="cil:chart" width="100%" />
+	</div>
 		
-</div>	
+	</Popover.Trigger>
+	<Popover.Content sideOffset={15} alignOffset={-95}>
+		<div class="menu">
+						
+			<span class="title">Chart Boards</span>
+			<ul>
+				{#each Object.entries(chartBoards) as [slug, chartboard]}
+					<li>
+						<a href="/chartboards/{slug}">{chartboard}</a>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</Popover.Content>
 
+</Popover.Root>	
 
 <style>
-	
+
 	.container  {
-        height: 100%;
-		position: relative; 
-		anchor-name: --anchor_1;
-
-	}
-
-	
-	
-	[popover] {
-		position-anchor: --anchor_1;
-		position-area: bottom;
-		transform: translateX(-97.5px);
-		margin-top: 12.5px;
-		border-width: 0px;
-		background-color: var(--ba-clr-menu-bg);
-		display: none;
-		opacity: 0;
-		transition:
-			opacity 300ms,
-			display 300ms allow-discrete,
-			overlay 500ms allow-discrete;
-
-		&:popover-open {
-		display: block;
-		opacity: 1;
-  		}
+		height: 35px;
 		
-	}
-
-	.button {
-		width: 29px;
-	}
+		}
+	
+	
 
 	.menu {
 		width: max-content;
@@ -120,7 +90,7 @@
 
 		[popover] {
 			inset: .25rem auto auto auto;
-			transform: translateX(-87.5px);
+			
 			border-width: 0px;
 			background-color: var(--ba-clr-menu-bg);
 			display: none;
