@@ -53,10 +53,7 @@
 		/* box-shadow: var(--shadow-sm); */
 		transition: transform 0.2s ease-in-out, box-shadow 0.3s ease,
 			outline 0.1s ease;
-		/*
-      	I assume this prevents the card from flickering on hover
-      	by triggering hardware-accelerated rendering
-    	*/
+		
 		transform: translateZ(0);
 
 	}

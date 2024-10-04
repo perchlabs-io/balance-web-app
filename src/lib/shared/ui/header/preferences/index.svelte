@@ -2,7 +2,6 @@
 	import { fade } from 'svelte/transition'
 	import Themes from './themes.svelte'
 	import Reading from './reading.svelte'
-	// import Dyslexic from './dyslexic.svelte'
 	import Reset from './reset.svelte'
 	import Icon from '@iconify/svelte';
 </script>
@@ -16,20 +15,10 @@
 		
 	</button>
 
-	<div id="settings" popover class="popover">
+	<div id="settings" popover="auto">
 		
 		  
-			<!-- <div class="menu">
-					
-				<span class="title">Chart Boards</span>
-				<ul>
-					{#each Object.entries(chartBoards) as [slug, chartboard]}
-						<li>
-							<a href="/chartboards/{slug}">{chartboard}</a>
-						</li>
-					{/each}
-				</ul>
-			</div> -->
+			
 
 			<div class="preferences">
 						
@@ -50,33 +39,7 @@
 </div>	
 
 <div class="container">
-	<!-- <Popover let:open class="popover">
-		
-		<PopoverButton aria-label="Preferences" class="icon" >
-			
-				<CogIcon width="29" height="29" />
-			
-		</PopoverButton>
-		
-		{#if open}
-			<div transition:fade|global={{ duration: 100 }}>
-				<PopoverPanel class="popover-panel" static>
-					<div class="preferences">
-						
-
-						<span class="title">Preferences</span>
-
-						<div class="options">
-							
-							<Reading />
-							
-							<Reset />
-						</div>
-					</div>
-				</PopoverPanel>
-			</div>
-		{/if}
-	</Popover> -->
+	
 </div>
 
 <style>
@@ -88,7 +51,7 @@
 
 	}
 	
-	.popover {
+	[popover] {
 		position-anchor: --anchor_1;
 		position-area: bottom;
 		transform: translateX(-183.5px);
@@ -168,13 +131,24 @@
 			height: 100%;
 			
 			position: relative; 
-			anchor-name: --anchor_1;
+			/* anchor-name: --anchor_1; */
 
 		
 
 		}
 
-		.popover {
+		[popover] {
+
+			inset: unset;
+			position: absolute;
+			top: 0.25rem;
+			position-area: bottom;
+		transform: translateX(-105.5px);
+			
+
+		}
+
+		/* .popover {
 			position-anchor: --anchor_1;
 			position-area: bottom;
 			transform: translateX(-106.5px);
@@ -185,7 +159,7 @@
 			opacity: 0;
 			
 			
-		}
+		} */
 		
 		.button {
 			width: 25px;
