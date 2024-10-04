@@ -17,7 +17,7 @@
 	</div>
 		
 	</Popover.Trigger>
-	<Popover.Content sideOffset={15} alignOffset={-95}>
+	<Popover.Content sideOffset={15} align="end" alignOffset={12}>
 		<div class="menu">
 						
 			<span class="title">Chart Boards</span>
@@ -83,26 +83,14 @@
 	}
 	
 	@media (max-width: 650px) {
+
 		.container  {
-			height: 100%;
-			
-		}
-
-		[popover] {
-			inset: .25rem auto auto auto;
-			
-			border-width: 0px;
-			background-color: var(--ba-clr-menu-bg);
-			display: none;
-			opacity: 0;
-		}
-
-		
-		
-		.button {
-			width: 24px;
+			height: 29px;
 			margin-top: 5px;
+		
 		}
+
+		
 		
 		.menu .title {
 			display: block;
