@@ -32,7 +32,7 @@
 			<li><a href="/newsletter">Newsletter</a></li>
 			<!--<li><a href="/rss.xml" target="_blank">RSS</a></li>-->
 			<!--<li><a href={youtube} target="_blank" rel="noreferrer">YouTube</a></li>-->
-			<li><a href={twitter} target="_blank" rel="noreferrer">Twitter</a></li>
+			<li><a href={twitter} target="_blank" rel="noreferrer">𝕏</a></li>
 			<li><a href={matrix} target="_blank" rel="noreferrer">Matrix</a></li>
 		</ul>
 	</div>
@@ -51,6 +51,7 @@
 		<p>Public API</p>
 		<ul>
 			<li><a href="/api/groupdata.json" target="_blank" rel="noreferrer">Pool Group</a></li>
+			<li><a href="/api/mavdata.json" target="_blank" rel="noreferrer">MAV Detail</a></li>
 		</ul>
 	</div>
 
@@ -67,7 +68,7 @@
 				<h2>Subscribe for updates</h2>
 				<Newsletter />
 				<p>
-					Catch the latest highlights on <a href={twitter} target="_blank" rel="noreferrer">Twitter</a> .
+					Catch the latest highlights on <a href={twitter} target="_blank" rel="noreferrer">𝕏</a> .
 				</p>
 			</div>
 		</span>

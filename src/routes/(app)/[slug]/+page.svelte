@@ -3,7 +3,6 @@
 	import type { PageServerData } from './$types'
 	import Card from './card.svelte'
 	import Clipboard from './clipboard.svelte'
-	// import Overlay from './overlay.svelte.tbr'
 	import {
 		fileUrl,
 		postImage,
@@ -48,7 +47,7 @@
 <Clipboard />
 
 <main>
-	<!-- <Overlay /> -->
+	
 
 	<div class="prose">
 		{@html data.content}

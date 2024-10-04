@@ -7,7 +7,7 @@ export const siteImage = `${siteUrl}social.png`
 export const postImage = 'https://balance-social-image.vercel.app/'
 
 export const twitterHandle = '@BalanceData22'
-export const twitter = 'https://twitter.com/BalanceData22'
+export const twitter = 'https://x.com/BalanceData22'
 export const youtube = ''
 export const github = 'https://github.com/perchlabs-io'
 export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'

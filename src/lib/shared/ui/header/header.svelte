@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import MenuCategories from './menuCategories.svelte'
 	import MenuCharts from './menuCharts.svelte'
 	import ThemeToggle from './themeToggle.svelte'
 	import Preferences from './preferences/index.svelte'

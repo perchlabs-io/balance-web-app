@@ -18,7 +18,6 @@
 	import { select } from "d3-selection";
 	import { zoom, zoomIdentity } from "d3-zoom";
 	import { fade, scale, slide } from 'svelte/transition';
-	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
 	import Icon from '@iconify/svelte';
 	
 

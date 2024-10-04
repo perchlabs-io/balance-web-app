@@ -1,7 +1,5 @@
 <script lang="ts">
-	// import { ArrowNarrowRightIcon } from '@rgossiaux/svelte-heroicons/outline'
 	import type { PageServerData } from './$types'
-	// import Newsletter from '$lib/shared/ui/newsletter.svelte'
 	import Posts from '$lib/shared/ui/posts.svelte'
 	import PolyMission from '$lib/icons/polymission.svg'
 	import Transition from '$lib/shared/transition/index.svelte'
@@ -253,11 +251,7 @@
 		</div>
 	</section>
 
-	<!--
-	<Posts posts={data.posts.popular}>
-		<h3 class="popular" slot="title">Popular</h3>
-	</Posts>
-	-->
+	
 
 	
 	<Posts posts={data.posts.latest}>
@@ -269,19 +263,7 @@
 	</Posts>
 	
 
-	<!--
-	<Posts posts={data.posts.series}>
-		<h3 class="series" slot="title">Series</h3>
-		<a slot="see-more" href="/series">
-			<span>See more series</span>
-			<ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" />
-		</a>
-	</Posts>
-
-	<Posts posts={data.posts.picks}>
-		<h3 class="picks" slot="title">Picks</h3>
-	</Posts>
-	-->
+	
 
 	
 	<section class="info-section">

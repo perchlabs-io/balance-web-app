@@ -15,7 +15,7 @@
 			
 		</button>
 
-		<div id="menu" popover class="popover">
+		<div id="menu" popover="auto" >
 			
 		  	
 				<div class="menu">
@@ -44,8 +44,10 @@
 		anchor-name: --anchor_1;
 
 	}
+
 	
-	.popover {
+	
+	[popover] {
 		position-anchor: --anchor_1;
 		position-area: bottom;
 		transform: translateX(-97.5px);
@@ -115,11 +117,19 @@
 			height: 100%;
 			
 			position: relative; 
-			anchor-name: --anchor_1;
+			/* anchor-name: --anchor_1; */
 
 		}
 
-		.popover {
+		[popover] {
+
+			inset: unset;
+			position: absolute;
+			top: 0.25rem;
+			
+		}
+
+		/* .popover {
 			position-anchor: --anchor_1;
 			position-area: bottom;
 			transform: translateX(-100.5px);
@@ -130,7 +140,7 @@
 			opacity: 0;
 			
 			
-		}
+		} */
 		
 		.button {
 			width: 24px;

@@ -6,12 +6,9 @@ import { categories, siteUrl } from '$lib/api/config'
 export const GET: RequestHandler = async () => {
 	const pages = [
 		'articles',
-		'series',
 		'newsletter',
-		'uses',
 		'faq',
 		'about',
-		'pool',
 		...Object.keys(categories).map((category) => `categories/${category}`),
 		...(await getPostsData()).map((post) => post.slug),
 	]
