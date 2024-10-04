@@ -4,25 +4,21 @@
 	import Reading from './reading.svelte'
 	import Reset from './reset.svelte'
 	import Icon from '@iconify/svelte';
+
+	
 </script>
 
 
-<div class="container">
+<div class="container" >
 
 	<button popovertarget="settings" class="button">
 		<Icon icon="fluent:settings-32-regular" width="100%" />
-		
-		
 	</button>
 
-	<div id="settings" popover="auto">
+	<div id="settings" popover="auto" >
 		
-		  
-			
-
-			<div class="preferences">
-						
-
+			<div class="preferences" >
+					
 				<span class="title">Preferences</span>
 
 				<div class="options">
@@ -38,9 +34,7 @@
 	
 </div>	
 
-<div class="container">
-	
-</div>
+
 
 <style>
 	.container  {
@@ -48,14 +42,13 @@
 		position: relative; 
 		anchor-name: --anchor_1;
 		
-
 	}
 	
 	[popover] {
 		position-anchor: --anchor_1;
 		position-area: bottom;
 		transform: translateX(-183.5px);
-		margin-top: 12px;
+		margin-top: 13.5px;
 		border-width: 0px;
 		background-color: var(--ba-clr-menu-bg);
 		display: none;
@@ -78,15 +71,11 @@
 	}
 
 	.preferences {
-		
 		background: var(--ba-clr-menu-bg);
 		padding: var(--spacing-24);
-		
 		box-shadow: var(--shadow-md);
 
-		
 	}
-	
 	
 	.preferences .title {
 		display: block;
@@ -130,40 +119,27 @@
 		.container  {
 			height: 100%;
 			
-			position: relative; 
-			/* anchor-name: --anchor_1; */
-
-		
-
 		}
 
 		[popover] {
-
-			inset: unset;
-			position: absolute;
-			top: 0.25rem;
-			position-area: bottom;
-		transform: translateX(-105.5px);
-			
-
-		}
-
-		/* .popover {
-			position-anchor: --anchor_1;
-			position-area: bottom;
-			transform: translateX(-106.5px);
-			margin-top: 12px;
+			inset: .1rem auto auto auto;
+			transform: translateX(-126px);
 			border-width: 0px;
 			background-color: var(--ba-clr-menu-bg);
 			display: none;
 			opacity: 0;
 			
-			
-		} */
+
+		}
+
 		
 		.button {
 			width: 25px;
 			margin-top: 6px;
+		}
+
+		.preferences {
+			width: 300px;
 		}
 		
 		.preferences .title {

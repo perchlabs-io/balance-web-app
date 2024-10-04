@@ -116,31 +116,18 @@
 		.container  {
 			height: 100%;
 			
-			position: relative; 
-			/* anchor-name: --anchor_1; */
-
 		}
 
 		[popover] {
-
-			inset: unset;
-			position: absolute;
-			top: 0.25rem;
-			
-		}
-
-		/* .popover {
-			position-anchor: --anchor_1;
-			position-area: bottom;
-			transform: translateX(-100.5px);
-			margin-top: 12px;
+			inset: .25rem auto auto auto;
+			transform: translateX(-87.5px);
 			border-width: 0px;
 			background-color: var(--ba-clr-menu-bg);
 			display: none;
 			opacity: 0;
-			
-			
-		} */
+		}
+
+		
 		
 		.button {
 			width: 24px;
@@ -160,6 +147,15 @@
 			font-weight: inherit;
 			color: var(--clr-menu-text);
 			
+		}
+		.menu ul {
+			display: grid;
+			width: 175px;
+			grid-template-rows: repeat(4, 1fr);
+			row-gap: var(--spacing-24);
+			column-gap: var(--spacing-64);
+			grid-auto-flow: column;
+			margin-top: var(--spacing-24);
 		}
 	}
   
