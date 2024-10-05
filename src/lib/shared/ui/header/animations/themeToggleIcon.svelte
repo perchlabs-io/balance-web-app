@@ -128,22 +128,7 @@
 		transform: translateX(-7px);
 	}
 
-	/* @media (max-width: 650px) {
-
-		button {
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			overflow: hidden;
-			padding: 6%;
-			border-width: 0px;
-			margin-top: 3px;
-			
-			
-		}
-
-
-	} */
+	
 
 	@supports (cx: 1) {
 		.dark .moon > circle {
@@ -231,6 +216,23 @@
 				transition-duration: var(--transition-duration-long);
 			}
 		}
+	}
+
+	@media (max-width: 650px) {
+
+		button {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			padding: 10%;
+			/* border-width: 0px;
+			margin-top: 3px; */
+			
+			
+		}
+
+
 	}
 
   </style>
