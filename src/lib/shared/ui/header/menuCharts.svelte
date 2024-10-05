@@ -33,7 +33,7 @@
 	{#if $windowWidth > 650}
 
 		<Popover.Content sideOffset={13.40} align="end" alignOffset={12}>
-			<div class="menu">
+			<div class="menu" out:fade|global={{ duration: 200 }}>
 							
 				<span class="title">Chart Boards</span>
 				<ul>
