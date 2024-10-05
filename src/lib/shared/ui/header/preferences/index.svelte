@@ -4,66 +4,88 @@
 	import Reading from './reading.svelte'
 	import Reset from './reset.svelte'
 	import Icon from '@iconify/svelte';
+	import { Popover } from "bits-ui";
+	import { windowWidth } from '$lib/stores/mychart';
+	import { onMount } from "svelte";
+
+	onMount(() => {
+		onResize();
+    });
+
+	const onResize = () => {
+        $windowWidth = window.innerWidth;
+    };
 
 	
 </script>
 
+<svelte:window
+  on:load={onResize}
+  on:resize={onResize}
+  />
 
-<div class="container" >
 
-	<button popovertarget="settings" class="button">
-		<Icon icon="fluent:settings-32-regular" width="100%" />
-	</button>
 
-	<div id="settings" popover="auto" >
-		
-			<div class="preferences" >
-					
-				<span class="title">Preferences</span>
-
-				<div class="options">
-					
-					<Reading />
-					
-					<Reset />
-				</div>
-			</div>
-		
-	</div>
-
+<Popover.Root>
 	
-</div>	
+	<Popover.Trigger>
+	<div class="container">
+		<Icon icon="fluent:settings-32-regular" width="100%" />
+	</div>
+		
+	</Popover.Trigger>
+	
+
+		{#if $windowWidth > 650}
+
+			<Popover.Content sideOffset={13.50} align="end" alignOffset={64}>
+				<div id="settings" >
+		
+					<div class="preferences" >
+							
+						<span class="title">Preferences</span>
+		
+						<div class="options">
+							
+							<Reading />
+							
+							<Reset />
+						</div>
+					</div>
+				</div>
+			</Popover.Content>
+		
+		{:else if $windowWidth <= 650}
+
+			<Popover.Content sideOffset={15} align="end" alignOffset={53}>
+				<div id="settings" >
+		
+					<div class="preferences" >
+							
+						<span class="title">Preferences</span>
+		
+						<div class="options">
+							
+							<Reading />
+							
+							<Reset />
+						</div>
+					</div>
+			</div>
+			</Popover.Content>
+			
+		{/if}
+		
+
+</Popover.Root>	
 
 
 
 <style>
 	.container  {
-        height: 100%;
-		
-		
-	}
-	
-	[popover] {
-		inset: 7.9rem 9.6rem auto auto;
-		border-width: 0px;
-		background-color: var(--ba-clr-menu-bg);
-		display: none;
-		opacity: 0;
-		transition:
-			opacity 300ms,
-			display 300ms allow-discrete,
-			overlay 500ms allow-discrete;
+		height: 31px;
+		margin-top: 7px;
 
-		&:popover-open {
-		display: block;
-		opacity: 1;
-  		}
-		
-	}
-	
-	.button {
-		width: 30px;
-		margin-top: 2px;
 	}
 
 	.preferences {
@@ -81,28 +103,39 @@
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
 		color: var(--clr-txt);
+
 	}
+
 	.preferences .options {
 		font-weight: 500;
 		color: var(--clr-menu-text);
 		
 	}
+
 	.preferences .options > :global(*) {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		gap: var(--spacing-32);
 		padding: var(--spacing-24) 0;
+
 	}
+
 	.preferences .options > :global(*:not(:last-child)) {
 		border-bottom: 1px solid var(--clr-menu-border);
+
 	}
+
 	.preferences .options > :global(*:last-child) {
 		padding-bottom: 0;
+
 	}
+
 	.preferences .options span {
 		max-width: 180px;
+
 	}
+
 	@media (min-width: 650px) {
 		.preferences {
 			width: 420px;
@@ -112,27 +145,14 @@
 		}
 	}
 	@media (max-width: 650px) {
+
 		.container  {
-			height: 100%;
-			
-		}
-
-		[popover] {
-			inset: 7.2rem 1.6rem auto auto;
-			
-			border-width: 0px;
-			background-color: var(--ba-clr-menu-bg);
-			display: none;
-			opacity: 0;
-			
-
+			height: 26px;
+			margin-top: 11px;
+		
 		}
 
 		
-		.button {
-			width: 25px;
-			margin-top: 6px;
-		}
 
 		.preferences {
 			width: 300px;

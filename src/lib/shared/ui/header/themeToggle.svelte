@@ -72,13 +72,28 @@
 </div>
 
 <style>
-	
-    .container :global(.shpae) {
-        height: 100%;
-		position: relative; 
-        
-        
+
+    .container  {
+		height: 27px;
 		
 	}
+	
+    .container :global(.shpae) {
+		position: relative; 
+		
+	}
+
+    @media (max-width: 650px) {
+
+        .container  {
+            height: 32px;
+            
+        }
+        
+        .container :global(.shpae) {
+            position: relative; 
+            
+        }
+    }
 	
 </style>
