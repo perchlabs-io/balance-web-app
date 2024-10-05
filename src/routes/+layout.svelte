@@ -89,7 +89,7 @@
 	
 	<div>
 		<button class="back-to-top" on:click={goTop} class:hidden>
-			<Icon icon="fa-solid:arrow-up" width="2.25em" height="2.25em" />
+			<Icon icon="fa-solid:arrow-up" width="75%"  />
 		</button>
 	</div>
 	
@@ -121,11 +121,19 @@
   		min-height: 100vh;
 		
 	}
+
+	
+
 	.back-to-top {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 40px;
+		height: 40px;
 		opacity: 1;
 		position: fixed;
 		z-index: 99;
-		right: 125px;
+		right: 10%;
 		user-select: none;
 		bottom: 70px;
 		border-radius: 0px;
@@ -133,6 +141,7 @@
 		color: var(--clr-bg);
 		box-shadow: 0 0 0 4px var(--clr-primary);
 		transition: all 0.3s ease-in-out;
+		
 	}
 	.back-to-top:hover {
 		
@@ -153,5 +162,38 @@
 		}
 		
 		
+	}
+
+	@media (max-width: 650px) {
+
+		.back-to-top {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 35px;
+			height: 35px;
+			opacity: 1;
+			position: fixed;
+			z-index: 99;
+			right: 10%;
+			user-select: none;
+			bottom: 70px;
+			border-radius: 0px;
+			background-color: var(--clr-primary);
+			color: var(--clr-bg);
+			box-shadow: 0 0 0 4px var(--clr-primary);
+			transition: all 0.3s ease-in-out;
+		
+		}
+		.back-to-top:hover {
+			box-shadow: 0 0 0 7px var(--clr-primary);
+			
+		}
+
+		.back-to-top.hidden {
+			opacity: 0;
+			visibility: hidden;
+
+		}
 	}
 </style>

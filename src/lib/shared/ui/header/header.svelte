@@ -176,7 +176,7 @@
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr;
 			display: flex;
-			grid-gap: var(--spacing-24);
+			grid-gap: var(--spacing-16);
 			margin-left: auto;
 			align-items: center;
 			

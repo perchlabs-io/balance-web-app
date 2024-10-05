@@ -140,7 +140,7 @@ a {
 	text-decoration: none;
 	
 	
-	z-index: 1;
+	// z-index: 1;
 	transition: all 0.3s ease-out;
 	
 }
@@ -165,7 +165,7 @@ a::before {
 	transition: transform 0.3s ease;
 	background-color: var(--clr-link-background);
 	border-radius: 4px;
-	z-index: -1;
+	// z-index: -1;
 	
 }
 

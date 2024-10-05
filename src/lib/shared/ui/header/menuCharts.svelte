@@ -2,12 +2,24 @@
 	import { fade } from 'svelte/transition'
 	import Icon from '@iconify/svelte';
 	import { Popover } from "bits-ui";
-	
-	
 	import { chartBoards } from '$lib/api/config'
+	import { windowWidth } from '$lib/stores/mychart';
+	import { onMount } from "svelte";
+
+	onMount(() => {
+		onResize();
+    });
+
+	const onResize = () => {
+        $windowWidth = window.innerWidth;
+    };
 	
 </script>
 
+<svelte:window
+  on:load={onResize}
+  on:resize={onResize}
+  />
 
 <Popover.Root>
 	
@@ -17,36 +29,56 @@
 	</div>
 		
 	</Popover.Trigger>
-	<Popover.Content sideOffset={15} align="end" alignOffset={12}>
-		<div class="menu">
-						
-			<span class="title">Chart Boards</span>
-			<ul>
-				{#each Object.entries(chartBoards) as [slug, chartboard]}
-					<li>
-						<a href="/chartboards/{slug}">{chartboard}</a>
-					</li>
-				{/each}
-			</ul>
-		</div>
-	</Popover.Content>
+
+	{#if $windowWidth > 650}
+
+		<Popover.Content sideOffset={13.40} align="end" alignOffset={12}>
+			<div class="menu">
+							
+				<span class="title">Chart Boards</span>
+				<ul>
+					{#each Object.entries(chartBoards) as [slug, chartboard]}
+						<li>
+							<a href="/chartboards/{slug}">{chartboard}</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		</Popover.Content>
+
+	{:else if $windowWidth <= 650}
+
+		<Popover.Content sideOffset={17.40} align="end" alignOffset={12}>
+			<div class="menu">
+							
+				<span class="title">Chart Boards</span>
+				<ul>
+					{#each Object.entries(chartBoards) as [slug, chartboard]}
+						<li>
+							<a href="/chartboards/{slug}">{chartboard}</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		</Popover.Content>
+
+	{/if}
 
 </Popover.Root>	
 
 <style>
 
 	.container  {
-		height: 35px;
-		
-		}
+		height: 29px;
+		margin-top: 3px;
+	}
 	
-	
-
 	.menu {
 		width: max-content;
 		background-color: var(--ba-clr-menu-bg);
 		padding: var(--spacing-24);
 		border-width: 0px;
+		
 		
 	}
 	
@@ -58,22 +90,29 @@
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
 		color: var(--clr-txt);
+
 	}
+
 	.menu a {
 		font-weight: inherit;
 		color: var(--clr-menu-text);
+
 	}
+
 	.menu a:hover {
 		color: var(--clr-primary);
+
 	}
+
 	.menu ul {
 		display: grid;
-		width: 200px;
+		width: 225px;
 		grid-template-rows: repeat(4, 1fr);
 		row-gap: var(--spacing-24);
 		column-gap: var(--spacing-64);
 		grid-auto-flow: column;
 		margin-top: var(--spacing-24);
+
 	}
 
 	@media (min-width: 650px) {
@@ -85,10 +124,12 @@
 	@media (max-width: 650px) {
 
 		.container  {
-			height: 29px;
-			margin-top: 5px;
+			height: 24px;
+			margin-top: 7px;
 		
 		}
+
+		
 
 		
 		
