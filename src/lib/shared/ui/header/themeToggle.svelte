@@ -85,9 +85,10 @@
 		
 	}
 
-    /* @media (max-width: 650px) {
+    @media (max-width: 650px) {
 
         .container  {
+            width: 32px;
             height: 32px;
             
         }
@@ -97,6 +98,6 @@
             position: relative; 
             
         }
-    } */
+    }
 	
 </style>
