@@ -39,7 +39,7 @@
 		{#if $windowWidth > 650}
 
 			<Popover.Content sideOffset={13.50} align="end" >
-				<div id="settings" >
+				<div id="settings" out:fade|global={{ duration: 200 }}>
 		
 					<div class="preferences" >
 							
