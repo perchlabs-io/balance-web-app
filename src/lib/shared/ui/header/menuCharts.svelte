@@ -48,7 +48,7 @@
 
 	{:else if $windowWidth <= 650}
 
-		<Popover.Content sideOffset={17.40} align="end" alignOffset={12}>
+		<Popover.Content sideOffset={10.40} align="end" alignOffset={12}>
 			<div class="menu">
 							
 				<span class="title">Chart Boards</span>
@@ -70,7 +70,7 @@
 
 	.container  {
 		height: 29px;
-		margin-top: 3px;
+		margin-top: 2px;
 	}
 	
 	.menu {
@@ -125,7 +125,7 @@
 
 		.container  {
 			height: 24px;
-			/* margin-top: 7px; */
+			margin-top: 7px;
 		
 		}
 
