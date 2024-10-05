@@ -218,6 +218,21 @@
 		}
 	}
 
-	
+	@media (max-width: 650px) {
+
+		button {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			padding: 10%;
+			/* border-width: 0px;
+			margin-top: 3px; */
+			
+			
+		}
+
+
+	}
 
   </style>
