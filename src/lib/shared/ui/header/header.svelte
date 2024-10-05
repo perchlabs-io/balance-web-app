@@ -147,6 +147,9 @@
 
 	.settings {
     grid-column: 2 / 1;
+	display: flex;
+	align-items: center;
+	
     
   	}
 
@@ -166,7 +169,7 @@
 		letter-spacing: 1px;
 		/* transition:  color 0.3s ease-in-out; */
 		text-indent: 13px;
-		padding-top: 1.10px;
+		/* padding-top: 1.10px; */
 		
 		}
 		nav {
@@ -191,7 +194,9 @@
 
 		.settings {
 			grid-column: 2 / 1;
-			
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.charts {

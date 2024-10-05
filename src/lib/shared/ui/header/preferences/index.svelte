@@ -57,7 +57,7 @@
 		
 		{:else if $windowWidth <= 650}
 
-			<Popover.Content sideOffset={15} align="end" alignOffset={53}>
+			<Popover.Content sideOffset={10} align="end" alignOffset={51}>
 				<div id="settings" >
 		
 					<div class="preferences" >
@@ -84,7 +84,7 @@
 <style>
 	.container  {
 		height: 31px;
-		/* margin-top: 7px; */
+		margin-top: 1px;
 
 	}
 
@@ -147,8 +147,10 @@
 	@media (max-width: 650px) {
 
 		.container  {
-			height: 26px;
-			/* margin-top: 11px; */
+			
+			height: 28px;
+			
+			margin-top: 5px;
 		
 		}
 
