@@ -1,98 +1,85 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import {
-		Popover,
-		PopoverButton,
-		PopoverPanel,
-	} from '@rgossiaux/svelte-headlessui'
-	
-	import { ChartBarIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import { sounds } from '$lib/stores/sfx'
+	import Icon from '@iconify/svelte';
+	import { Popover } from "bits-ui";
 	import { chartBoards } from '$lib/api/config'
+	import { windowWidth } from '$lib/stores/mychart';
+	import { onMount } from "svelte";
+
+	onMount(() => {
+		onResize();
+    });
+
+	const onResize = () => {
+        $windowWidth = window.innerWidth;
+    };
+	
 </script>
 
-<div class="container">
-	<Popover let:open class="popover">
-		<PopoverButton aria-label="Chart Boards" class="icon" >
-			
-			<ChartBarIcon width="29" height="29" />
-		</PopoverButton>
+<svelte:window
+  on:load={onResize}
+  on:resize={onResize}
+  />
 
-		{#if open}
-			<div transition:fade={{ duration: 100 }}>
-				<PopoverPanel class="popover-panel" static>
-					<div class="menu">
-						<svg
-							width="24"
-							height="24"
-							class="arrow"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								id="inside"
-								d="M23 24H1L11.0909 1.98341C11.4474 1.20562 12.5526 1.20562 12.9091 1.98341L23 24Z"
-								fill="none"
-							/>
-							<path
-								id="outside"
-								d="M12.8944 1.78885L24 24H23L12.9021 2.88628C12.5396 2.12822 11.4604 2.12822 11.0979 2.88628L1 24H0L11.1056 1.78885C11.4741 1.05181 12.5259 1.0518 12.8944 1.78885Z"
-								fill="none"
-							/>
-						</svg>
+<Popover.Root>
+	
+	<Popover.Trigger>
+	<div class="container">
+		<Icon icon="cil:chart" width="100%" />
+	</div>
+		
+	</Popover.Trigger>
 
-						<span class="title">Chart Boards</span>
-						<ul>
-							{#each Object.entries(chartBoards) as [slug, chartboard]}
-								<li>
-									<a href="/chartboards/{slug}">{chartboard}</a>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				</PopoverPanel>
+	{#if $windowWidth > 650}
+
+		<Popover.Content sideOffset={13.40} align="end" alignOffset={12}>
+			<div class="menu">
+							
+				<span class="title">Chart Boards</span>
+				<ul>
+					{#each Object.entries(chartBoards) as [slug, chartboard]}
+						<li>
+							<a href="/chartboards/{slug}">{chartboard}</a>
+						</li>
+					{/each}
+				</ul>
 			</div>
-		{/if}
-	</Popover>
-</div>
+		</Popover.Content>
+
+	{:else if $windowWidth <= 650}
+
+		<Popover.Content sideOffset={10.40} align="end" alignOffset={12}>
+			<div class="menu">
+							
+				<span class="title">Chart Boards</span>
+				<ul>
+					{#each Object.entries(chartBoards) as [slug, chartboard]}
+						<li>
+							<a href="/chartboards/{slug}">{chartboard}</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		</Popover.Content>
+
+	{/if}
+
+</Popover.Root>	
 
 <style>
-	.container {
-		width: 35px;
-		height: 35px;
-	}
-	.container :global(.popover) {
-		height: 100%;
-		position: relative;
-	}
-	.container :global(.popover-panel) {
-		position: absolute;
-		top: 50px;
-		right: -10px;
-		z-index: 10;
-	}
-	.container :global(.icon) {
-		padding: 5%;
-		transition: all 0.3s ease-out;
-		
+
+	.container  {
+		height: 29px;
+		margin-top: 2px;
 	}
 	
 	.menu {
 		width: max-content;
-		
-		background: var(--ba-clr-menu-bg);
+		background-color: var(--ba-clr-menu-bg);
 		padding: var(--spacing-24);
+		border-width: 0px;
 		
-		box-shadow: var(--shadow-md);
-	}
-	.menu .arrow {
-		position: absolute;
-		top: -23px;
-		right: 16px;
-	}
-	.menu .arrow #inside {
-		fill: var(--ba-clr-menu-bg);
+		
 	}
 	
 	.menu .title {
@@ -102,23 +89,32 @@
 		font-weight: 500;
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
+		color: var(--clr-txt);
+
 	}
+
 	.menu a {
 		font-weight: inherit;
 		color: var(--clr-menu-text);
+
 	}
+
 	.menu a:hover {
 		color: var(--clr-primary);
+
 	}
+
 	.menu ul {
 		display: grid;
-		width: 200px;
+		width: 225px;
 		grid-template-rows: repeat(4, 1fr);
 		row-gap: var(--spacing-24);
 		column-gap: var(--spacing-64);
 		grid-auto-flow: column;
 		margin-top: var(--spacing-24);
+
 	}
+
 	@media (min-width: 650px) {
 		.menu ul {
 			grid-template-rows: repeat(4, 1fr);
@@ -126,22 +122,17 @@
 	}
 	
 	@media (max-width: 650px) {
-		.container {
-			width: 24px;
+
+		.container  {
 			height: 24px;
-			z-index: 10;
+			margin-top: 7px;
+		
 		}
-		.menu .arrow {
-			position: absolute;
-			top: -23px;
-			right: 12px;
-		}
-		.container :global(.popover-panel) {
-			position: absolute;
-			top: 50px;
-			right: -12px;
-			z-index: 10;
-		}
+
+		
+
+		
+		
 		.menu .title {
 			display: block;
 			padding-bottom: var(--spacing-24);
@@ -156,5 +147,16 @@
 			color: var(--clr-menu-text);
 			
 		}
+		.menu ul {
+			display: grid;
+			width: 175px;
+			grid-template-rows: repeat(4, 1fr);
+			row-gap: var(--spacing-24);
+			column-gap: var(--spacing-64);
+			grid-auto-flow: column;
+			margin-top: var(--spacing-24);
+		}
 	}
+  
+	
 </style>

@@ -1,16 +1,12 @@
 <script lang="ts">
 	function useDefaults() {
 		const htmlElement = document.documentElement
-		htmlElement.dataset.theme = '🌛 Night'
 		htmlElement.style.setProperty('--post-txt-size', '18px')
 		htmlElement.style.setProperty('--post-txt-length', '70ch')
 		htmlElement.style.setProperty('--post-txt-height', '40px')
-		delete htmlElement.dataset.font
-		localStorage.theme = '🌛 Night'
 		localStorage.textSize = '18px'
 		localStorage.textLength = '70ch'
 		localStorage.textHeight = '40px'
-		localStorage.removeItem('font')
 	}
 </script>
 

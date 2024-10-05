@@ -2,7 +2,7 @@
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import KeffChart from "./keffective/KeffChart.svelte";
 	import LevChart from "./stakevleverage/LevChart.svelte";
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	
 	
 	
 	export let data : any;
@@ -31,7 +31,7 @@
 <Heading>Decentralization</Heading>
 
 <main>
-	<!-- <Overlay /> -->
+	
 
 	<!-- This is a test comment to confirm automated deployment is working correctly  2-->
 

@@ -1,4 +1,4 @@
-export const siteName = 'Balance'
+export const siteName = 'BALANCE'
 export const siteUrl = 'https://www.balanceanalytics.io/'
 export const siteTitle = 'Balance Analytics'
 export const siteDescription =
@@ -7,7 +7,7 @@ export const siteImage = `${siteUrl}social.png`
 export const postImage = 'https://balance-social-image.vercel.app/'
 
 export const twitterHandle = '@BalanceData22'
-export const twitter = 'https://twitter.com/BalanceData22'
+export const twitter = 'https://x.com/BalanceData22'
 export const youtube = ''
 export const github = 'https://github.com/perchlabs-io'
 export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'
@@ -32,14 +32,17 @@ export const chartBoards = {
 	
 }
 
-// https://api.github.com/repos/user/repo/contents/data/posts.json
+
+
+// https://api.github.com/repos/user/repo/contents/data/projects.json
 export const postsDataUrl = `${api}/repos/${owner}/${repo}/contents/data/posts.json`
 
-// https://api.github.com/repos/user/repo/contents/posts
+// https://api.github.com/repos/user/repo/contents/projects
 export const postsUrl = `${api}/repos/${owner}/${repo}/contents/${path}`
 
-// https://github.com/user/repo/blob/main/posts
+// https://github.com/user/repo/blob/main/projects
 export const fileUrl = `https://github.com/${owner}/${repo}/blob/main/posts`
 
-// https://raw.githubusercontent.com/user/repo/main/posts/post-slug/images/image.webp
+// https://raw.githubusercontent.com/user/repo/main/projects/post-slug/images/image.web
 export const imagesUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/posts`
+

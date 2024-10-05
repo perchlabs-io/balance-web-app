@@ -1,23 +1,24 @@
 <script lang="ts">
 	
-	import { PlayIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import { PauseIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import { ArrowLeftIcon } from '@rgossiaux/svelte-heroicons/outline'
-	import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
+	// import { PlayIcon } from '@rgossiaux/svelte-heroicons/outline'
+	// import { PauseIcon } from '@rgossiaux/svelte-heroicons/outline'
+	// import { ArrowLeftIcon } from '@rgossiaux/svelte-heroicons/outline'
+	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
 	import RangeSlider from "svelte-range-slider-pips";
 	import { tweened } from 'svelte/motion'
     import { cubicOut } from 'svelte/easing'
     import { selectedEpoch, selectedEpoch2 } from '$lib/stores/mychart';
-	import {
-		Popover,
-		PopoverButton,
-		PopoverPanel,
-	} from '@rgossiaux/svelte-headlessui'
+	// import {
+	// 	Popover,
+	// 	PopoverButton,
+	// 	PopoverPanel,
+	// } from '@rgossiaux/svelte-headlessui'
 	import { zoom, zoomIdentity } from "d3-zoom";
 	import { onMount } from "svelte";
 	import { select } from "d3-selection";
 	import { windowWidth, windowHeight, colorTheme } from '$lib/stores/mychart';
 	import debounceFn from "lodash.debounce";
+	import Icon from '@iconify/svelte';
 	
 	
 	export let curMAVData : any;
@@ -292,7 +293,7 @@
 	<section class="heroheader">
 		<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 		{#if showContent === chartTitle}
-		<p class="chartdetail" transition:slide={{ duration: 200 }}>
+		<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 			{chartInfo}
 			
 		</p>
@@ -309,7 +310,7 @@
 			<h4>MAV&nbsp;&nbsp;&nbsp;{curMAVData2}</h4>
 		</div>
 		<div class="mavlegend">
-			<h4>&lt; 49%</h4><ChartPieIcon style="color:rgb(44, 154, 255, 0.75);"  width="17" /><h4>> 51%</h4><ChartPieIcon style="color:rgb(131, 106, 249, 0.75);" width="17" />
+			<h4>&lt; 49%</h4><Icon icon="fa:pie-chart" style="color:rgb(44, 154, 255, 0.75);"  width="17" /><h4>> 51%</h4><Icon icon="fa:pie-chart" style="color:rgb(131, 106, 249, 0.75);" width="17" />
 		</div>
 		<div class="poolsearch">
 			
@@ -332,7 +333,7 @@
 
 	
 		{#if filteredGroups.length > 0}
-		<section class="groupbox" transition:slide={{ duration: 200 }}>
+		<section class="groupbox" transition:slide|global={{ duration: 200 }}>
 				<div class="groupresults">
 					
 								{#each filteredGroups as group, i}
@@ -489,26 +490,28 @@
 	<section class="inputbox" >
 		{#if $windowWidth > 650}
 			<div class="control">
-				<button class="controlicon" >
-				<PlayIcon on:click={startInterval} width="45" height="45"/>
+				<button class="controlicon" on:click={startInterval}>
+				<Icon icon="ph:play-circle-light" width="45" height="45"/>
+				
 				</button>
-				<button class="controlicon">
-				<PauseIcon on:click={()=>{ clearInterval(interval)}} width="45" height="45"/>
+				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
+				<Icon icon="ph:pause-circle-light" width="45" height="45"/>
 				</button>
-				<button class="controliconreset">
-				<ArrowLeftIcon on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }} width="45" height="45"/>
+				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
+				<Icon icon="fluent:replay-20-regular" width="45" height="45"/>
+					
 				</button>
 			</div>
 		{:else if $windowWidth <= 650}
 			<div class="control">
-				<button class="controlicon" >
-				<PlayIcon on:click={startInterval} width="40" height="40"/>
+				<button class="controlicon" on:click={startInterval}>
+				<Icon icon="ph:play-circle-light" width="40" height="40"/>
 				</button>
-				<button class="controlicon">
-				<PauseIcon on:click={()=>{ clearInterval(interval)}} width="40" height="40"/>
+				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
+				<Icon icon="ph:pause-circle-light" width="40" height="40"/>
 				</button>
-				<button class="controliconreset">
-				<ArrowLeftIcon on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }} width="40" height="40"/>
+				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
+				<Icon icon="fluent:replay-20-regular" width="40" height="40"/>
 				</button>
 			</div>
 

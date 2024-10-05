@@ -18,7 +18,7 @@
 	import { select } from "d3-selection";
 	import { zoom, zoomIdentity } from "d3-zoom";
 	import { fade, scale, slide } from 'svelte/transition';
-	import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
+	import Icon from '@iconify/svelte';
 	
 
     
@@ -167,7 +167,7 @@
 	
 	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 	{#if showContent === chartTitle}
-	<p class="chartdetail" transition:slide={{ duration: 200 }}>
+	<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 		{chartInfo}<br/><br/>
 		
 			<b>Delegated:&emsp;</b>{catDelegatedInfo}<br/>
@@ -184,19 +184,20 @@
 
   <section class="inputbox" >
 	<div class="legendDelegated">
-		<h4>Delegated</h4><ChartPieIcon style="color:{DELEGATED_COLOR}"  width="17" />
+		<h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" />
+		
 	</div>
 	<div class="legendRPDelegated">
-		<h4>Retired Pool</h4><ChartPieIcon style="color:{RP_DELEGATED_COLOR}"  width="17" />
+		<h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" />
 	</div>
 	<div class="legendNotDelegated">
-		<h4>Not Delegated</h4><ChartPieIcon style="color:{NOT_DELEGATED_COLOR}"  width="17" />
+		<h4>Not Delegated</h4><Icon icon="fa:pie-chart"style="color:{NOT_DELEGATED_COLOR}"  width="17" />
 	</div>
 	<div class="legendNeverDelegated">
-		<h4>Never Delegated</h4><ChartPieIcon style="color:{NEVER_DELEGATED_COLOR}"  width="17" />
+		<h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" />
 	</div>
 	<div class="legendCommercial">
-		<h4>Ineligible</h4><ChartPieIcon style="color:{COMMERCIAL_COLOR}"  width="17" />
+		<h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" />
 	</div>
 
   </section>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import {fade} from 'svelte/transition'
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	
 	import { onMount } from "svelte";
 		
 		let isExpanded = false
@@ -35,7 +35,7 @@
 
 
 <main>
-	<!-- <Overlay /> -->
+	
 
 	<section class="heroheader">
 		<div class="inputbox">
@@ -56,7 +56,7 @@
 				<h4 class="membername">Nicholas Gilbert</h4>
 				<!-- <div class="memberdivider" /> -->
 				<div class="memberpic">
-					<img style="border-radius: 0;" src="./assets/NG_profile_pic.png" alt="Nicholas Gilbert">
+					<img style="border-radius: 0;" src="./images/NG_profile_pic.png" alt="Nicholas Gilbert">
 				</div>
 				<p class="membertwitter"><strong>Twitter:</strong>&emsp; <a href="https://twitter.com/GilbertStClr" target="_blank" rel="noopener noreferrer">&emsp; @GilbertStClr</a></p>
 				<p class="membertitle"><strong>Title:</strong>&emsp;&emsp;&nbsp;&nbsp;&nbsp; Founder & Co-Owner</p>
@@ -68,7 +68,7 @@
 				<h4 class="membername">@TheStophe</h4>
 				<!-- <div class="memberdivider" /> -->
 				<div class="memberpic">
-					<img style="border-radius: 0;" src="./assets/cgarant_profile.png" alt="@TheStophe">
+					<img style="border-radius: 0;" src="./images/cgarant_profile.png" alt="@TheStophe">
 				</div>
 				<p class="membertwitter"><strong>Twitter:</strong> <a href="https://twitter.com/TheStophe" target="_blank" rel="noopener noreferrer">&emsp; @TheStophe</a></p>
 				<p class="membertitle" ><strong>Title:</strong>&emsp;&emsp;&nbsp;&nbsp;&nbsp; Co-Owner</p>

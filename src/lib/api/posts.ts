@@ -82,10 +82,11 @@ export async function getPosts(): Promise<PostsType> {
 			const ellipsis = descriptionLength > characterLimit ? '...' : ''
 			const description =
 				post.description.substring(0, characterLimit) + ellipsis
+			
 
 			return {
 				...post,
-				description,
+				description
 			}
 		})
 

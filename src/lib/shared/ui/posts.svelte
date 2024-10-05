@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { EyeIcon } from '@rgossiaux/svelte-heroicons/outline'
+	
 	import Transition from '$lib/shared/transition/index.svelte'
 	import { inview } from 'svelte-inview';
 	import type { ObserverEventDetails, Options } from 'svelte-inview';
 	import { views } from '$lib/stores/views'
 	import type { PostType } from '$lib/types'
+	import Icon from '@iconify/svelte';
+	
 	export let posts: PostType[]
 
 	let isInView : any;
@@ -30,7 +32,7 @@
 				<a href="/{post.slug}">
 					<article class="card">
 						<span class="views">
-							<EyeIcon width="24" height="24" aria-hidden="true" />
+							<Icon icon="ph:eye" width="1.6em" height="1.6em" />
 							
 							{#if $views.length > 0}
 								<span>
@@ -89,12 +91,7 @@
 		box-shadow: var(--shadow-sm);
 		transition: transform 0.2s ease-in-out, box-shadow 0.3s ease,
 			outline 0.1s ease;
-		/*
-      I assume this prevents the card from flickering on hover
-      by triggering hardware-accelerated rendering
-    
-		transform: translateZ(0);
-		*/
+		
 	}
 	.card:hover {
 		transform: scale(1.02);
@@ -167,12 +164,7 @@
 			box-shadow: var(--shadow-sm);
 			transition: transform 0.2s ease-in-out, box-shadow 0.3s ease,
 				outline 0.1s ease;
-			/*
-		I assume this prevents the card from flickering on hover
-		by triggering hardware-accelerated rendering
-		
-			transform: translateZ(0);
-			*/
+			
 		}
 	
 	

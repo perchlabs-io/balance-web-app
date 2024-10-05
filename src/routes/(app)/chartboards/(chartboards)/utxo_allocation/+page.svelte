@@ -2,7 +2,7 @@
 
 	// imports
 	import Heading from '$lib/shared/ui/heading.svelte'
-	import Overlay from '$lib/shared/ui/overlay.svelte'
+	
 	
 	// define charts on page
 	import UTxOStackChart from './utxo_stack_chart/UTxOStackChart.svelte'

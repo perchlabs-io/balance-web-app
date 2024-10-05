@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import Newsletter from '$lib/shared/ui/newsletter.svelte'
-	import {
-		ArrowNarrowRightIcon
-	} from '@rgossiaux/svelte-heroicons/outline'
+	
 </script>
 
 <svelte:head>
@@ -26,7 +24,7 @@
 		>
 			
 
-			<ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" />
+			
 			<span>Return to BALANCE</span>
 		</a>
 </div>

@@ -9,11 +9,11 @@
 
 	export let onClick = () => {
 
-        if($colorTheme == '🌛 Night') {
+        if($colorTheme == 'dark') {
 
             auto = !auto
 
-            let selectedTheme = '☀️ Daylight'
+            let selectedTheme = 'light'
 
             const htmlElement = document.documentElement
             htmlElement.dataset.theme = selectedTheme
@@ -27,7 +27,7 @@
 
             auto = !auto
 
-            let selectedTheme = '🌛 Night'
+            let selectedTheme = 'dark'
 
             const htmlElement = document.documentElement
             htmlElement.dataset.theme = selectedTheme
@@ -42,7 +42,7 @@
 	}
 
     const themeCheck = () => {
-        if($colorTheme == '🌛 Night') {
+        if($colorTheme == 'dark') {
 
         auto = !auto
 
@@ -72,26 +72,32 @@
 </div>
 
 <style>
-	.container {
+
+    .container  {
 		width: 35px;
 		height: 35px;
-	}
-
-    .container :global(.shpae) {
-        height: 100%;
-		position: relative; 
-        
 		
 	}
 	
-	@media (max-width: 650px) {
-		.container {
-		width: 24px;
-		height: 24px;
-	}
+    .container :global(.shpae) {
+        height: 100%;
+		position: relative; 
+		
 	}
 
+    @media (max-width: 650px) {
 
-	
+        .container  {
+            width: 32px;
+            height: 32px;
+            
+        }
+        
+        .container :global(.shpae) {
+            height: 100%;
+            position: relative; 
+            
+        }
+    }
 	
 </style>

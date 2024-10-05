@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import { MailIcon } from '@rgossiaux/svelte-heroicons/outline'
+	import Icon from '@iconify/svelte';
+	
 	let email : any = ''
 	let error = ''
 	let success = ''
@@ -32,18 +33,19 @@
 		placeholder="enter@email.here"
 	/>
 	<button type="submit">
-		<MailIcon width="24" height="24" aria-hidden="true" />
+		<Icon icon="tdesign:mail" width="20" height="20" />
+		
 		<span>Subscribe</span>
 	</button>
 </form>
 
 <div class="message">
 	{#if error}
-		<span in:fade class="error">{error}</span>
+		<span in:fade|global class="error">{error}</span>
 	{/if}
 
 	{#if success}
-		<span in:fade class="success">{success}</span>
+		<span in:fade|global class="success">{success}</span>
 	{/if}
 </div>
 

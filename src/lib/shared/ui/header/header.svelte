@@ -1,5 +1,4 @@
 <script lang="ts">
-	import MenuCategories from './menuCategories.svelte'
 	import MenuCharts from './menuCharts.svelte'
 	import ThemeToggle from './themeToggle.svelte'
 	import Preferences from './preferences/index.svelte'
@@ -34,15 +33,20 @@
 
 	
 	<div class="logo">
-		<img class="image" src="/assets/ba_header_logo.png" ><a class="title"  href="/">{siteName}</a>
+		<img class="image" src="/images/ba_header_logo.png" ><a class="title"  href="/">{siteName}</a>
 	</div>
 
 	<nav>
 		
-		
-		<ThemeToggle />
-		<Preferences />
-		<MenuCharts />
+		<div class="theme">
+			<ThemeToggle />
+		</div>
+		<div class="settings">
+			<Preferences />
+		</div>
+		<div class="charts">
+			<MenuCharts />
+		</div>
 		
 	</nav>
 	
@@ -122,14 +126,37 @@
 	
 	nav {
 		grid-column: 3 / 3;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		display: flex;
-		gap: var(--spacing-16);
+		grid-gap: var(--spacing-24);
 		margin-left: auto;
+		align-items: center;
+		/* align-content: space-evenly; */
+		/* justify-items: end; */
 		
 	}
 	nav :global(svg) {
 		cursor: pointer;
 	}
+
+	.theme {
+    grid-column: 1 / 1;
+    
+  	}
+
+	.settings {
+    grid-column: 2 / 1;
+	display: flex;
+	align-items: center;
+	
+    
+  	}
+
+	.charts {
+    grid-column: 3 / 1;
+    
+  	}
 
 	@media (max-width: 650px) {
 		.image {
@@ -142,16 +169,40 @@
 		letter-spacing: 1px;
 		/* transition:  color 0.3s ease-in-out; */
 		text-indent: 13px;
-		padding-top: 1.10px;
+		/* padding-top: 1.10px; */
 		
 		}
 		nav {
-		grid-column: 3 / 3;
-		display: flex;
-		gap: var(--spacing-10);
-		margin-left: auto;
-		margin-top: -7px;
-	}
+		
+
+			grid-column: 3 / 3;
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			display: flex;
+			grid-gap: var(--spacing-16);
+			margin-left: auto;
+			align-items: center;
+			
+			margin-top: -7px;
+		}
+
+		.theme {
+			grid-column: 1 / 1;
+			
+			
+		}
+
+		.settings {
+			grid-column: 2 / 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.charts {
+			grid-column: 3 / 1;
+			
+		}
 	}
 
 </style>
