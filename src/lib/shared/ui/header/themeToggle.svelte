@@ -74,7 +74,7 @@
 <style>
 
     .container  {
-		width: 35px;
+		/* width: 35px; */
 		height: 35px;
 		
 	}
@@ -85,7 +85,7 @@
 		
 	}
 
-    /* @media (max-width: 650px) {
+    @media (max-width: 650px) {
 
         .container  {
             height: 32px;
@@ -93,9 +93,10 @@
         }
         
         .container :global(.shpae) {
+            height: 100%;
             position: relative; 
             
         }
-    } */
+    }
 	
 </style>
