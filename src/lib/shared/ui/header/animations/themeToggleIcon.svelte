@@ -67,9 +67,9 @@
 	  display: flex;
 	  align-items: center;
 	  overflow: hidden;
-	  padding: 1%;
-	  border-width: 0px;
-	  margin-top: -2px;
+	  padding: 8%;
+	  /* border-width: 0px;
+	  margin-top: -2px; */
 	  
 	  
 	}
@@ -128,7 +128,7 @@
 		transform: translateX(-7px);
 	}
 
-	@media (max-width: 650px) {
+	/* @media (max-width: 650px) {
 
 		button {
 			cursor: pointer;
@@ -143,7 +143,7 @@
 		}
 
 
-	}
+	} */
 
 	@supports (cx: 1) {
 		.dark .moon > circle {
