@@ -170,8 +170,8 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 35px;
-			height: 35px;
+			width: 30px;
+			height: 30px;
 			opacity: 1;
 			position: fixed;
 			z-index: 99;

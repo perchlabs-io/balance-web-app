@@ -83,7 +83,7 @@
 		
 	}
 
-    @media (max-width: 650px) {
+    /* @media (max-width: 650px) {
 
         .container  {
             height: 32px;
@@ -94,6 +94,6 @@
             position: relative; 
             
         }
-    }
+    } */
 	
 </style>
