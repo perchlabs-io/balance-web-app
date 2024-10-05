@@ -38,7 +38,7 @@
 
 		{#if $windowWidth > 650}
 
-			<Popover.Content sideOffset={13.50} align="end" alignOffset={64}>
+			<Popover.Content sideOffset={13.50} align="end" >
 				<div id="settings" >
 		
 					<div class="preferences" >
@@ -57,7 +57,7 @@
 		
 		{:else if $windowWidth <= 650}
 
-			<Popover.Content sideOffset={10} align="end" alignOffset={51}>
+			<Popover.Content sideOffset={10} align="end" >
 				<div id="settings" >
 		
 					<div class="preferences" >
