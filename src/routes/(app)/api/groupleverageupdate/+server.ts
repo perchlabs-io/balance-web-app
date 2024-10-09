@@ -6,7 +6,7 @@ import { supabase } from '$lib/database'
 
 export const GET: RequestHandler = async () => {
 
-    const response = await fetch('https://api.balanceanalytics.io/rpc/network_mav_poolgroup_list', {
+    const response = await fetch('https://api.balanceanalytics.io/rpc/pool_leverage_sk', {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',
@@ -22,13 +22,15 @@ export const GET: RequestHandler = async () => {
 
             const staticdata2 = JSON.stringify(chartData)
             const staticdata3 = JSON.parse(staticdata2)
-            const staticdata4 = await staticdata3[0].mavdata
+            const staticdata4 = await staticdata3[0].chartdata
             const api_data_json = await staticdata4
+
+            
 
             //console.log(mav_data_json)
             
 
-    const api_id = 'cardano'
+    const api_id = 'group_leverage'
 
     const api = await supabase
 		.from('api')

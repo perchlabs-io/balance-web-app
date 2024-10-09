@@ -1,18 +1,8 @@
 <script lang="ts">
-	
-	// import { PlayIcon } from '@rgossiaux/svelte-heroicons/outline'
-	// import { PauseIcon } from '@rgossiaux/svelte-heroicons/outline'
-	// import { ArrowLeftIcon } from '@rgossiaux/svelte-heroicons/outline'
-	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
 	import RangeSlider from "svelte-range-slider-pips";
 	import { tweened } from 'svelte/motion'
     import { cubicOut } from 'svelte/easing'
     import { selectedEpoch, selectedEpoch2 } from '$lib/stores/mychart';
-	// import {
-	// 	Popover,
-	// 	PopoverButton,
-	// 	PopoverPanel,
-	// } from '@rgossiaux/svelte-headlessui'
 	import { zoom, zoomIdentity } from "d3-zoom";
 	import { onMount } from "svelte";
 	import { select } from "d3-selection";
