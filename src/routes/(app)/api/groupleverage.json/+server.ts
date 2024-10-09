@@ -4,7 +4,7 @@ import { supabase } from '$lib/database'
 
 export const GET: RequestHandler = async () => {
 
-	const api_id = 'cardano_mav'
+	const api_id = 'group_leverage'
 
 	const { data: api, error } = await supabase
 		.from('api')
