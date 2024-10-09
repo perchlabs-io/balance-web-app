@@ -28,7 +28,7 @@ export const GET: RequestHandler = async () => {
             //console.log(mav_data_json)
             
 
-    const api_id = 'cardano'
+    const api_id = 'cardano_mav'
 
     const api = await supabase
 		.from('api')
