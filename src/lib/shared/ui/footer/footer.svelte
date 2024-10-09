@@ -26,16 +26,18 @@
 		</ul>
 	</div>
 
-	<div class="follow">
-		<p>Follow</p>
+	<div class="api">
+		<p>Public API</p>
 		<ul>
-			<li><a href="/newsletter">Newsletter</a></li>
-			<!--<li><a href="/rss.xml" target="_blank">RSS</a></li>-->
-			<!--<li><a href={youtube} target="_blank" rel="noreferrer">YouTube</a></li>-->
-			<li><a href={twitter} target="_blank" rel="noreferrer">𝕏</a></li>
-			<li><a href={matrix} target="_blank" rel="noreferrer">Matrix</a></li>
+			<li><a href="/api/groupdata.json" target="_blank" rel="noreferrer">Pool Group List</a></li>
+			<li><a href="/api/mavdata.json" target="_blank" rel="noreferrer">Cardano MAV Detail</a></li>
+			<li><a href="/api/groupleverage.json" target="_blank" rel="noreferrer">Group Stake v Leverage</a></li>
+			
+			
 		</ul>
 	</div>
+
+	
 
 	<div class="info">
 		<p>Info</p>
@@ -47,13 +49,20 @@
 		</ul>
 	</div>
 
-	<div class="api">
-		<p>Public API</p>
+	<div class="follow">
+		<p>Follow</p>
 		<ul>
-			<li><a href="/api/groupdata.json" target="_blank" rel="noreferrer">Pool Group</a></li>
-			<li><a href="/api/mavdata.json" target="_blank" rel="noreferrer">MAV Detail</a></li>
+			<li><a href="/newsletter">Newsletter</a></li>
+			<!--<li><a href="/rss.xml" target="_blank">RSS</a></li>-->
+			<!--<li><a href={youtube} target="_blank" rel="noreferrer">YouTube</a></li>-->
+			<li><a href={twitter} target="_blank" rel="noreferrer">𝕏</a></li>
+			<li><a href={matrix} target="_blank" rel="noreferrer">Matrix</a></li>
 		</ul>
 	</div>
+
+	
+
+	
 
 	<figure>
 		<div class="decorative" >
@@ -81,9 +90,9 @@
 <style>
 	footer {
 		display: grid;
-		grid-template-columns: repeat(12, [column-start] 1fr);
-		column-gap: var(--spacing-24);
-		/*row-gap: var(--spacing-18);*/
+		grid-template-columns: repeat(14, [column-start] 1fr);
+		/* column-gap: var(--spacing-24); */
+		/* row-gap: var(--spacing-16); */
 		margin-top: var(--spacing-178);
 		
 		padding: var(--spacing-32);
@@ -93,7 +102,7 @@
 		/*border-radius: var(--rounded-20) var(--rounded-20) 0 0;*/
 	}
 	footer > * {
-		grid-column: column-start 1 / span 11;
+		grid-column: column-start 1 / span 13;
 	}
 	footer p {
 		font-weight: 700;
@@ -101,11 +110,12 @@
 	footer ul {
 		width: max-content;
 		display: grid;
-		grid-template-rows: repeat(5, 1fr);
+		grid-template-rows: repeat(4, 1fr);
 		grid-auto-flow: column;
 		column-gap: var(--spacing-32);
 		row-gap: var(--spacing-16);
 		margin-top: var(--spacing-16);
+		
 	}
 	footer li a {
 		font-weight: inherit;
@@ -127,27 +137,10 @@
 	footer figure .decorative {
 		width: 100%;
 		height: 100%;
-		
-		
 		padding-bottom: 50px;
 		
-		
-		
 	}
-	footer blockquote {
-		font-size: clamp(var(--font-24), 3vw, var(--font-32));
-		font-family: var(--font-sans);
-		text-shadow: 2px 2px 10px hsl(0 0% 0% / 10%);
-	}
-	html[data-font='dyslexic'] footer blockquote {
-		font-family: var(--font-dyslexic);
-		font-size: var(--font-24);
-		line-height: 32px;
-	}
-	footer figcaption {
-		align-self: end;
-	}
-
+	
 	.newsletter p {
 		color: var(--clr-hero-txt);
 	}
@@ -157,22 +150,24 @@
 	
 	@media (min-width: 860px) {
 		footer figure {
-			grid-area: 1 / col8-start / last-line / 8;
+			grid-area: 1 / col8-start / last-line / 9;
 		}
 		footer .categories {
 			grid-column: column-start 1 / span 3;
+			
 		}
 		footer .chartboards {
 			grid-column: column-start 4 / span 3;
 		}
-		footer .follow {
-			grid-column: column-start 1 / span 3;
+		footer .api {
+			grid-column: column-start 1 / span 6;
 		}
 		footer .info {
-			grid-column: column-start 4 / span 3;
+			grid-column: column-start 9 / span 3;
+			
 		}
-		footer .api {
-			grid-column: column-start 8 / span 3;
+		footer .follow {
+			grid-column: column-start 12 / span 2;
 		}
 	}
 	@media (min-width: 1240px) {
@@ -182,6 +177,21 @@
 		}
 	}
 	@media (max-width: 650px) {
+		footer {
+			display: grid;
+			grid-template-columns: repeat(12, [column-start] 1fr);
+			
+			row-gap: var(--spacing-42);
+			margin-top: var(--spacing-178);
+			
+			padding: var(--spacing-32);
+			background-color: var(--ba-clr-footer-bg);
+			border-top: 1px solid var(--clr-menu-border);
+			border-left: 1px solid var(--clr-menu-border);
+			/*border-radius: var(--rounded-20) var(--rounded-20) 0 0;*/
+		}
+		
+
 		footer li a {
 			font-size: var(--font-14);
 			font-weight: inherit;
@@ -198,5 +208,6 @@
 			font-size: var(--font-14);
 			color: var(--clr-hero-txt);
 		}
+		
 	}
 </style>
