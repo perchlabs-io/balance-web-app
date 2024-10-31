@@ -14,13 +14,14 @@ export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'
 
 export const api = 'https://api.github.com'
 export const owner = 'perchlabs-io'
-export const repo = 'balance-media'
+export const repo = 'balance-media-staging'
 export const path = 'posts'
 
 export const categories = {
 	development: 'Development',
 	announcements: 'Announcements',
-	pool_landscape: 'Pool Landscape'
+	pool_landscape: 'Pool Landscape',
+	group_update: 'Group Update'
 	
 }
 
