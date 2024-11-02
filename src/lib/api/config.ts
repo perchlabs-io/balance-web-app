@@ -15,7 +15,7 @@ export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'
 export const api = 'https://api.github.com'
 export const owner = 'perchlabs-io'
 export const repo = 'balance-media'
-export const branch = 'staging'
+export const branch = 'main'
 export const path = 'posts'
 
 export const categories = {
