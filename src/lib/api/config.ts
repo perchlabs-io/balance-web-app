@@ -14,7 +14,8 @@ export const matrix = 'https://matrix.to/#/#general:forum.balanceanalytics.io'
 
 export const api = 'https://api.github.com'
 export const owner = 'perchlabs-io'
-export const repo = 'balance-media-staging'
+export const repo = 'balance-media'
+export const branch = 'staging'
 export const path = 'posts'
 
 export const categories = {
@@ -36,14 +37,14 @@ export const chartBoards = {
 
 
 // https://api.github.com/repos/user/repo/contents/data/projects.json
-export const postsDataUrl = `${api}/repos/${owner}/${repo}/contents/data/posts.json`
+export const postsDataUrl = `${api}/repos/${owner}/${repo}/contents/data/posts.json?ref=${branch}`
 
 // https://api.github.com/repos/user/repo/contents/projects
 export const postsUrl = `${api}/repos/${owner}/${repo}/contents/${path}`
 
 // https://github.com/user/repo/blob/main/projects
-export const fileUrl = `https://github.com/${owner}/${repo}/blob/main/posts`
+export const fileUrl = `https://github.com/${owner}/${repo}/blob/${branch}/posts`
 
 // https://raw.githubusercontent.com/user/repo/main/projects/post-slug/images/image.web
-export const imagesUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/posts`
+export const imagesUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/posts`
 
