@@ -15,6 +15,7 @@ import rehypePrism from 'rehype-prism-plus'
 import rehypeCodeTitles from 'rehype-code-titles'
 import { rehypeCopyCode, rehypeUnwrapImages } from './plugins'
 
+import { branch } from './config'
 import { imagesUrl } from './config'
 import type { FrontMatterType } from '$lib/types'
 
@@ -43,7 +44,7 @@ function searchAndReplace(content: string, slug: string): string {
 			return `
         <video controls muted>
           <source
-            src="${imagesUrl}/${slug}/images/${src}"
+            src="${imagesUrl}/${slug}/images/${src}?ref=${branch}"
             type="video/mp4"
           />
         </video>
@@ -52,7 +53,7 @@ function searchAndReplace(content: string, slug: string): string {
 		.replace(image, (_, src, alt) => {
 			return `
       <img
-        src="${imagesUrl}/${slug}/images/${src}"
+        src="${imagesUrl}/${slug}/images/${src}?ref=${branch}"
         alt="${alt}"
         loading="lazy"
 		style="max-height: 600px"
