@@ -297,7 +297,7 @@
 	<section class="info-section">
 		<div class="info-text">
 			<h3 class="ba-text-header">Pool Rates</h3>
-			<p class="ba-text">As of January 2024, <b class="ba-text-primary">BALNC Pool</b> rates are a min fee of <b class="ba-text-primary">170 Ada</b> (the lowest) and a margin fee of <b class="ba-text-primary">0.00%</b>. This means from the rewards of validating blocks, 170A is deducted, and the remainder is provided to you the delegators.  These rates are very competitive and the pool rewards support our Analysis Services to serve the Community. We have a high pledge of <b class="ba-text-primary">400k Ada</b> to help win blocks and protect the network from Sybil Attacks.</p>
+			<p class="ba-text">As of January 2024, <b class="ba-text-primary">BALNC Pool</b> rates are a min fee of <b class="ba-text-primary">170 Ada</b> (the lowest) and a margin fee of <b class="ba-text-primary">0.00%</b>. This means from the rewards of validating blocks, 170A is deducted, and the remainder is provided to you the delegators.  These rates are very competitive and the pool rewards support our Analysis Services to serve the Community.</p>
 		</div>
 
 		<div class="info-divider" />
