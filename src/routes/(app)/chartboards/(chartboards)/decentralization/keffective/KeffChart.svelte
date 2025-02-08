@@ -25,10 +25,9 @@
 	$: innerWidth = width - margin.left - margin.right;
 	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
 	
-	const yScale = scaleLog()
-	  .domain([10, 70]) // INPUT
+	const yScale = scaleLinear()
+	  .domain([1, 70]) // INPUT
 	  .range([innerHeight, 0]); // OUTPUT
-	
 	const minEpoch = (keffData.mav[0].epoch);
 	const maxEpoch = (keffData.mav[keffData.mav.length - 1].epoch);
 	$: xScale = scaleLinear()
