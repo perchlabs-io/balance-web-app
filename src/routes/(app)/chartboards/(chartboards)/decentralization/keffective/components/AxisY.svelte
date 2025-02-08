@@ -5,7 +5,7 @@
     export let yScale : any;
 </script>
 
-{#each yScale.ticks(5) as tick}
+{#each yScale.ticks(10) as tick}
     <text
         class="axis-format"
         x="0"

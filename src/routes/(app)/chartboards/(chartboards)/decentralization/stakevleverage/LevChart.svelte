@@ -61,6 +61,20 @@
 	}, 750)
 	}
 
+	const nextEpoch = () => {
+		if (epoch2 < maxEpochData) {
+        epoch2++;
+        selectedEpoch.set(epoch2);
+    	}
+	};
+
+	const previousEpoch = () => {
+		if (epoch2 > 210) {
+        epoch2--;
+        selectedEpoch.set(epoch2);
+    	}
+	};
+
     //const margin = { top: 80, right: 50, left: 95, bottom: 50 };
 	const margin = { top: 5, right: 15, bottom: 65, left: 75 };
 	const marginMobile = { top: 5, right: 10, bottom: 65, left: 35 };
@@ -480,29 +494,51 @@
 	<section class="inputbox" >
 		{#if $windowWidth > 650}
 			<div class="control">
-				<button class="controlicon" on:click={startInterval}>
+
+				<button class="controlicon" style="margin-left: 20px;" on:click={startInterval}>
 				<Icon icon="ph:play-circle-light" width="45" height="45"/>
-				
 				</button>
+
 				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
 				<Icon icon="ph:pause-circle-light" width="45" height="45"/>
 				</button>
+
 				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
 				<Icon icon="fluent:replay-20-regular" width="45" height="45"/>
-					
 				</button>
+
+				<button class="controliconreset" on:click={previousEpoch}>
+					<Icon icon="fluent:previous-20-regular" width="45" height="43"/>
+				</button>
+
+				<button class="controliconreset" style="margin-right: 20px;" on:click={nextEpoch}>
+					<Icon icon="fluent:next-20-regular" width="45" height="43"/>
+				</button>
+
 			</div>
 		{:else if $windowWidth <= 650}
 			<div class="control">
+
 				<button class="controlicon" on:click={startInterval}>
 				<Icon icon="ph:play-circle-light" width="40" height="40"/>
 				</button>
+
 				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
 				<Icon icon="ph:pause-circle-light" width="40" height="40"/>
 				</button>
+
 				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
 				<Icon icon="fluent:replay-20-regular" width="40" height="40"/>
 				</button>
+
+				<button class="controliconreset" on:click={previousEpoch}>
+					<Icon icon="fluent:previous-20-regular" width="40" height="38"/>
+				</button>
+
+				<button class="controliconreset" on:click={nextEpoch}>
+					<Icon icon="fluent:next-20-regular" width="40" height="38"/>
+				</button>
+				
 			</div>
 
 		{/if}
@@ -644,7 +680,7 @@
 		display: flex;
 		
 		justify-content: center;
-		gap: var(--spacing-32);
+		gap: var(--spacing-24);
 		padding-top: 28px;
 		padding-bottom: 28px;
 		border: 1.5px solid var(--clr-menu-border);
@@ -655,7 +691,7 @@
 		display: flex;
 		
 		justify-content: center;
-		gap: var(--spacing-32);
+		gap: var(--spacing-24);
 		
 		transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 		
@@ -685,7 +721,7 @@
 		display: flex;
 		
 		justify-content: center;
-		gap: var(--spacing-32);
+		gap: var(--spacing-24);
 		transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 		
 	}
