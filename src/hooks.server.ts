@@ -3,6 +3,19 @@ import { type Handle, redirect } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
+import { fetch, Request, Response, Headers } from 'undici';
+if (typeof globalThis.fetch === 'undefined') {
+  globalThis.fetch = fetch;
+}
+if (typeof globalThis.Request === 'undefined') {
+  globalThis.Request = Request;
+}
+if (typeof globalThis.Response === 'undefined') {
+  globalThis.Response = Response;
+}
+if (typeof globalThis.Headers === 'undefined') {
+  globalThis.Headers = Headers;
+}
 
 const supabase: Handle = async ({ event, resolve }) => {
   /**
