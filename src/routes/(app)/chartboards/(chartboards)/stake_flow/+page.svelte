@@ -32,7 +32,7 @@
 
 
 <main>
-	<Overlay />
+	//<Overlay />
 	
 	<PercStakedAda {delegationPrctData} />
 

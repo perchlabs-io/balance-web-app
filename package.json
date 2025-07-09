@@ -12,15 +12,15 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@iconify/svelte": "^4.0.1",
+		"@iconify/svelte": "^5.0.0",
 		"@poppanator/sveltekit-svg": "^4.2.1",
 		"@supabase/auth-helpers-sveltekit": "^0.13.0",
-		"@supabase/ssr": "^0.3.0",
+		"@supabase/ssr": "^0.6.1",
 		"@supabase/supabase-js": "^2.43.1",
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/adapter-vercel": "^5.4.4",
-		"@sveltejs/kit": "^2.0.0",
-		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@sveltejs/adapter-auto": "^6.0.1",
+		"@sveltejs/adapter-vercel": "^5.7.2",
+		"@sveltejs/kit": "^2.x",
+		"@sveltejs/vite-plugin-svelte": "^3.x",
 		"@types/eslint": "^8.56.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
@@ -47,15 +47,19 @@
 		"remark-smartypants": "^3.0.1",
 		"remark-toc": "^9.0.0",
 		"sass": "^1.76.0",
-		"svelte": "^4.2.7",
+		"svelte": "^4.x",
 		"svelte-check": "^3.6.0",
 		"svelte-inview": "^4.0.2",
 		"svelte-loading-spinners": "^0.3.6",
 		"svelte-range-slider-pips": "^3.1.1",
+		"svgo": "^4.0.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"unified": "^11.0.4",
-		"vite": "^5.0.3"
+		"vite": "^7.x"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"undici": "^7.11.0"
+	}
 }
