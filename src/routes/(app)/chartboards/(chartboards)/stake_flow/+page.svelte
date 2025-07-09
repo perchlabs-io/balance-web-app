@@ -2,30 +2,22 @@
 
 	// imports
 	import Heading from '$lib/shared/ui/heading.svelte'
-	// import Overlay from '$lib/shared/ui/overlay.svelte'
+	import Overlay from '$lib/shared/ui/overlay.svelte'
 	
 	// define donut charts on page
-	// import DonutGroupStakeChart from './donut_group_stake/DonutGroupStakeChart.svelte'
-	
-	// import data
+	import PercStakedAda from './perc_staked_ada/PercStakedAda.svelte'
+	import HbarStakeFlow from './hbar_stake_flow/HbarStakeFlow.svelte'
+
+	// // import data
 	export let data : any;
-	// console.log(data,"data donut page check")
+	const minEpochStart = 40;
 
-
-	//*************************/
-	//Donut Group Stake
-	//*************************/
-
-	// data preprocessing setup
-	let donutData = data.groupStakeDonutData[0].chartdata;
-	let curMAVData = data.mavData;
-	let maxEpochData = data.epochData[data.epochData.length - 1].epoch;
-	let stakeFlowData = data.stakeFlowData;
-	
-	console.log('stake flow', stakeFlowData)
-	// console.log(donutData,"donutData +page check")
-	// console.log(curMAVData,"curMAVData +page check")
-
+    // Preprocessing setup
+    // let keffData = data.keffData[0].keffdata;
+    let stakeFlowData = data.stakeFlowData;
+	let delegationPrctData = data.delegationPrctData[0].chartdata.delegation_prcnt; // will start from very beginning
+	// let delegationPrctData = delegationPrctDataAll.slice(minEpochStart); //sliced from minEpochStart (say 40) to the end of the object array.
+	// console.log("delegationPrctData", delegationPrctData)
 	
 </script>
 
@@ -40,13 +32,15 @@
 
 
 <main>
-	<!-- <Overlay /> -->
+	<Overlay />
 	
-	<!-- <DonutGroupStakeChart {donutData} {curMAVData} {maxEpochData}/> -->
+	<PercStakedAda {delegationPrctData} />
+
+	<HbarStakeFlow {delegationPrctData} {stakeFlowData} />
 
 </main>
 
-<!-- {@debug DonutGroupStakeChart} -->
+
 
 <style>
 

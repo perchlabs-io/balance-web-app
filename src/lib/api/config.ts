@@ -30,7 +30,7 @@ export const chartBoards = {
 	decentralization: 'Decentralization',
 	donut_shop: 'Donut Shop',
 	utxo_allocation: 'UTxO Allocation',
-	// stake_flow: "Stake Flow"
+	stake_flow: "Stake Flow"
 	
 }
 
