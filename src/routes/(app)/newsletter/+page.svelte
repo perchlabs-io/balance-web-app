@@ -1,14 +1,11 @@
 <script lang="ts">
-	import Heading from '$lib/shared/ui/heading.svelte'
-	import Newsletter from '$lib/shared/ui/newsletter.svelte'
+	import Heading from '$lib/shared/ui/heading.svelte';
+	import Newsletter from '$lib/shared/ui/newsletter.svelte';
 </script>
 
 <svelte:head>
 	<title>Newsletter</title>
-	<meta
-		content="Subscribe for updates and tasty web development treats."
-		name="description"
-	/>
+	<meta content="Subscribe for updates and tasty web development treats." name="description" />
 </svelte:head>
 
 <Heading>Newsletter</Heading>
@@ -35,12 +32,11 @@
 		}
 	}
 	@media (max-width: 650px) {
-		.newsletter h3{
+		.newsletter h3 {
 			font-size: var(--font-14);
 			font-weight: 1000;
 			margin-bottom: var(--spacing-32);
 			text-transform: capitalize;
-			
 		}
 	}
 </style>
