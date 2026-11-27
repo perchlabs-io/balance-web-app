@@ -1,17 +1,29 @@
 <script lang="ts">
-    export let data : any;
-    export let xScale : any;
-    export let yScale : any;
-    export let xScaleZoom : any;
-    export let yScaleZoom : any;
-    export let color : any;
-    export let hoveredEpoch : any;
-    $: dataBeforeHover = data.filter((d : any) => (d.epoch) <= hoveredEpoch);
-    $: dataAfterHover = data.filter((d : any) => (d.epoch) >= hoveredEpoch);
     import { line } from "d3-shape";
-    $: lineGenerator = line()
+    interface Props {
+        data: any;
+        xScale: any;
+        yScale: any;
+        xScaleZoom: any;
+        yScaleZoom: any;
+        color: any;
+        hoveredEpoch: any;
+    }
+
+    let {
+        data,
+        xScale,
+        yScale,
+        xScaleZoom,
+        yScaleZoom,
+        color,
+        hoveredEpoch
+    }: Props = $props();
+    let dataBeforeHover = $derived(data.filter((d : any) => (d.epoch) <= hoveredEpoch));
+    let dataAfterHover = $derived(data.filter((d : any) => (d.epoch) >= hoveredEpoch));
+    let lineGenerator = $derived(line()
         .x((d : any) => xScaleZoom ? xScaleZoom(d.epoch) : xScale(d.epoch))
-        .y((d : any) => yScaleZoom ? yScaleZoom(d.delta) : yScale(d.delta));
+        .y((d : any) => yScaleZoom ? yScaleZoom(d.delta) : yScale(d.delta)));
 </script>
 
 

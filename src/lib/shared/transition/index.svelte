@@ -6,7 +6,12 @@
 		duration?: number
 		delay?: number
 	}
-	export let transition: Transition
+	interface Props {
+		transition: Transition;
+		children?: import('svelte').Snippet;
+	}
+
+	let { transition, children }: Props = $props();
 
 	
   
@@ -15,7 +20,7 @@
 {#if transition.type === 'page'}
 	{#key $page.url}
 		<div in:fly={{ y: -50, duration: 250 }}>
-			<slot />
+			{@render children?.()}
 		</div>
 	{/key}
 {/if}
@@ -26,7 +31,7 @@
 		style:animation-duration="{transition.duration}ms"
 		style:animation-delay="{transition.delay}ms"
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 {/if}
 
@@ -38,7 +43,7 @@
 		
 	>
 	
-		<slot />
+		{@render children?.()}
 	
 	</div>
 {/if}
@@ -51,7 +56,7 @@
 		
 	>
 	
-		<slot />
+		{@render children?.()}
 	
 	</div>
 {/if}
@@ -65,7 +70,7 @@
 		
 	>
 	
-		<slot />
+		{@render children?.()}
 	
 	</div>
 {/if}

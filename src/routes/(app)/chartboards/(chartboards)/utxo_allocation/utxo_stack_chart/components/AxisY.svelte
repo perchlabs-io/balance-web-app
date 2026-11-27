@@ -1,17 +1,21 @@
 <script lang="ts">
                   
                  
-    export let width : any;
-    export let yScale : any;
-    export let yScaleZoom : any
+  interface Props {
+    width: any;
+    yScale: any;
+    yScaleZoom: any;
+  }
+
+  let { width, yScale, yScaleZoom }: Props = $props();
 
     const formatter = new Intl.NumberFormat('en-US', {
     notation: "compact", maximumSignificantDigits: 3
   
 })
 
-    let ticks : any;
-    $: ticks = yScaleZoom ? yScaleZoom.ticks(10) : yScale.ticks(10)
+    let ticks : any = $derived(yScaleZoom ? yScaleZoom.ticks(10) : yScale.ticks(10));
+    
 
 </script>
 

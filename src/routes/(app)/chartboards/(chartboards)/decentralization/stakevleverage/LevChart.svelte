@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run, preventDefault } from 'svelte/legacy';
+
 	import RangeSlider from "svelte-range-slider-pips";
 	import { tweened } from 'svelte/motion'
     import { cubicOut } from 'svelte/easing'
@@ -9,39 +11,54 @@
 	import { windowWidth, windowHeight, colorTheme } from '$lib/stores/mychart';
 	import debounceFn from "lodash.debounce";
 	import Icon from '@iconify/svelte';
-	
-	
-	export let curMAVData : any;
-	export let selectedData : any;
-	export let poolGroupData : any;
-	export let maxEpochData : any;
-	export let minEpochData : any;
+    import { scaleLinear, scaleLog } from "d3-scale";
+    import AxisX from "./components/AxisX.svelte";
+    import AxisY from "./components/AxisY.svelte";
+    import Tooltip from "./components/Tooltip.svelte";
+	import { fade, scale, slide } from 'svelte/transition';
+	import GroupSearch from "./components/GroupSearch.svelte";
 
+	interface Props {
+		curMAVData: any;
+		selectedData: any;
+		poolGroupData: any;
+		maxEpochData: any;
+		minEpochData: any;
+	}
 
+	let {
+		curMAVData,
+		selectedData,
+		poolGroupData = $bindable(),
+		maxEpochData,
+		minEpochData
+	}: Props = $props();
 
+	selectedEpoch.set(maxEpochData);
 
 	//*************************/
 	//Group Stake v. Leverage
 	//*************************/
 
 	let ticker = '';
-	let levChart : any;
-	let epoch2 : number;
+	let levChart : any = $state();
+	let epoch2 = $state(maxEpochData);
+	let epoch = $state([maxEpochData]);
 	let waiting = false;
-	let interval : any;
+	let interval : any = $state();
 	//let width = 1100;
     //let height = 500;
-	let hoveredData : any;
+	let hoveredData : any = $state();
 	let sliderConfig : any = { stiffness: 0.1, damping: 0.8 }
 	//let sliderConfig : any = { stiffness: 0.15, damping: 0.5 }
 	let chartTitle = 'Group Stake v. Leverage';
 	let chartInfo = 'This chart portrays the stake pool grouping landscape of stake versus leverage throughout epochs of time. Use the slider and press play to see how the MAV and Network Average (red dot) change over time.';
-	let xScaleZoom : any;
-	let xScaleZoomMobile : any;
-	let yScaleZoom : any;
-	let rScaleZoom : any;
-	
-	$: filterOnEpoch = () => {
+	let xScaleZoom : any = $state();
+	let xScaleZoomMobile : any = $state();
+	let yScaleZoom : any = $state();
+	let rScaleZoom : any = $state(1);
+
+	const filterOnEpoch = () => {
 		selectedEpoch.set(epoch[0]);
 		clearInterval(interval);
 	};
@@ -79,66 +96,20 @@
 	const margin = { top: 5, right: 15, bottom: 65, left: 75 };
 	const marginMobile = { top: 5, right: 10, bottom: 65, left: 35 };
 	let height = 600;
-	let width = 1150;
+	let width = $state(1150);
 
 	let innerHeight = height - margin.top - margin.bottom;
-	$: innerWidth = width - margin.left - margin.right;
-	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
-	
-	$: poolGroupData = poolGroupData;
-    $: curMAVData2 = curMAVData[$selectedEpoch2][0].mc;
-	$: selectedData2 = selectedData[$selectedEpoch2];
-	$: maxEpochData2 = maxEpochData;
-	//$: minEpochData2 = minEpochData;
-	$: epoch = [epoch2];
-	$: epoch2 = $selectedEpoch;
-	//$: windowWidth2 = window.innerWidth;
 
-	
-    
-	selectedEpoch.set(maxEpochData);
-
-    import { scaleLinear, scaleLog } from "d3-scale";
-    $: xScale = scaleLog()
-        .domain([1, 1300])
-        //.range([margin.left, width - margin.right]);
-		.range([20, innerWidth]);
-	
-	$: xScaleMobile = scaleLog()
-        .domain([1, 1300])
-        //.range([margin.left, width - margin.right]);
-		.range([20, innerWidthMobile]);
-
-    $: yScale = scaleLog()
-        .domain([1000000, 3500000000])
-        //.range([height - margin.top - margin.bottom, 0]);
-		.range([innerHeight, 0]);
-
-	//$: xScaleZoom = xScale;
-	//$: yScaleZoom = yScale;
-    
-    
-    import AxisX from "./components/AxisX.svelte";
-    import AxisY from "./components/AxisY.svelte";
-    import Tooltip from "./components/Tooltip.svelte";
-	  
     const params = {
 		delay: 100,
 		duration: 750,
 		easing: cubicOut
 	  };
 
-	const tData = tweened(selectedData2, params);
-	  
-	$: tData.set(selectedData2);
+	/* FILTERING countres DATA BASED ON INPUT */	
+	let filteredGroups : any = $state([]);
 
-	//*************************/
-	//Chart Info - Expand / Collapse Feature
-	//*************************/
-	
-	import { fade, scale, slide } from 'svelte/transition';
-
-	let showContent = ''
+	let showContent = $state('')
 
 	const handleClick = (payload : any) => {
   
@@ -149,15 +120,6 @@
 		showContent = ''
 		
 	}
-
-	//*************************/
-	//Group Search - Locate specific pool group on chart
-	//*************************/
-
-	import GroupSearch from "./components/GroupSearch.svelte";
-
-	/* FILTERING countres DATA BASED ON INPUT */	
-	let filteredGroups : any = [];
 	// $: console.log(filteredCountries)	
 
 	const filterGroups = () => {
@@ -174,14 +136,10 @@
 
 
 	/* HANDLING THE INPUT */
-	let searchInput : any; // use with bind:this to focus element
-	let inputValue = "";
+	let searchInput : any = $state(); // use with bind:this to focus element
+	let inputValue = $state("");
 	let groupSelect = "";
 		
-	$: if (!inputValue) {
-		filteredGroups = [];
-		hiLiteIndex = null;
-	}
 
 	const clearInput = () => {
 		inputValue = "";	
@@ -221,9 +179,7 @@
 		
 
 	/* NAVIGATING OVER THE LIST OF COUNTRIES W HIGHLIGHTING */	
-	let hiLiteIndex : any = null;
-	//$: console.log(hiLiteIndex);	
-	$: hiLitedCountry = filteredGroups[hiLiteIndex]; 	
+	let hiLiteIndex : any = $state(null); 	
 		
 	const navigateList = (e : any) => {
 		if (e.key === "ArrowDown" && hiLiteIndex <= filteredGroups.length-1) {
@@ -250,10 +206,6 @@
 
 	
 
-	$: xScaleZoom = xScale
-	$: xScaleZoomMobile = xScaleMobile
-	$: yScaleZoom = yScale
-	$: rScaleZoom = 1
 
 	onMount(() => {        
 
@@ -284,18 +236,68 @@
 		)
     });
 
+	run(() => {
+		epoch2 = $selectedEpoch;
+	});
+	run(() => {
+		epoch = [epoch2];
+	});
+	let innerWidth = $derived(width - margin.left - margin.right);
+	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
+	run(() => {
+		poolGroupData = poolGroupData;
+	});
+    let curMAVData2 = $derived.by(() => curMAVData[$selectedEpoch2][0].mc);
+	let selectedData2 = $derived.by(() => selectedData[$selectedEpoch2]);
+	let maxEpochData2 = $derived(maxEpochData);
+	const tData = tweened(selectedData[String(maxEpochData)] ?? [], params);
+    let xScale = $derived(scaleLog()
+        .domain([1, 1300])
+        //.range([margin.left, width - margin.right]);
+		.range([20, innerWidth]));
+	let xScaleMobile = $derived(scaleLog()
+        .domain([1, 1300])
+        //.range([margin.left, width - margin.right]);
+		.range([20, innerWidthMobile]));
+    let yScale = $derived(scaleLog()
+        .domain([1000000, 3500000000])
+        //.range([height - margin.top - margin.bottom, 0]);
+		.range([innerHeight, 0]));
+	run(() => {
+		if (selectedData2) {
+			tData.set(selectedData2);
+		}
+	});
+	run(() => {
+		if (!inputValue) {
+			filteredGroups = [];
+			hiLiteIndex = null;
+		}
+	});
+	//$: console.log(hiLiteIndex);	
+	let hiLitedCountry = $derived(filteredGroups[hiLiteIndex]);
+	run(() => {
+		xScaleZoom = xScale
+	});
+	run(() => {
+		xScaleZoomMobile = xScaleMobile
+	});
+	run(() => {
+		yScaleZoom = yScale
+	});
+	
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={debounceFn(onResize, debounce)}
+  onload={onResize}
+  onresize={debounceFn(onResize, debounce)}
   
-  on:keydown={navigateList}
+  onkeydown={navigateList}
   />
 
 
 	<section class="heroheader">
-		<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
+		<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 		{#if showContent === chartTitle}
 		<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 			{chartInfo}
@@ -318,13 +320,13 @@
 		</div>
 		<div class="poolsearch">
 			
-			<form  on:submit|preventDefault={submitValue}>
+			<form  onsubmit={preventDefault(submitValue)}>
 				
 				  <input type="text"
 								   placeholder="Group Search" 
 								   bind:this={searchInput}
 								   bind:value={inputValue} 
-								   on:input={filterGroups}/>
+								   oninput={filterGroups}/>
 				
 				  
 				
@@ -431,13 +433,13 @@
 					
 					
 					
-					on:mouseover={() => {
+					onmouseover={() => {
 						hoveredData = myData;
 					  }}
-					  on:mouseleave={() => {
+					  onmouseleave={() => {
 						hoveredData = null;
 					  }}
-					  on:focus={() => {
+					  onfocus={() => {
 						hoveredData = myData;
 					  }}
   
@@ -461,13 +463,13 @@
 					
 					
 					
-					on:mouseover={() => {
+					onmouseover={() => {
 						hoveredData = myData;
 					  }}
-					  on:mouseleave={() => {
+					  onmouseleave={() => {
 						hoveredData = null;
 					  }}
-					  on:focus={() => {
+					  onfocus={() => {
 						hoveredData = myData;
 					  }}
   
@@ -481,9 +483,16 @@
 
 		</svg>
 		{#if hoveredData && $windowWidth > 650}
-			<Tooltip data={hoveredData} {xScale} {xScaleZoom} {yScale} {yScaleZoom} innerWidth={innerWidth}/>
+			<Tooltip data={hoveredData} {xScale} {xScaleZoom} {yScale} {yScaleZoom} {margin} />
 		{:else if hoveredData && $windowWidth <= 650}
-			<Tooltip data={hoveredData} xScale={xScaleMobile} xScaleZoom={xScaleZoomMobile} {yScale} {yScaleZoom} innerWidth={innerWidthMobile}/>
+			<Tooltip
+				data={hoveredData}
+				xScale={xScaleMobile}
+				xScaleZoom={xScaleZoomMobile}
+				{yScale}
+				{yScaleZoom}
+				margin={marginMobile}
+			/>
 		{/if}
 		</div>
 	
@@ -495,23 +504,23 @@
 		{#if $windowWidth > 650}
 			<div class="control">
 
-				<button class="controlicon" style="margin-left: 20px;" on:click={startInterval}>
+				<button class="controlicon" style="margin-left: 20px;" onclick={startInterval}>
 				<Icon icon="ph:play-circle-light" width="45" height="45"/>
 				</button>
 
-				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
+				<button class="controlicon" onclick={()=>{ clearInterval(interval)}}>
 				<Icon icon="ph:pause-circle-light" width="45" height="45"/>
 				</button>
 
-				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
+				<button class="controliconreset" onclick={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
 				<Icon icon="fluent:replay-20-regular" width="45" height="45"/>
 				</button>
 
-				<button class="controliconreset" on:click={previousEpoch}>
+				<button class="controliconreset" onclick={previousEpoch}>
 					<Icon icon="fluent:previous-20-regular" width="45" height="43"/>
 				</button>
 
-				<button class="controliconreset" style="margin-right: 20px;" on:click={nextEpoch}>
+				<button class="controliconreset" style="margin-right: 20px;" onclick={nextEpoch}>
 					<Icon icon="fluent:next-20-regular" width="45" height="43"/>
 				</button>
 
@@ -519,23 +528,23 @@
 		{:else if $windowWidth <= 650}
 			<div class="control">
 
-				<button class="controlicon" on:click={startInterval}>
+				<button class="controlicon" onclick={startInterval}>
 				<Icon icon="ph:play-circle-light" width="40" height="40"/>
 				</button>
 
-				<button class="controlicon" on:click={()=>{ clearInterval(interval)}}>
+				<button class="controlicon" onclick={()=>{ clearInterval(interval)}}>
 				<Icon icon="ph:pause-circle-light" width="40" height="40"/>
 				</button>
 
-				<button class="controliconreset" on:click={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
+				<button class="controliconreset" onclick={() =>{ selectedEpoch.set(210); epoch2 = 210; }}>
 				<Icon icon="fluent:replay-20-regular" width="40" height="40"/>
 				</button>
 
-				<button class="controliconreset" on:click={previousEpoch}>
+				<button class="controliconreset" onclick={previousEpoch}>
 					<Icon icon="fluent:previous-20-regular" width="40" height="38"/>
 				</button>
 
-				<button class="controliconreset" on:click={nextEpoch}>
+				<button class="controliconreset" onclick={nextEpoch}>
 					<Icon icon="fluent:next-20-regular" width="40" height="38"/>
 				</button>
 				
@@ -583,6 +592,10 @@
 
 	circle:focus {
 		outline: none;
+	}
+
+	.chart-container {
+		position: relative;
 	}
 
 	.hero {

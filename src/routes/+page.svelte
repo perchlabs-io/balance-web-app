@@ -22,16 +22,20 @@
 	} from '$lib/api/config'
 
 	
-	export let data: PageServerData
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
 	
 	if (browser) {
 		colorTheme.set(localStorage.theme)
 	}
 
-	let isInView1 : any;
-	let isInView2 : any;
-	let isInView3 : any;
-	let isInView4 : any;
+	let isInView1 : any = $state();
+	let isInView2 : any = $state();
+	let isInView3 : any = $state();
+	let isInView4 : any = $state();
 	let resetObserver : any;
 
 	const resetInView = () => {
@@ -81,8 +85,8 @@
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={onResize}
+  onload={onResize}
+  onresize={onResize}
   />
 
 <svelte:head>
@@ -142,7 +146,7 @@
 
 	<h2 class="latest" >Chart Boards</h2>
 	<section class="chart-section">
-		<div class="chart-text" use:inview="{options}" on:inview_change="{handleChange1}">
+		<div class="chart-text" use:inview="{options}" oninview_change={handleChange1}>
 			{#if isInView1}
 			<Transition transition={{ type: 'slide-left', duration: 1, delay: 400 }}>
 			<div>
@@ -154,9 +158,9 @@
 			{/if}
 		</div>
 		
-		<div class="chart-divider" />
+		<div class="chart-divider"></div>
 
-		<div class="chart-image" use:inview="{options}" on:inview_change="{handleChange1}">
+		<div class="chart-image" use:inview="{options}" oninview_change={handleChange1}>
 			{#if isInView1}
 			<Transition transition={{ type: 'slide-right', duration: 1, delay: 400 }}>
 				{#if $colorTheme == 'dark'}
@@ -170,7 +174,7 @@
 	</section>
 
 	<section class="chart-section-reverse">
-		<div class="chart-text-reverse" use:inview="{options}" on:inview_change="{handleChange2}">
+		<div class="chart-text-reverse" use:inview="{options}" oninview_change={handleChange2}>
 			{#if isInView2}
 			<Transition transition={{ type: 'slide-right', duration: 1, delay: 400 }}>
 				<div>
@@ -181,9 +185,9 @@
 			{/if}
 		</div>
 
-		<div class="chart-divider-reverse" />
+		<div class="chart-divider-reverse"></div>
 
-		<div class="chart-image-reverse" use:inview="{options}" on:inview_change="{handleChange2}">
+		<div class="chart-image-reverse" use:inview="{options}" oninview_change={handleChange2}>
 			{#if isInView2}
 			<Transition transition={{ type: 'slide-left', duration: 1, delay: 400 }}>
 				{#if $colorTheme == 'dark'}
@@ -197,7 +201,7 @@
 	</section>
 
 	<section class="chart-section">
-		<div class="chart-text" use:inview="{options}" on:inview_change="{handleChange3}">
+		<div class="chart-text" use:inview="{options}" oninview_change={handleChange3}>
 			{#if isInView3}
 			<Transition transition={{ type: 'slide-left', duration: 1, delay: 400 }}>
 				<div>
@@ -208,9 +212,9 @@
 			{/if}
 		</div>
 
-		<div class="chart-divider" />
+		<div class="chart-divider"></div>
 
-		<div class="chart-image" use:inview="{options}" on:inview_change="{handleChange3}">
+		<div class="chart-image" use:inview="{options}" oninview_change={handleChange3}>
 			{#if isInView3}
 			<Transition transition={{ type: 'slide-right', duration: 1, delay: 400 }}>
 				{#if $colorTheme == 'dark'}
@@ -224,7 +228,7 @@
 	</section>
 
 	<section class="chart-section-reverse"  >
-		<div class="chart-text-reverse" use:inview="{options}" on:inview_change="{handleChange4}">
+		<div class="chart-text-reverse" use:inview="{options}" oninview_change={handleChange4}>
 
 		{#if isInView4}
 			<Transition transition={{ type: 'slide-right', duration: 1, delay: 400 }}>
@@ -236,9 +240,9 @@
 			{/if}
 		</div>
 
-		<div class="chart-divider-reverse" />
+		<div class="chart-divider-reverse"></div>
 
-		<div class="chart-image-reverse" use:inview="{options}" on:inview_change="{handleChange4}">
+		<div class="chart-image-reverse" use:inview="{options}" oninview_change={handleChange4}>
 			{#if isInView4}
 			<Transition transition={{ type: 'slide-left', duration: 1, delay: 400 }}>
 				{#if $colorTheme == 'dark'}
@@ -255,8 +259,11 @@
 
 	
 	<Posts posts={data.posts.latest}>
-		<h2 class="latest" slot="title">Latest Articles</h2>
-		<a slot="see-more" href="/articles">
+		{#snippet title()}
+				<h2 class="latest" >Latest Articles</h2>
+			{/snippet}
+		<!-- @migration-task: migrate this slot by hand, `see-more` is an invalid identifier -->
+	<a slot="see-more" href="/articles">
 			<span>See more articles</span>
 			<!-- <ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" /> -->
 		</a>
@@ -271,7 +278,7 @@
 			<PolyMission  stroke= var(--clr-primary) fill= var(--clr-primary)/>
 		</div>
 
-		<div class="info-divider" />
+		<div class="info-divider"></div>
 
 		
 		<div class="info-text">
@@ -287,7 +294,7 @@
 			<p class="ba-text"><b class="ba-text-primary">BALNC Pool</b> is a self-hosted, baremetal rack server hosting the blockchain database and supporting decentralization.</p>
 		</div>
 
-		<div class="info-divider" />
+		<div class="info-divider"></div>
 
 		<div class="info-image">
 			<PolyTech  stroke= var(--clr-primary) fill= var(--clr-primary)/>
@@ -300,7 +307,7 @@
 			<p class="ba-text">As of January 2024, <b class="ba-text-primary">BALNC Pool</b> rates are a min fee of <b class="ba-text-primary">170 Ada</b> (the lowest) and a margin fee of <b class="ba-text-primary">0.00%</b>. This means from the rewards of validating blocks, 170A is deducted, and the remainder is provided to you the delegators.  These rates are very competitive and the pool rewards support our Analysis Services to serve the Community.</p>
 		</div>
 
-		<div class="info-divider" />
+		<div class="info-divider"></div>
 
 		<div class="info-image">
 			<PolyRates  stroke= var(--clr-primary) fill= var(--clr-primary)/>
@@ -313,7 +320,7 @@
 			<p class="ba-text">BALANCE provides Newsletters with Cardano blockchain events, stakepool landscape & grouping changes, and on-chain analysis state of the network updates. We also have the entire blockchain database (not just an index) to query and provide curated data visualization insights thru our Web Application. Please explore our site and visit the charts!</p>
 		</div>
 
-		<div class="info-divider" />
+		<div class="info-divider"></div>
 
 		<div class="info-image">
 			<PolyService  stroke= var(--clr-primary) fill= var(--clr-primary)/>

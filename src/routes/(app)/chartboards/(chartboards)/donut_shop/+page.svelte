@@ -7,8 +7,13 @@
 	// define donut charts on page
 	import DonutGroupStakeChart from './donut_group_stake/DonutGroupStakeChart.svelte'
 	
-	// import data
-	export let data : any;
+	
+	interface Props {
+		// import data
+		data: any;
+	}
+
+	let { data }: Props = $props();
 	// console.log(data,"data donut page check")
 
 

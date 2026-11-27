@@ -1,16 +1,27 @@
 <script lang="ts">
   
-    export let height : any;
-    export let width : any;
-    export let xScale : any;
-    export let hoveredEpoch : any;
-    export let isUnhovered : any;
-    export let windowWidth : any;
+  interface Props {
+    height: any;
+    width: any;
+    xScale: any;
+    hoveredEpoch: any;
+    isUnhovered: any;
+    windowWidth: any;
+  }
+
+  let {
+    height,
+    width,
+    xScale,
+    hoveredEpoch,
+    isUnhovered,
+    windowWidth
+  }: Props = $props();
     // Format our ticks as short date strings
     //import { timeFormat } from "d3-time-format";
     //const dateFormat = timeFormat("%b %e");
     const TICK_LENGTH = 8;
-    $: ticks = isUnhovered ? xScale.ticks(10) : [(hoveredEpoch)];
+    let ticks = $derived(isUnhovered ? xScale.ticks(10) : [(hoveredEpoch)]);
 
     
 

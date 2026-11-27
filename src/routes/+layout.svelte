@@ -14,11 +14,16 @@
 
 	inject({ mode: dev ? 'development' : 'production' });
 
-	export let showOnPx = 750;
-	let hidden = true;
+	let hidden = $state(true);
 
-	export let data;
-	$: ({ session, supabase } = data);
+	interface Props {
+		showOnPx?: number;
+		data: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { showOnPx = 750, data, children }: Props = $props();
+	let { session, supabase } = $derived(data);
 
 	
 	const goTop = () => {
@@ -63,7 +68,7 @@
 	// })
 </script>
 
-<svelte:window on:scroll={handleOnScroll} />
+<svelte:window onscroll={handleOnScroll} />
 
 {#if $navigationIsDelayed}
 		<div class="loading" in:fade={{ duration: 150 }}>
@@ -81,14 +86,14 @@
 		
 		<Header />
 		<Transition transition={{ type: 'page' }}>
-			<slot />
+			{@render children?.()}
 		</Transition>
 		<Footer />
 	</div>
 
 	
 	<div>
-		<button class="back-to-top" on:click={goTop} class:hidden>
+		<button class="back-to-top" onclick={goTop} class:hidden>
 			<Icon icon="fa-solid:arrow-up" width="75%"  />
 		</button>
 	</div>

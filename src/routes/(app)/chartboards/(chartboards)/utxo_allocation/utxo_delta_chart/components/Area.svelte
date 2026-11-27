@@ -1,16 +1,26 @@
 <script lang="ts">
-    export let data : any;
-    export let xScale : any;
-    export let yScale : any;
-    export let color : any;
-    export let hoveredEpoch : any;
-    $: dataBeforeHover = data.filter((d : any) => (d.epoch) <= hoveredEpoch);
-    $: dataAfterHover = data.filter((d : any) => (d.epoch) > hoveredEpoch);
     import { area } from "d3-shape";
-    $: AreaGenerator = area()
+    interface Props {
+        data: any;
+        xScale: any;
+        yScale: any;
+        color: any;
+        hoveredEpoch: any;
+    }
+
+    let {
+        data,
+        xScale,
+        yScale,
+        color,
+        hoveredEpoch
+    }: Props = $props();
+    let dataBeforeHover = $derived(data.filter((d : any) => (d.epoch) <= hoveredEpoch));
+    let dataAfterHover = $derived(data.filter((d : any) => (d.epoch) > hoveredEpoch));
+    let AreaGenerator = $derived(area()
         .x((d : any) => xScale(d.epoch))
         .y0((d : any) => yScale(d.low))
-        .y1((d : any) => yScale(d.high));
+        .y1((d : any) => yScale(d.high)));
 </script>
 
 <path

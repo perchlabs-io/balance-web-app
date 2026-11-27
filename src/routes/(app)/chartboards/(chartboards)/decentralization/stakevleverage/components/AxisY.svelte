@@ -1,10 +1,20 @@
 <script lang="ts">
     
-    export let width : any;
-    export let windowWidth : any;
-    export let yScale : any;
-    export let yScaleZoom : any;
-    export let margin : any;
+  interface Props {
+    width: any;
+    windowWidth: any;
+    yScale: any;
+    yScaleZoom: any;
+    margin: any;
+  }
+
+  let {
+    width,
+    windowWidth,
+    yScale,
+    yScaleZoom,
+    margin
+  }: Props = $props();
   
    
 
@@ -15,8 +25,8 @@ const formatter = new Intl.NumberFormat('en-US', {
 })
 
 
-let yTicks : any;
-    $: yTicks = yScaleZoom ? yScaleZoom.ticks(7) : yScale.ticks(7)
+let yTicks : any = $derived(yScaleZoom ? yScaleZoom.ticks(7) : yScale.ticks(7));
+    
 
 const firstDigitStr = String(yTicks)[0];
 
@@ -27,7 +37,7 @@ const firstDigitStr = String(yTicks)[0];
     {#each yTicks as tick}
 
         
-        {#if String(tick)[0] === "1" || String(tick)[0] === "3" || String(tick)[0] === "6" }
+        {#if String(tick)[0] === "1" || String(tick)[0] === "3" || String(tick)[0] === "6"}
         <text 
         class="axis-format"
         x="0"

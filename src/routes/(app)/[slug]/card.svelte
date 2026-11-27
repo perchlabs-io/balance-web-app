@@ -4,7 +4,11 @@
 	import { twitter, matrix } from '$lib/api/config'
 	import Icon from '@iconify/svelte';
 	
-	export let preset: 'delegate' | 'matrix' | 'newsletter'
+	interface Props {
+		preset: 'delegate' | 'matrix' | 'newsletter';
+	}
+
+	let { preset }: Props = $props();
 </script>
 
 {#if preset === 'delegate'}

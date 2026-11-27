@@ -11,7 +11,11 @@
 		twitterHandle,
 	} from '$lib/api/config'
 	import { updateViews } from '$lib/database'
-	export let data: PageServerData
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
 	let editUrl = `${fileUrl}/${data.frontmatter.slug}/${data.frontmatter.slug}.md`
 	let image = `${postImage}${encodeURIComponent(data.frontmatter.title)}.png`
 	if (!dev && browser) {

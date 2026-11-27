@@ -1,12 +1,24 @@
 <script lang="ts">
 
-    export let xScale : any;
-    export let xScaleZoom : any;
-    export let yScale : any;
-    export let yScaleZoom : any;
-    export let hoveredEpoch : any;
-    export let data : any;
-    export let color : any;
+  interface Props {
+    xScale: any;
+    xScaleZoom: any;
+    yScale: any;
+    yScaleZoom: any;
+    hoveredEpoch: any;
+    data: any;
+    color: any;
+  }
+
+  let {
+    xScale,
+    xScaleZoom,
+    yScale,
+    yScaleZoom,
+    hoveredEpoch,
+    data,
+    color
+  }: Props = $props();
     const getYValue = (epoch : any) =>
         data.filter((d : any) => (d.epoch) >= epoch)[0]?.high;
 

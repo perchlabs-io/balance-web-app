@@ -1,8 +1,12 @@
 <script lang="ts">
                   
                  
-    export let width : any;
-    export let yScale : any;
+  interface Props {
+    width: any;
+    yScale: any;
+  }
+
+  let { width, yScale }: Props = $props();
 </script>
 
 {#each yScale.ticks(10) as tick}

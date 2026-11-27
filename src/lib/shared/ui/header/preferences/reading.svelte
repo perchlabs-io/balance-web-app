@@ -4,9 +4,9 @@
 	const userTextSize = browser && localStorage.textSize
 	const userTextLength = browser && localStorage.textLength
 	const userTextHeight = browser && localStorage.textHeight
-	let textSize = userTextSize ? userTextSize.replace('px', '') : 18
-	let textLength = userTextLength ? userTextLength.replace('ch', '') : 70
-	let textHeight = userTextHeight ? userTextHeight.replace('px', '') : 40
+	let textSize = $state(userTextSize ? userTextSize.replace('px', '') : 18)
+	let textLength = $state(userTextLength ? userTextLength.replace('ch', '') : 70)
+	let textHeight = $state(userTextHeight ? userTextHeight.replace('px', '') : 40)
 	function handleFontSizeChange() {
 		localStorage.textSize = `${textSize}px`
 		rootElement.style.setProperty('--post-txt-size', `${textSize}px`)
@@ -28,7 +28,7 @@
 	<div class="slider">
 		<span>{textSize}px</span>
 		<input
-			on:change={handleFontSizeChange}
+			onchange={handleFontSizeChange}
 			bind:value={textSize}
 			type="range"
 			name="text-size"
@@ -47,7 +47,7 @@
 	<div class="slider">
 		<span>{textLength}ch</span>
 		<input
-			on:change={handleTextLengthChange}
+			onchange={handleTextLengthChange}
 			bind:value={textLength}
 			type="range"
 			name="text-length"
@@ -66,7 +66,7 @@
 	<div class="slider">
 		<span>{textHeight}px</span>
 		<input
-			on:change={handleTextHeightChange}
+			onchange={handleTextHeightChange}
 			bind:value={textHeight}
 			type="range"
 			name="text-height"

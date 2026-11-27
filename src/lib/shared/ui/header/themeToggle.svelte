@@ -4,10 +4,14 @@
 	import ThemeToggleIcon from './animations/themeToggleIcon.svelte'
 	
     
-    export let auto = true
 
 
-	export let onClick = () => {
+   interface Props {
+      auto?: boolean;
+      onClick?: any;
+   }
+
+   let { auto = $bindable(true), onClick = () => {
 
         if($colorTheme == 'dark') {
 
@@ -39,7 +43,7 @@
 
         }
 
-	}
+	} }: Props = $props();
 
     const themeCheck = () => {
         if($colorTheme == 'dark') {

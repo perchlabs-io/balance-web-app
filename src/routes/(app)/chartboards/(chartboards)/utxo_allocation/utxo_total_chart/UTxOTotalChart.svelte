@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run, handlers } from 'svelte/legacy';
+
   
     //*** imports ***//
     import * as d3 from 'd3';
@@ -22,18 +24,17 @@
 	
 
     
-    export let epochData : any;
 
     const margin = { top: 15, right: 65, bottom: 55, left: 65 };
 	const marginMobile = { top: 15, right: 50, bottom: 55, left: 45 };
 	let height = 500;
-	let width = 400;
+	let width = $state(400);
 	let innerHeight = height - margin.top - margin.bottom;
 
-	let utxoChart : any;
+	let utxoChart : any = $state();
 
-	$: innerWidth = width - margin.left - margin.right;
-	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
+	let innerWidth = $derived(width - margin.left - margin.right);
+	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
 
 	let currWindowWidth = $windowWidth;
     let debounce = 10000000000;
@@ -44,39 +45,39 @@
         $colorTheme = localStorage.theme;
 	};
 
-	let totalMax : any;
+	let totalMax : any = $state();
 	let totalHighArray : any;
 
 	let totalHighDelegated : any;
-	let totalHighRPDelegated : any;
+	let totalHighRPDelegated : any = $state();
 	let totalHighNotDelegated : any;
 	let totalHighNeverDelegated : any;
 	let totalHighCommercial : any;
 	
-	let totalShowDelegated = false;
-	let totalShowRPDelegated = true;
-	let totalShowNotDelegated = false;
-	let totalShowNeverDelegated = false;
-	let totalShowCommercial = false;
+	let totalShowDelegated = $state(false);
+	let totalShowRPDelegated = $state(true);
+	let totalShowNotDelegated = $state(false);
+	let totalShowNeverDelegated = $state(false);
+	let totalShowCommercial = $state(false);
     
 
-    $: yScale = scaleLinear()
+    let yScale = $derived(scaleLinear()
 	  .domain([0, totalMax]) // INPUT
-	  .range([innerHeight, 0]); // OUTPUT
+	  .range([innerHeight, 0])); // OUTPUT
 	
 	const minEpoch = (epochData[0].epoch);
 	const maxEpoch = (epochData[epochData.length - 1].epoch);
 
-    let hoveredEpoch = maxEpoch;
-	let isHovered = false;
+    let hoveredEpoch = $state(maxEpoch);
+	let isHovered = $state(false);
 
-	$: xScale = scaleLinear()
+	let xScale = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidth]); // OUTPUT
+	  .range([10, innerWidth])); // OUTPUT
 
-	$: xScaleMobile = scaleLinear()
+	let xScaleMobile = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidthMobile]); // OUTPUT
+	  .range([10, innerWidthMobile])); // OUTPUT
 
 	const DELEGATED_COLOR = "#55DF96";
 	const RP_DELEGATED_COLOR = "#32BAFF";
@@ -84,7 +85,12 @@
 	const NEVER_DELEGATED_COLOR = "#BD64FF";
     const COMMERCIAL_COLOR = "#FF6464";
 
-	export let utxoTotalData : any;
+	interface Props {
+		epochData: any;
+		utxoTotalData: any;
+	}
+
+	let { epochData, utxoTotalData }: Props = $props();
 
     const params = {
 		delay: 100,
@@ -94,12 +100,14 @@
 
 	const tData = tweened(utxoTotalData, params);
 	  
-	$: tData.set(utxoTotalData);
+	run(() => {
+		tData.set(utxoTotalData);
+	});
 
 	
-    $: xScaleZoom = xScale;
-	$: xScaleZoomMobile = xScaleMobile;
-	$: yScaleZoom = yScale;
+    let xScaleZoom = $derived(xScale);
+	let xScaleZoomMobile = $derived(xScaleMobile);
+	let yScaleZoom = $derived(yScale);
 
 	onMount(() => {
         onResize();
@@ -136,13 +144,17 @@
 	totalHighCommercial = Math.max(...$tData['commercial'].map((o : any) => o.high))
 
 	
-	let totalMaxBase : any;
+	let totalMaxBase : any = $state();
 	
 
-	$: totalMaxBase = totalHighRPDelegated
-	$: totalMax = totalMaxBase + (totalMaxBase * .10)
+	run(() => {
+		totalMaxBase = totalHighRPDelegated
+	});
+	run(() => {
+		totalMax = totalMaxBase + (totalMaxBase * .10)
+	});
 
-	let showContent = ''
+	let showContent = $state('')
 	let chartTitle = 'UTxO Allocation Balance Per Category';
 	let chartInfo = 'The UTxO Allocation Balance chart provides focused analysis of historical ADA balances per selected UTxO category and offers enhanced data exploration UX through D3 Zoom capabilities.';
 
@@ -319,14 +331,13 @@
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={debounceFn(onResize, debounce)}
-  on:resize={onResize}
+  onload={onResize}
+  onresize={handlers(debounceFn(onResize, debounce), onResize)}
   />
 
   <section class="heroheader">
 	
-	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
+	<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 	{#if showContent === chartTitle}
 	<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 		{chartInfo}
@@ -339,33 +350,33 @@
 
   <section class="button-container">
     {#if totalShowDelegated === true}
-        <button class="linechartdetailbuttons_delegated_active" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated_active" type="button" onclick={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_delegated" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated" type="button" onclick={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if totalShowRPDelegated === true}
-        <button class="linechartdetailbuttons_rpdelegated_active" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated_active" type="button" onclick={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_rpdelegated" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated" type="button" onclick={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if totalShowNotDelegated === true}
-        <button class="linechartdetailbuttons_notdelegated_active"type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated_active"type="button" onclick={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_notdelegated" type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated" type="button" onclick={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if totalShowNeverDelegated === true}
-        <button class="linechartdetailbuttons_neverdelegated_active" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated_active" type="button" onclick={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_neverdelegated" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated" type="button" onclick={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
 	{#if totalShowCommercial === true}
-        <button class="linechartdetailbuttons_commercial_active" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial_active" type="button" onclick={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_commercial" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial" type="button" onclick={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {/if}
 	
   </section>

@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (see-more to see_more) making the component unusable -->
 <script lang="ts">
 	
 	import Transition from '$lib/shared/transition/index.svelte'

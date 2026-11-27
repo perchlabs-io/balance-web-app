@@ -2,21 +2,25 @@
 	import { colorTheme } from '$lib/stores/mychart';
 	import { browser } from '$app/environment'
 
-	export let auto = true
-	export let ariaLabel = 'toggle menu'
 	
 	
 
-	export let onClick = () => {
+	interface Props {
+		auto?: boolean;
+		ariaLabel?: string;
+		onClick?: any;
+	}
+
+	let { auto = $bindable(true), ariaLabel = 'toggle menu', onClick = () => {
 
 		auto = !auto
 
 
-	}
+	} }: Props = $props();
 	
   </script>
   
-  <button on:click={onClick} aria-expanded={auto} aria-label={ariaLabel}>
+  <button onclick={onClick} aria-expanded={auto} aria-label={ariaLabel}>
 		<svg
 			class:auto
             width="32" 

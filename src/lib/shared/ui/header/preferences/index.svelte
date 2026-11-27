@@ -20,8 +20,8 @@
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={onResize}
+  onload={onResize}
+  onresize={onResize}
   />
 
 

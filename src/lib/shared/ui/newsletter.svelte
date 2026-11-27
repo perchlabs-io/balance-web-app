@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import { fade } from 'svelte/transition'
 	import Icon from '@iconify/svelte';
 	
-	let email : any = ''
-	let error = ''
-	let success = ''
+	let email : any = $state('')
+	let error = $state('')
+	let success = $state('')
 	async function subscribe() {
 		const response = await fetch(`/api/subscribe`, {
 			method: 'post',
@@ -23,7 +25,7 @@
 	}
 </script>
 
-<form on:submit|preventDefault={subscribe}>
+<form onsubmit={preventDefault(subscribe)}>
 	<label for="email" class="sr-only">Enter your email</label>
 	<input
 		bind:value={email}

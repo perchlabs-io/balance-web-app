@@ -12,7 +12,7 @@
 
 <div class="reset-preferences">
 	<span>Use default settings</span>
-	<button on:click={useDefaults}>Reset</button>
+	<button onclick={useDefaults}>Reset</button>
 </div>
 
 <style>

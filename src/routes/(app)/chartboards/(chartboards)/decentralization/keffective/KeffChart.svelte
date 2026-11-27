@@ -2,58 +2,51 @@
 	import Heading from '$lib/shared/ui/heading.svelte'
 	import { scaleLog, scaleLinear, scaleTime } from "d3-scale";
 	import Line_Keff from "./components/Line.svelte";
-	// import { ChartPieIcon } from '@rgossiaux/svelte-heroicons/solid'
 	import { windowWidth, windowHeight, colorTheme } from '$lib/stores/mychart';
 	import Icon from '@iconify/svelte';
-
-	export let keffData : any;
-	
-	
-
-	let chartTitle = 'Average Resulting Decentralization';
-	let chartInfo = 'This chart displays the average MAV and the weighted average resulting decentralization or "effective decentralization" over time by taking into account pool groupings.';
-	
-
-	const marginMobile = { top: 15, right: 40, bottom: 52, left: 20 };
-	const margin = { top: 15, right: 45, bottom: 52, left: 30 };
-	let height = 400;
-	let width = 400;
-	let innerHeight = height - margin.top - margin.bottom;
-
-
-
-	$: innerWidth = width - margin.left - margin.right;
-	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
-	
-	const yScale = scaleLinear()
-	  .domain([1, 70]) // INPUT
-	  .range([innerHeight, 0]); // OUTPUT
-	const minEpoch = (keffData.mav[0].epoch);
-	const maxEpoch = (keffData.mav[keffData.mav.length - 1].epoch);
-	$: xScale = scaleLinear()
-	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidth]); // OUTPUT
-
-	$: xScaleMobile = scaleLinear()
-	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidthMobile]); // OUTPUT
-	const MAV_COLOR = "#FF6166";
-	const KEFF_COLOR = "#32BAFF";
-	const KEFF2_COLOR = "#FFCA64";
 	import AxisX_Keff from "./components/AxisX.svelte";
 	import AxisY_Keff from "./components/AxisY.svelte";
 	import HoverEvents_Keff from "./components/HoverEvents.svelte";
 	import Tooltip_Keff from "./components/Tooltip.svelte";
-	let hoveredEpoch = maxEpoch;
-	let isHovered = false;
-
-	//*************************/
-	//Chart Info - Expand / Collapse Feature
-	//*************************/
-	
 	import { fade, scale, slide } from 'svelte/transition';
 
-	let showContent = ''
+	interface Props {
+		keffData: any;
+	}
+
+	let { keffData }: Props = $props();
+
+	let chartTitle = 'Average Resulting Decentralization';
+	let chartInfo = 'This chart displays the average MAV and the weighted average resulting decentralization or "effective decentralization" over time by taking into account pool groupings.';
+	
+	const marginMobile = { top: 15, right: 40, bottom: 52, left: 20 };
+	const margin = { top: 15, right: 45, bottom: 52, left: 30 };
+	let height = 400;
+	let width = $state(400);
+	let innerHeight = height - margin.top - margin.bottom;
+
+	let innerWidth = $derived(width - margin.left - margin.right);
+	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
+	
+	const minEpoch = keffData.mav[0].epoch;
+	const maxEpoch = keffData.mav[keffData.mav.length - 1].epoch;
+	const yScale = $derived(scaleLinear()
+	  .domain([1, 70])
+	  .range([innerHeight, 0]));
+	let xScale = $derived(scaleLinear()
+	  .domain([minEpoch, maxEpoch])
+	  .range([10, innerWidth]));
+
+	let xScaleMobile = $derived(scaleLinear()
+	  .domain([minEpoch, maxEpoch])
+	  .range([10, innerWidthMobile]));
+	const MAV_COLOR = "#FF6166";
+	const KEFF_COLOR = "#32BAFF";
+	const KEFF2_COLOR = "#FFCA64";
+	let hoveredEpoch = $state(maxEpoch);
+	let isHovered = $state(false);
+
+	let showContent = $state('')
 
 	const handleClick = (payload : any) => {
   
@@ -77,14 +70,14 @@
   </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={onResize}
+  onload={onResize}
+  onresize={onResize}
   />
 	
 
 	<section class="heroheader">
 		
-		<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
+		<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 		{#if showContent === chartTitle}
 		<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 			{chartInfo}

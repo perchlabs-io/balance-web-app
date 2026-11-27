@@ -1,25 +1,31 @@
 <script lang="ts">
+   import { run } from 'svelte/legacy';
+
     import { onMount } from 'svelte';
     import * as d3 from 'd3';
 
-    export let data: Array<{ label: string; value: number }>;
-    export let width: number;
-    export var height: number;
+   interface Props {
+      data: Array<{ label: string; value: number }>;
+      width: number;
+      height: number;
+   }
+
+   let { data = $bindable(), width, height }: Props = $props();
 
 
     //donut parameterization / preprocessing
-    let radius = Math.min(width, height) / 2;
-    let innerRadius = radius * 0.6;
-    let outerRadius = radius * 1.0;
+    let radius = $state(Math.min(width, height) / 2);
+    let innerRadius = $state(radius * 0.6);
+    let outerRadius = $state(radius * 1.0);
     const padAngle = 0.02;
     const cornerRadius = 3;
     const tooltipOffset = 20;
     const radiusPopoutPadding = 1.05;	//[%/100] e.g. 105%/100 = 1.05
 
-    let pie: any;
-    let arc: any;
-    let pie_data: any;
-    let arc_data: any;
+    let pie: any = $state();
+    let arc: any = $state();
+    let pie_data: any = $derived(pie(data));
+    let arc_data: any = $derived(arc(pie_data));
     let radius_recalc;
 
 
@@ -35,12 +41,20 @@
         .padAngle(padAngle)
         .padRadius(innerRadius);
 
-    $: data = data;
-    $: pie_data = pie(data);
-    $: radius = Math.min(width, height) / 2; 
-    $: innerRadius = radius * 0.6;
-    $: outerRadius = radius * 1.0;
-    $: arc_data = arc(pie_data)
+    run(() => {
+      data = data;
+   });
+    
+    run(() => {
+      radius = Math.min(width, height) / 2;
+   }); 
+    run(() => {
+      innerRadius = radius * 0.6;
+   });
+    run(() => {
+      outerRadius = radius * 1.0;
+   });
+    
 
     //--- debugging ----//
 

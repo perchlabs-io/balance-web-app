@@ -5,21 +5,18 @@
 	
 	
 	
-	export let data : any;
+	interface Props {
+		data: any;
+	}
 
-	//*************************/
-	//Avg. Resulting Decentralization
-	//*************************/
-	let keffData = data.keffData[0].keffdata;
+	let { data }: Props = $props();
 
-	//*************************/
-	//Group Stake v. Leverage
-	//*************************/
-	let curMAVData = data.mavData;
-	let selectedData = data.levData;
-	let poolGroupData = data.groupData.pgl;
-	let maxEpochData = data.epochData[data.epochData.length - 1].epoch;
-	let minEpochData = data.epochData[0].epoch;
+	let keffData = $derived(data.keffData[0].keffdata);
+	let curMAVData = $derived(data.mavData);
+	let selectedData = $derived(data.levData);
+	let poolGroupData = $derived(data.groupData.pgl);
+	let maxEpochData = $derived(data.epochData[data.epochData.length - 1].epoch);
+	let minEpochData = $derived(data.epochData[0].epoch);
 
 
 </script>

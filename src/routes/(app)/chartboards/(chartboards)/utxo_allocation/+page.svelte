@@ -8,8 +8,13 @@
 	import UTxOStackChart from './utxo_stack_chart/UTxOStackChart.svelte'
 	import UTxODeltaChart from './utxo_delta_chart/UTxODeltaChart.svelte'
 	import UTxOTotalChart from './utxo_total_chart/UTxOTotalChart.svelte'
-	// import data
-	export let data : any;
+	
+	interface Props {
+		// import data
+		data: any;
+	}
+
+	let { data }: Props = $props();
 	
 
 

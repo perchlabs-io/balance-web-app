@@ -1,18 +1,28 @@
 <script lang="ts">
     
-    export let height : any;
-    export let width : any;
-    export let xScale : any;
-    export let xScaleZoom : any;
-    export let margin : any;
+  interface Props {
+    height: any;
+    width: any;
+    xScale: any;
+    xScaleZoom: any;
+    margin: any;
+  }
+
+  let {
+    height,
+    width,
+    xScale,
+    xScaleZoom,
+    margin
+  }: Props = $props();
     
   
     //let xTicks = [ 1,  10, 30, 60, 100, 200, 500, 1000];
 
     
 	  
-    let xTicks : any;
-    $: xTicks = xScaleZoom ? xScaleZoom.ticks() : xScale.ticks()
+    let xTicks : any = $derived(xScaleZoom ? xScaleZoom.ticks() : xScale.ticks());
+    
 	  
 	
 	  
@@ -21,7 +31,7 @@
   <g  >
     {#each xTicks as tick}
 
-    {#if String(tick)[0] === "1" || String(tick)[0] === "2" || String(tick)[0] === "5" }
+    {#if String(tick)[0] === "1" || String(tick)[0] === "2" || String(tick)[0] === "5"}
           <text class="axis-format"
         x={xScaleZoom ? xScaleZoom(tick) : xScale(tick)} 
         y={height }

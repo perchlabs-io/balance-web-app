@@ -1,13 +1,23 @@
 <script lang="ts">
-	export let question : any;
-	export let answer : any;
-	export let link1url : any;
-	export let link1text : any;
-	export let id : any;
 
 	import { fade, scale, slide } from 'svelte/transition';
+	interface Props {
+		question: any;
+		answer: any;
+		link1url: any;
+		link1text: any;
+		id: any;
+	}
 
-	let showContent = ''
+	let {
+		question,
+		answer,
+		link1url,
+		link1text,
+		id
+	}: Props = $props();
+
+	let showContent = $state('')
 
 	const handleClick = (payload : any) => {
   
@@ -21,8 +31,8 @@
 	
 </script>
 
-	<div {id} class="inputbox" on:mouseleave={handleQAClose}>
-		<button class="question" type="button" on:click={() => handleClick(question)}>{question}</button>
+	<div {id} class="inputbox" onmouseleave={handleQAClose}>
+		<button class="question" type="button" onclick={() => handleClick(question)}>{question}</button>
 		{#if showContent === question}
 		<p class="answer" transition:slide|global={{ duration: 400 }}>
 			{answer}

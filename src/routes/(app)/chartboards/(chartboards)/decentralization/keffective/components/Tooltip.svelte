@@ -1,10 +1,20 @@
 <script lang="ts">
 
-    export let xScale : any;
-    export let yScale : any;
-    export let hoveredEpoch : any;
-    export let data : any;
-    export let color : any;
+  interface Props {
+    xScale: any;
+    yScale: any;
+    hoveredEpoch: any;
+    data: any;
+    color: any;
+  }
+
+  let {
+    xScale,
+    yScale,
+    hoveredEpoch,
+    data,
+    color
+  }: Props = $props();
     const getYValue = (epoch : any) =>
         data.filter((d : any) => (d.epoch) >= epoch)[0]?.stat;
 

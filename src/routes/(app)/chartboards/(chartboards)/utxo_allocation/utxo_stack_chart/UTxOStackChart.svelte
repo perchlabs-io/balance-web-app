@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run, handlers } from 'svelte/legacy';
+
   
     //*** imports ***//
     import * as d3 from 'd3';
@@ -22,19 +24,18 @@
 	
 
     
-    export let epochData : any;
 
     const margin = { top: 15, right: 65, bottom: 55, left: 65 };
 	const marginMobile = { top: 15, right: 50, bottom: 55, left: 40 };
 	let height = 500;
-	let width = 400;
+	let width = $state(400);
 	let innerHeight = height - margin.top - margin.bottom;
 	
 
-	let utxoChart : any;
+	let utxoChart : any = $state();
 
-	$: innerWidth = width - margin.left - margin.right;
-	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
+	let innerWidth = $derived(width - margin.left - margin.right);
+	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
 
 	let currWindowWidth = $windowWidth;
     let debounce = 10000000000;
@@ -45,10 +46,10 @@
         $colorTheme = localStorage.theme;
 	};
 
-	let stackMax : any;
+	let stackMax : any = $derived(stackMaxBase + (stackMaxBase * .10));
 	
 
-	let stackHighDelegated : any;
+	let stackHighDelegated : any = $state();
 	let stackHighRPDelegated : any;
 	let stackHighNotDelegated : any;
 	let stackHighNeverDelegated : any;
@@ -57,23 +58,23 @@
 	
     
 
-    $: yScale = scaleLinear()
+    let yScale = $derived(scaleLinear()
 	  .domain([0, stackMax]) // INPUT
-	  .range([innerHeight, 0]); // OUTPUT
+	  .range([innerHeight, 0])); // OUTPUT
 	
 	const minEpoch = (epochData[0].epoch);
 	const maxEpoch = (epochData[epochData.length - 1].epoch);
 
-    let hoveredEpoch = maxEpoch;
-	let isHovered = false;
+    let hoveredEpoch = $state(maxEpoch);
+	let isHovered = $state(false);
 
-	$: xScale = scaleLinear()
+	let xScale = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidth]); // OUTPUT
+	  .range([10, innerWidth])); // OUTPUT
 
-	$: xScaleMobile = scaleLinear()
+	let xScaleMobile = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidthMobile]); // OUTPUT
+	  .range([10, innerWidthMobile])); // OUTPUT
 
 	const DELEGATED_COLOR = "#55DF96";
 	const RP_DELEGATED_COLOR = "#32BAFF";
@@ -81,7 +82,12 @@
 	const NEVER_DELEGATED_COLOR = "#BD64FF";
     const COMMERCIAL_COLOR = "#FF6464";
 
-	export let utxoStackData : any;
+	interface Props {
+		epochData: any;
+		utxoStackData: any;
+	}
+
+	let { epochData, utxoStackData }: Props = $props();
 
     const params = {
 		delay: 100,
@@ -91,12 +97,14 @@
 
 	const tData = tweened(utxoStackData, params);
 	  
-	$: tData.set(utxoStackData);
+	run(() => {
+		tData.set(utxoStackData);
+	});
 
 	
-    $: xScaleZoom = xScale;
-	$: xScaleZoomMobile = xScaleMobile;
-	$: yScaleZoom = yScale;
+    let xScaleZoom = $derived(xScale);
+	let xScaleZoomMobile = $derived(xScaleMobile);
+	let yScaleZoom = $derived(yScale);
 
 	onMount(() => {
         onResize();
@@ -133,13 +141,13 @@
 	stackHighCommercial = Math.max(...$tData['commercial'].map((o : any) => o.high))
 
 	
-	let stackMaxBase : any;
+	let stackMaxBase : any = $derived(stackHighDelegated);
 	
 
-	$: stackMaxBase = stackHighDelegated
-	$: stackMax = stackMaxBase + (stackMaxBase * .10)
+	
+	
 
-	let showContent = ''
+	let showContent = $state('')
 	let chartTitle = 'Aggregate UTxO Stack';
 	let chartInfo = 'The Aggregate UTxO Stack chart provides a cumulative view of the 5 UTxO categories, supporting compare and contrast of each category ADA allocation against total ADA supply in circulation.';
 	let catDelegatedInfo = 'ADA delegated to stake pool'
@@ -158,14 +166,13 @@
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={debounceFn(onResize, debounce)}
-  on:resize={onResize}
+  onload={onResize}
+  onresize={handlers(debounceFn(onResize, debounce), onResize)}
   />
 
   <section class="heroheader">
 	
-	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
+	<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 	{#if showContent === chartTitle}
 	<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 		{chartInfo}<br/><br/>

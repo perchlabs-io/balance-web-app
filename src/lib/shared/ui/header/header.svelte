@@ -10,7 +10,7 @@
 	let currentY: number
 	let clientHeight: number
 
-	$: curTheme = {colorTheme};
+	let curTheme = $derived({colorTheme});
 
 	const deriveDirection = (y: number) => {
 		const direction = !previousY || previousY < y ? 'down' : 'up'
@@ -19,8 +19,8 @@
 		return direction
 	}
 
-	$: scrollDirection = deriveDirection(currentY)
-	$: offscreen = scrollDirection === 'down' && currentY > clientHeight * 4
+	let scrollDirection = $derived(deriveDirection(currentY))
+	let offscreen = $derived(scrollDirection === 'down' && currentY > clientHeight * 4)
 
 	
 </script>

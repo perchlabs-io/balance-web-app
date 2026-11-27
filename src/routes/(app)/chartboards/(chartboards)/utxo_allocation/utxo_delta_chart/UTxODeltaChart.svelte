@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
   
     //*** imports ***//
     import * as d3 from 'd3';
@@ -22,24 +24,23 @@
 	
 
     
-    export let epochData : any;
 
 	
 
     const margin = { top: 15, right: 65, bottom: 55, left: 65 };
 	const marginMobile = { top: 15, right: 55, bottom: 55, left: 40 };
 	let height = 500;
-	let width = 400;
+	let width = $state(400);
 	let innerHeight = height - margin.top - margin.bottom;
 	
-	let utxoChart : any;
+	let utxoChart : any = $state();
 	
 	
 
 
 
-	$: innerWidth = width - margin.left - margin.right;
-	$: innerWidthMobile = width - marginMobile.left - marginMobile.right;
+	let innerWidth = $derived(width - margin.left - margin.right);
+	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
 
     let currWindowWidth = $windowWidth;
     let debounce = 10000000000;
@@ -52,48 +53,48 @@
 
     
 
-	let deltaMax : any;
-	let deltaMin : any;
-	let deltaHighArray : any;
-	let deltaLowArray : any;
+	let deltaMax : any = $state();
+	let deltaMin : any = $state();
+	let deltaHighArray : any = $state();
+	let deltaLowArray : any = $state();
 
-	let deltaHighDelegated : any;
-	let deltaHighRPDelegated : any;
-	let deltaHighNotDelegated : any;
-	let deltaHighNeverDelegated : any;
-	let deltaHighCommercial : any;
+	let deltaHighDelegated : any = $state();
+	let deltaHighRPDelegated : any = $state();
+	let deltaHighNotDelegated : any = $state();
+	let deltaHighNeverDelegated : any = $state();
+	let deltaHighCommercial : any = $state();
 
-	let deltaLowDelegated : any;
-	let deltaLowRPDelegated : any;
-	let deltaLowNotDelegated : any;
-	let deltaLowNeverDelegated : any;
-	let deltaLowCommercial : any;
+	let deltaLowDelegated : any = $state();
+	let deltaLowRPDelegated : any = $state();
+	let deltaLowNotDelegated : any = $state();
+	let deltaLowNeverDelegated : any = $state();
+	let deltaLowCommercial : any = $state();
 	
-	let deltaShowDelegated = true;
-	let deltaShowRPDelegated = true;
-	let deltaShowNotDelegated = true;
-	let deltaShowNeverDelegated = true;
-	let deltaShowCommercial = true;
+	let deltaShowDelegated = $state(true);
+	let deltaShowRPDelegated = $state(true);
+	let deltaShowNotDelegated = $state(true);
+	let deltaShowNeverDelegated = $state(true);
+	let deltaShowCommercial = $state(true);
 
 
 
-    $: yScale = scaleLinear()
+    let yScale = $derived(scaleLinear()
 	  .domain([deltaMin, deltaMax]) // INPUT
-	  .range([innerHeight, 0]); // OUTPUT
+	  .range([innerHeight, 0])); // OUTPUT
 	
 	const minEpoch = (epochData[0].epoch);
 	const maxEpoch = (epochData[epochData.length - 1].epoch);
 
-    let hoveredEpoch = maxEpoch;
-	let isHovered = false;
+    let hoveredEpoch = $state(maxEpoch);
+	let isHovered = $state(false);
 
-	$: xScale = scaleLinear()
+	let xScale = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidth]); // OUTPUT
+	  .range([10, innerWidth])); // OUTPUT
 
-	$: xScaleMobile = scaleLinear()
+	let xScaleMobile = $derived(scaleLinear()
 	  .domain([minEpoch, maxEpoch]) // INPUT
-	  .range([10, innerWidthMobile]); // OUTPUT
+	  .range([10, innerWidthMobile])); // OUTPUT
 
 	const DELEGATED_COLOR = "#55DF96";
 	const RP_DELEGATED_COLOR = "#32BAFF";
@@ -102,7 +103,12 @@
     const COMMERCIAL_COLOR = "#FF6464";
 
 	
-	export let utxoDeltaData : any;
+	interface Props {
+		epochData: any;
+		utxoDeltaData: any;
+	}
+
+	let { epochData, utxoDeltaData }: Props = $props();
 
 	
 
@@ -116,12 +122,14 @@
 
 	const tData = tweened(utxoDeltaData, params);
 	  
-	$: tData.set(utxoDeltaData);
+	run(() => {
+		tData.set(utxoDeltaData);
+	});
 
 	
-    $: xScaleZoom = xScale;
-	$: xScaleZoomMobile = xScaleMobile;
-	$: yScaleZoom = yScale;
+    let xScaleZoom = $derived(xScale);
+	let xScaleZoomMobile = $derived(xScaleMobile);
+	let yScaleZoom = $derived(yScale);
     
 
 	onMount(() => {
@@ -165,36 +173,48 @@
 	deltaLowNeverDelegated = Math.min(...$tData['never_delegated'].map((o : any) => o.delta))
 	deltaLowCommercial = Math.min(...$tData['commercial'].map((o : any) => o.delta))
 
-	$: deltaHighArray = 
-				[
-					{'category':'delegated', 'delta': deltaHighDelegated},
-					{'category':'rp_delegated', 'delta': deltaHighRPDelegated},
-					{'category':'not_delegated', 'delta': deltaHighNotDelegated},
-					{'category':'never_delegated', 'delta': deltaHighNeverDelegated},
-					{'category':'commercial', 'delta': deltaHighCommercial}
-				]
+	run(() => {
+		deltaHighArray = 
+					[
+						{'category':'delegated', 'delta': deltaHighDelegated},
+						{'category':'rp_delegated', 'delta': deltaHighRPDelegated},
+						{'category':'not_delegated', 'delta': deltaHighNotDelegated},
+						{'category':'never_delegated', 'delta': deltaHighNeverDelegated},
+						{'category':'commercial', 'delta': deltaHighCommercial}
+					]
+	});
 
-	$: deltaLowArray = 
-				[
-					{'category':'delegated', 'delta': deltaLowDelegated},
-					{'category':'rp_delegated', 'delta': deltaLowRPDelegated},
-					{'category':'not_delegated', 'delta': deltaLowNotDelegated},
-					{'category':'never_delegated', 'delta': deltaLowNeverDelegated},
-					{'category':'commercial', 'delta': deltaLowCommercial}
-				]
+	run(() => {
+		deltaLowArray = 
+					[
+						{'category':'delegated', 'delta': deltaLowDelegated},
+						{'category':'rp_delegated', 'delta': deltaLowRPDelegated},
+						{'category':'not_delegated', 'delta': deltaLowNotDelegated},
+						{'category':'never_delegated', 'delta': deltaLowNeverDelegated},
+						{'category':'commercial', 'delta': deltaLowCommercial}
+					]
+	});
 
 	
 
-	let deltaMaxBase : any;
-	let deltaMinBase : any;
+	let deltaMaxBase : any = $state();
+	let deltaMinBase : any = $state();
 
-	$: deltaMaxBase = Math.max(...deltaHighArray.map((o : any) => o.delta))
-	$: deltaMax = deltaMaxBase + (deltaMaxBase * .10)
+	run(() => {
+		deltaMaxBase = Math.max(...deltaHighArray.map((o : any) => o.delta))
+	});
+	run(() => {
+		deltaMax = deltaMaxBase + (deltaMaxBase * .10)
+	});
 
-	$: deltaMinBase = Math.min(...deltaLowArray.map((o : any) => o.delta))
-	$: deltaMin = deltaMinBase + (deltaMinBase * .10)
+	run(() => {
+		deltaMinBase = Math.min(...deltaLowArray.map((o : any) => o.delta))
+	});
+	run(() => {
+		deltaMin = deltaMinBase + (deltaMinBase * .10)
+	});
 
-	let showContent = ''
+	let showContent = $state('')
 	let chartTitle = 'UTxO Allocation Delta Per Category';
 	let chartInfo = 'The UTxO Allocation Delta chart provides historical UTxO allocation net change detail per selected categories.  Identify potenital correlations in UTxO alloction fluctuations by selecting multiple categories to explore.';
 
@@ -552,13 +572,13 @@
 </script>
 
 <svelte:window
-  on:load={onResize}
-  on:resize={debounceFn(onResize, debounce)}
+  onload={onResize}
+  onresize={debounceFn(onResize, debounce)}
   />
 
   <section class="heroheader">
 	
-	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
+	<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}><h4 class="heroheadertext" >{chartTitle}</h4></button>
 	{#if showContent === chartTitle}
 	<p class="chartdetail" transition:slide|global={{ duration: 200 }}>
 		{chartInfo}
@@ -572,33 +592,33 @@
   <section class="button-container">
 	
     {#if deltaShowDelegated === true}
-        <button class="linechartdetailbuttons_delegated_active" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated_active" type="button" onclick={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_delegated" type="button" on:click={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_delegated" type="button" onclick={() => showDelegated()}><h4>Delegated</h4><Icon icon="fa:pie-chart" style="color:{DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowRPDelegated === true}
-        <button class="linechartdetailbuttons_rpdelegated_active" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated_active" type="button" onclick={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_rpdelegated" type="button" on:click={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_rpdelegated" type="button" onclick={() => showRPDelegated()}><h4>Retired Pool</h4><Icon icon="fa:pie-chart" style="color:{RP_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowNotDelegated === true}
-        <button class="linechartdetailbuttons_notdelegated_active"type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated_active"type="button" onclick={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_notdelegated" type="button" on:click={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_notdelegated" type="button" onclick={() => showNotDelegated()}><h4>Not Delegated</h4><Icon icon="fa:pie-chart" style="color:{NOT_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
     {#if deltaShowNeverDelegated === true}
-        <button class="linechartdetailbuttons_neverdelegated_active" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated_active" type="button" onclick={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_neverdelegated" type="button" on:click={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_neverdelegated" type="button" onclick={() => showNeverDelegated()}><h4>Never Delegated</h4><Icon icon="fa:pie-chart" style="color:{NEVER_DELEGATED_COLOR}"  width="17" /></button>
     {/if}
 
 	{#if deltaShowCommercial === true}
-        <button class="linechartdetailbuttons_commercial_active" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial_active" type="button" onclick={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart" style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {:else}
-        <button class="linechartdetailbuttons_commercial" type="button" on:click={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart"style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
+        <button class="linechartdetailbuttons_commercial" type="button" onclick={() => showCommercial()}><h4>Ineligible</h4><Icon icon="fa:pie-chart"style="color:{COMMERCIAL_COLOR}"  width="17" /></button>
     {/if}
 	
   </section>
