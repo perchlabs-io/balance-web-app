@@ -1,25 +1,19 @@
 <script lang="ts">
-	import { browser, dev } from '$app/environment'
-	import type { PageServerData } from './$types'
-	import Card from './card.svelte'
-	import Clipboard from './clipboard.svelte'
-	import {
-		fileUrl,
-		postImage,
-		siteName,
-		siteUrl,
-		twitterHandle,
-	} from '$lib/api/config'
-	import { updateViews } from '$lib/database'
+	import { browser, dev } from '$app/environment';
+	import type { PageServerData } from './$types';
+	import Card from './card.svelte';
+	import Clipboard from './clipboard.svelte';
+	import { fileUrl, postImage, siteName, siteUrl, twitterHandle } from '$lib/api/config';
+	import { updateViews } from '$lib/database';
 	interface Props {
 		data: PageServerData;
 	}
 
 	let { data }: Props = $props();
-	let editUrl = `${fileUrl}/${data.frontmatter.slug}/${data.frontmatter.slug}.md`
-	let image = `${postImage}${encodeURIComponent(data.frontmatter.title)}.png`
+	let editUrl = `${fileUrl}/${data.frontmatter.slug}/${data.frontmatter.slug}.md`;
+	let image = `${postImage}${encodeURIComponent(data.frontmatter.title)}.png`;
 	if (!dev && browser) {
-		updateViews(data.frontmatter.slug)
+		updateViews(data.frontmatter.slug);
 	}
 	//if (dev && browser) {
 	//	updateViews(data.frontmatter.slug)
@@ -29,9 +23,9 @@
 <svelte:head>
 	<title>{data.frontmatter.title}</title>
 	<meta
-    property="og:image"
-    content="https://balance-social-image.vercel.app/api/og?title={data.frontmatter.title}"
-  	/>
+		property="og:image"
+		content="https://balance-social-image.vercel.app/api/og?title={data.frontmatter.title}"
+	/>
 
 	<meta content={data.frontmatter.description} name="description" />
 
@@ -51,8 +45,6 @@
 <Clipboard />
 
 <main>
-	
-
 	<div class="prose">
 		{@html data.content}
 	</div>

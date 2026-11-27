@@ -33,8 +33,12 @@
 	style="position: absolute; top: {margin.top + y + 5}px; left: {margin.left + x + leftOffset}px;"
 >
 	<p class="tooltip-item"><strong>Name:</strong>&nbsp;&nbsp;&nbsp;&nbsp; {data.pg}</p>
-	<p class="tooltip-item"><strong>Stake:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₳ {formatter.format(data.y)}</p>
-	<p class="tooltip-item"><strong>Pledge:</strong>&nbsp;&nbsp;&nbsp; ₳ {formatter.format(data.pa)}</p>
+	<p class="tooltip-item">
+		<strong>Stake:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₳ {formatter.format(data.y)}
+	</p>
+	<p class="tooltip-item">
+		<strong>Pledge:</strong>&nbsp;&nbsp;&nbsp; ₳ {formatter.format(data.pa)}
+	</p>
 </div>
 
 <style>

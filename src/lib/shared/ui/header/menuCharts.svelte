@@ -1,40 +1,32 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition'
+	import { fade } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
-	import { Popover } from "bits-ui";
-	import { chartBoards } from '$lib/api/config'
+	import { Popover } from 'bits-ui';
+	import { chartBoards } from '$lib/api/config';
 	import { windowWidth } from '$lib/stores/mychart';
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
 	onMount(() => {
 		onResize();
-    });
+	});
 
 	const onResize = () => {
-        $windowWidth = window.innerWidth;
-    };
-	
+		$windowWidth = window.innerWidth;
+	};
 </script>
 
-<svelte:window
-  onload={onResize}
-  onresize={onResize}
-  />
+<svelte:window onload={onResize} onresize={onResize} />
 
 <Popover.Root>
-	
 	<Popover.Trigger>
-	<div class="container">
-		<Icon icon="cil:chart" width="100%" />
-	</div>
-		
+		<div class="container">
+			<Icon icon="cil:chart" width="100%" />
+		</div>
 	</Popover.Trigger>
 
 	{#if $windowWidth > 650}
-
-		<Popover.Content sideOffset={13.40} align="end" alignOffset={12}>
+		<Popover.Content sideOffset={13.4} align="end" alignOffset={12}>
 			<div class="menu" out:fade|global={{ duration: 200 }}>
-							
 				<span class="title">Chart Boards</span>
 				<ul>
 					{#each Object.entries(chartBoards) as [slug, chartboard]}
@@ -45,12 +37,9 @@
 				</ul>
 			</div>
 		</Popover.Content>
-
 	{:else if $windowWidth <= 650}
-
-		<Popover.Content sideOffset={10.40} align="end" alignOffset={12}>
+		<Popover.Content sideOffset={10.4} align="end" alignOffset={12}>
 			<div class="menu">
-							
 				<span class="title">Chart Boards</span>
 				<ul>
 					{#each Object.entries(chartBoards) as [slug, chartboard]}
@@ -61,27 +50,22 @@
 				</ul>
 			</div>
 		</Popover.Content>
-
 	{/if}
-
-</Popover.Root>	
+</Popover.Root>
 
 <style>
-
-	.container  {
+	.container {
 		height: 29px;
 		margin-top: 2px;
 	}
-	
+
 	.menu {
 		width: max-content;
 		background-color: var(--ba-clr-menu-bg);
 		padding: var(--spacing-24);
 		border-width: 0px;
-		
-		
 	}
-	
+
 	.menu .title {
 		display: block;
 		padding-bottom: var(--spacing-24);
@@ -90,18 +74,15 @@
 		line-height: 32px;
 		border-bottom: 2px solid var(--clr-menu-border);
 		color: var(--clr-txt);
-
 	}
 
 	.menu a {
 		font-weight: inherit;
 		color: var(--clr-menu-text);
-
 	}
 
 	.menu a:hover {
 		color: var(--clr-primary);
-
 	}
 
 	.menu ul {
@@ -112,7 +93,6 @@
 		column-gap: var(--spacing-64);
 		grid-auto-flow: column;
 		margin-top: var(--spacing-24);
-
 	}
 
 	@media (min-width: 650px) {
@@ -120,19 +100,13 @@
 			grid-template-rows: repeat(4, 1fr);
 		}
 	}
-	
-	@media (max-width: 650px) {
 
-		.container  {
+	@media (max-width: 650px) {
+		.container {
 			height: 24px;
 			margin-top: 7px;
-		
 		}
 
-		
-
-		
-		
 		.menu .title {
 			display: block;
 			padding-bottom: var(--spacing-24);
@@ -145,7 +119,6 @@
 			font-size: var(--font-14);
 			font-weight: inherit;
 			color: var(--clr-menu-text);
-			
 		}
 		.menu ul {
 			display: grid;
@@ -157,6 +130,4 @@
 			margin-top: var(--spacing-24);
 		}
 	}
-  
-	
 </style>

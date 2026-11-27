@@ -1,9 +1,8 @@
 <script lang="ts">
-	
-	import Newsletter from '$lib/shared/ui/newsletter.svelte'
-	import { twitter, matrix } from '$lib/api/config'
+	import Newsletter from '$lib/shared/ui/newsletter.svelte';
+	import { twitter, matrix } from '$lib/api/config';
 	import Icon from '@iconify/svelte';
-	
+
 	interface Props {
 		preset: 'delegate' | 'matrix' | 'newsletter';
 	}
@@ -14,36 +13,29 @@
 {#if preset === 'delegate'}
 	<div class="card">
 		<div class="decorative">
-			
-			<Icon icon="mdi:heart-outline" width="26px"/>
-			
+			<Icon icon="mdi:heart-outline" width="26px" />
 		</div>
 		<span class="title">Delegate</span>
 		<p class="text">
-
-			If you would like to support future research and blockchain analytics, 
-			please consider delegating to <b>Balance Stake Pool - [BALNC]</b>.
+			If you would like to support future research and blockchain analytics, please consider
+			delegating to <b>Balance Stake Pool - [BALNC]</b>.
 		</p>
-		
 	</div>
 {/if}
 
 {#if preset === 'matrix'}
 	<div class="card">
 		<div class="decorative">
-			
-			<Icon icon="ph:note-pencil" width="26px"/>
+			<Icon icon="ph:note-pencil" width="26px" />
 		</div>
 
 		<span class="title">Join The Discussion</span>
 		<p class="text">
-			Join the BALANCE Matrix server to get involved and meet the team.  Stop by 
-			today to help build a more resilient blockchain network.
+			Join the BALANCE Matrix server to get involved and meet the team. Stop by today to help build
+			a more resilient blockchain network.
 		</p>
 		<a class="link" href={matrix} target="_blank" rel="noreferrer">
 			<span>Join BALANCE Matrix Server</span>
-
-			
 		</a>
 	</div>
 {/if}
@@ -51,8 +43,7 @@
 {#if preset === 'newsletter'}
 	<div class="card">
 		<div class="decorative">
-			
-			<Icon icon="octicon:mail-24" width="22px"/>
+			<Icon icon="octicon:mail-24" width="22px" />
 		</div>
 		<span class="title">Subscribe to our Newsletter</span>
 		<Newsletter />

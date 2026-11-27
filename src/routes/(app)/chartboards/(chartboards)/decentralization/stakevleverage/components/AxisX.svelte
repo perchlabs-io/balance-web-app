@@ -1,80 +1,58 @@
 <script lang="ts">
-    
-  interface Props {
-    height: any;
-    width: any;
-    xScale: any;
-    xScaleZoom: any;
-    margin: any;
-  }
+	interface Props {
+		height: any;
+		width: any;
+		xScale: any;
+		xScaleZoom: any;
+		margin: any;
+	}
 
-  let {
-    height,
-    width,
-    xScale,
-    xScaleZoom,
-    margin
-  }: Props = $props();
-    
-  
-    //let xTicks = [ 1,  10, 30, 60, 100, 200, 500, 1000];
+	let { height, width, xScale, xScaleZoom, margin }: Props = $props();
 
-    
-	  
-    let xTicks : any = $derived(xScaleZoom ? xScaleZoom.ticks() : xScale.ticks());
-    
-	  
-	
-	  
-  </script>
-  
-  <g  >
-    {#each xTicks as tick}
+	//let xTicks = [ 1,  10, 30, 60, 100, 200, 500, 1000];
 
-    {#if String(tick)[0] === "1" || String(tick)[0] === "2" || String(tick)[0] === "5"}
-          <text class="axis-format"
-        x={xScaleZoom ? xScaleZoom(tick) : xScale(tick)} 
-        y={height }
-        dy="15"
-        dominant-baseline="hanging"
-        font-size="10px"
-        font-weight=500
-        text-anchor="middle"
-        >{tick}</text>
+	let xTicks: any = $derived(xScaleZoom ? xScaleZoom.ticks() : xScale.ticks());
+</script>
 
-        <line class="line-format"
-        x1= {xScaleZoom ? xScaleZoom(tick) : xScale(tick)} 
-        x2= {xScaleZoom ? xScaleZoom(tick) : xScale(tick)}
-        y1= "0"
-        y2={height + 7}
-         />
-        
-    {/if} 
+<g>
+	{#each xTicks as tick}
+		{#if String(tick)[0] === '1' || String(tick)[0] === '2' || String(tick)[0] === '5'}
+			<text
+				class="axis-format"
+				x={xScaleZoom ? xScaleZoom(tick) : xScale(tick)}
+				y={height}
+				dy="15"
+				dominant-baseline="hanging"
+				font-size="10px"
+				font-weight="500"
+				text-anchor="middle">{tick}</text
+			>
 
-    <text class="axis-format"
-          y={(height) + 50}
-          x={(width) / 2 - 35} 
-           
-           font-size="12px"
-           letter-spacing="1px"
-           >Leverage
-        </text>
-        
-        
-    {/each}
-  </g>
+			<line
+				class="line-format"
+				x1={xScaleZoom ? xScaleZoom(tick) : xScale(tick)}
+				x2={xScaleZoom ? xScaleZoom(tick) : xScale(tick)}
+				y1="0"
+				y2={height + 7}
+			/>
+		{/if}
 
+		<text
+			class="axis-format"
+			y={height + 50}
+			x={width / 2 - 35}
+			font-size="12px"
+			letter-spacing="1px"
+			>Leverage
+		</text>
+	{/each}
+</g>
 
-  <style>
-    .axis-format {
-      
-      fill: var(--clr-txt);
-  
-    }
-    .line-format {
-      stroke: var(--clr-chart-line);
-    }
-  
-  
-  
-  </style>
+<style>
+	.axis-format {
+		fill: var(--clr-txt);
+	}
+	.line-format {
+		stroke: var(--clr-chart-line);
+	}
+</style>

@@ -1,25 +1,21 @@
-import { json } from '@sveltejs/kit'
-import type { RequestHandler } from '@sveltejs/kit'
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from '@sveltejs/kit';
 
-import { supabase } from '$lib/database'
+import { supabase } from '$lib/database';
 
 export const POST: RequestHandler = async ({ request }) => {
-	const slug = await request.json()
+	const slug = await request.json();
 
-	const views = await supabase
-		.from('views')
-		.select('views')
-		.match({ slug })
-		.single()
+	const views = await supabase.from('views').select('views').match({ slug }).single();
 
 	if (!views.data) {
 		const { error } = await supabase.from('views').insert({
 			slug,
-			views: 1,
-		})
+			views: 1
+		});
 
 		if (error) {
-			return json({ error: error.message })
+			return json({ error: error.message });
 		}
 	}
 
@@ -27,14 +23,14 @@ export const POST: RequestHandler = async ({ request }) => {
 		const { error } = await supabase
 			.from('views')
 			.update({
-				views: views.data.views + 1,
+				views: views.data.views + 1
 			})
-			.match({ slug })
+			.match({ slug });
 
 		if (error) {
-			return json({ error: error.message })
+			return json({ error: error.message });
 		}
 	}
 
-	return new Response(undefined, { status: 303, headers: { location: '/' } })
-}
+	return new Response(undefined, { status: 303, headers: { location: '/' } });
+};

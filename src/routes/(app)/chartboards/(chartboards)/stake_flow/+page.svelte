@@ -1,13 +1,11 @@
 <script lang="ts">
-
 	// imports
-	import Heading from '$lib/shared/ui/heading.svelte'
+	import Heading from '$lib/shared/ui/heading.svelte';
 	// import Overlay from '$lib/shared/ui/overlay.svelte'
-	
+
 	// define donut charts on page
 	// import DonutGroupStakeChart from './donut_group_stake/DonutGroupStakeChart.svelte'
-	
-	
+
 	interface Props {
 		// import data
 		data: any;
@@ -15,7 +13,6 @@
 
 	let { data }: Props = $props();
 	// console.log(data,"data donut page check")
-
 
 	//*************************/
 	//Donut Group Stake
@@ -26,15 +23,10 @@
 	let curMAVData = data.mavData;
 	let maxEpochData = data.epochData[data.epochData.length - 1].epoch;
 	let stakeFlowData = data.stakeFlowData;
-	
+
 	// console.log(donutData,"donutData +page check")
 	// console.log(curMAVData,"curMAVData +page check")
-
-	
 </script>
-
-
-
 
 <svelte:head>
 	<title>Stake Flow</title>
@@ -42,18 +34,13 @@
 
 <Heading>Stake Flow</Heading>
 
-
 <main>
 	<!-- <Overlay /> -->
-	
-	<!-- <DonutGroupStakeChart {donutData} {curMAVData} {maxEpochData}/> -->
 
+	<!-- <DonutGroupStakeChart {donutData} {curMAVData} {maxEpochData}/> -->
 </main>
 
 <!-- {@debug DonutGroupStakeChart} -->
 
 <style>
-
-
-
 </style>

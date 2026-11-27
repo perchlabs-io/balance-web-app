@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Header from '$lib/shared/ui/header/header.svelte'
-	import Footer from '$lib/shared/ui/footer/footer.svelte'
-	import Transition from '$lib/shared/transition/index.svelte'
-	import '../styles/styles.scss'
+	import Header from '$lib/shared/ui/header/header.svelte';
+	import Footer from '$lib/shared/ui/footer/footer.svelte';
+	import Transition from '$lib/shared/transition/index.svelte';
+	import '../styles/styles.scss';
 	import Icon from '@iconify/svelte';
 	import { goto, invalidate } from '$app/navigation';
-	import { onMount } from 'svelte'
-	import {fade} from 'svelte/transition'
-	import {Circle3, Chasing, Jumper, Square, Pulse} from 'svelte-loading-spinners'
-	import {navigationIsDelayed} from '$lib/stores/loading'
+	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { Circle3, Chasing, Jumper, Square, Pulse } from 'svelte-loading-spinners';
+	import { navigationIsDelayed } from '$lib/stores/loading';
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
 
@@ -25,28 +25,25 @@
 	let { showOnPx = 750, data, children }: Props = $props();
 	let { session, supabase } = $derived(data);
 
-	
 	const goTop = () => {
 		document.body.scrollIntoView();
-	}
+	};
 
 	const scrollContainer = () => {
 		return document.documentElement || document.body;
-	}
+	};
 
 	const handleOnScroll = () => {
 		if (!scrollContainer()) {
-		return;
+			return;
 		}
 
 		if (scrollContainer().scrollTop > showOnPx) {
-		hidden = false;
+			hidden = false;
 		} else {
-		hidden = true;
+			hidden = true;
 		}
-	}
-	
-	
+	};
 
 	// onMount(() => {
 	// 	const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -71,35 +68,30 @@
 <svelte:window onscroll={handleOnScroll} />
 
 {#if $navigationIsDelayed}
-		<div class="loading" in:fade={{ duration: 150 }}>
-			<div class="absolute w-full h-full  opacity-50 z-10"></div>
-			<div class="absolute w-full h-full flex justify-center items-center z-20">
+	<div class="loading" in:fade={{ duration: 150 }}>
+		<div class="absolute w-full h-full opacity-50 z-10"></div>
+		<div class="absolute w-full h-full flex justify-center items-center z-20">
 			<Pulse />
-			</div>
 		</div>
+	</div>
 {/if}
 
 {#if !$navigationIsDelayed}
+	<Transition transition={{ type: 'fade', duration: 250 }}>
+		<div class="grid">
+			<Header />
+			<Transition transition={{ type: 'page' }}>
+				{@render children?.()}
+			</Transition>
+			<Footer />
+		</div>
 
-<Transition transition={{ type: 'fade', duration: 250 }}>
-	<div class="grid">
-		
-		<Header />
-		<Transition transition={{ type: 'page' }}>
-			{@render children?.()}
-		</Transition>
-		<Footer />
-	</div>
-
-	
-	<div>
-		<button class="back-to-top" onclick={goTop} class:hidden>
-			<Icon icon="fa-solid:arrow-up" width="75%"  />
-		</button>
-	</div>
-	
-</Transition>
-
+		<div>
+			<button class="back-to-top" onclick={goTop} class:hidden>
+				<Icon icon="fa-solid:arrow-up" width="75%" />
+			</button>
+		</div>
+	</Transition>
 {/if}
 
 <style>
@@ -120,14 +112,11 @@
 	}
 	.loading {
 		display: flex;
-  		justify-content: center;
-  		align-items: center;
-  		text-align: center;
-  		min-height: 100vh;
-		
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		min-height: 100vh;
 	}
-
-	
 
 	.back-to-top {
 		display: flex;
@@ -146,31 +135,23 @@
 		color: var(--clr-bg);
 		box-shadow: 0 0 0 4px var(--clr-primary);
 		transition: all 0.3s ease-in-out;
-		
 	}
 	.back-to-top:hover {
-		
 		box-shadow: 0 0 0 7px var(--clr-primary);
-		
-		
 	}
 
 	.back-to-top.hidden {
 		opacity: 0;
 		visibility: hidden;
 	}
-	
-	
+
 	@media (min-width: 1240px) {
 		.grid {
 			padding: 0;
 		}
-		
-		
 	}
 
 	@media (max-width: 650px) {
-
 		.back-to-top {
 			display: flex;
 			justify-content: center;
@@ -188,17 +169,14 @@
 			color: var(--clr-bg);
 			box-shadow: 0 0 0 4px var(--clr-primary);
 			transition: all 0.3s ease-in-out;
-		
 		}
 		.back-to-top:hover {
 			box-shadow: 0 0 0 7px var(--clr-primary);
-			
 		}
 
 		.back-to-top.hidden {
 			opacity: 0;
 			visibility: hidden;
-
 		}
 	}
 </style>

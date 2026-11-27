@@ -1,42 +1,36 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import { fade } from 'svelte/transition'
+	import { fade } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
-	
-	let email : any = $state('')
-	let error = $state('')
-	let success = $state('')
+
+	let email: any = $state('');
+	let error = $state('');
+	let success = $state('');
 	async function subscribe() {
 		const response = await fetch(`/api/subscribe`, {
 			method: 'post',
 			body: JSON.stringify(email),
-			headers: { 'Content-Type': 'application/json' },
-		})
-		const subscribe = await response.json()
+			headers: { 'Content-Type': 'application/json' }
+		});
+		const subscribe = await response.json();
 		if (subscribe.error) {
-			success = ''
-			error = subscribe.error
+			success = '';
+			error = subscribe.error;
 		}
 		if (subscribe.success) {
-			error = ''
-			success = subscribe.success
+			error = '';
+			success = subscribe.success;
 		}
 	}
 </script>
 
 <form onsubmit={preventDefault(subscribe)}>
 	<label for="email" class="sr-only">Enter your email</label>
-	<input
-		bind:value={email}
-		type="email"
-		id="email"
-		name="email"
-		placeholder="enter@email.here"
-	/>
+	<input bind:value={email} type="email" id="email" name="email" placeholder="enter@email.here" />
 	<button type="submit">
 		<Icon icon="tdesign:mail" width="20" height="20" />
-		
+
 		<span>Subscribe</span>
 	</button>
 </form>

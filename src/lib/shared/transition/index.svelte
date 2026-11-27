@@ -1,20 +1,17 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
-	import { page } from '$app/stores'
+	import { fly } from 'svelte/transition';
+	import { page } from '$app/stores';
 	type Transition = {
-		type: 'fade' | 'stagger' | 'page' | 'slide-right' | 'slide-left'
-		duration?: number
-		delay?: number
-	}
+		type: 'fade' | 'stagger' | 'page' | 'slide-right' | 'slide-left';
+		duration?: number;
+		delay?: number;
+	};
 	interface Props {
 		transition: Transition;
 		children?: import('svelte').Snippet;
 	}
 
 	let { transition, children }: Props = $props();
-
-	
-  
 </script>
 
 {#if transition.type === 'page'}
@@ -35,47 +32,35 @@
 	</div>
 {/if}
 
-{#if transition.type === 'stagger'  && transition.duration != undefined}
+{#if transition.type === 'stagger' && transition.duration != undefined}
 	<div
 		class="stagger"
 		style:animation-duration="{transition.duration * 300}ms"
 		style:animation-delay="{transition.delay}ms"
-		
 	>
-	
 		{@render children?.()}
-	
 	</div>
 {/if}
 
-{#if transition.type === 'slide-right'  && transition.duration != undefined}
+{#if transition.type === 'slide-right' && transition.duration != undefined}
 	<div
 		class="slide-right"
 		style:animation-duration="{transition.duration * 300}ms"
 		style:animation-delay="{transition.delay}ms"
-		
 	>
-	
 		{@render children?.()}
-	
 	</div>
 {/if}
 
-
-{#if transition.type === 'slide-left'  && transition.duration != undefined}
+{#if transition.type === 'slide-left' && transition.duration != undefined}
 	<div
 		class="slide-left"
 		style:animation-duration="{transition.duration * 300}ms"
 		style:animation-delay="{transition.delay}ms"
-		
 	>
-	
 		{@render children?.()}
-	
 	</div>
 {/if}
-
-
 
 <style>
 	div {
@@ -94,19 +79,18 @@
 		animation-name: slide-right;
 		animation-fill-mode: forwards;
 		display: flex;
-        align-items: center;
-        justify-content: center;
+		align-items: center;
+		justify-content: center;
 	}
 	.slide-left {
 		opacity: 0;
 		animation-name: slide-left;
 		animation-fill-mode: forwards;
 		display: flex;
-        align-items: center;
-        justify-content: center;
+		align-items: center;
+		justify-content: center;
 	}
-	
-	
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -145,5 +129,4 @@
 			transform: translateX(0px);
 		}
 	}
-	
 </style>

@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import type { PageServerData } from './$types'
-	import Heading from '$lib/shared/ui/heading.svelte'
-	import Posts from '$lib/shared/ui/posts.svelte'
-	import { categories } from '$lib/api/config'
+	import { page } from '$app/stores';
+	import type { PageServerData } from './$types';
+	import Heading from '$lib/shared/ui/heading.svelte';
+	import Posts from '$lib/shared/ui/posts.svelte';
+	import { categories } from '$lib/api/config';
 	interface Props {
 		data: PageServerData;
 	}
 
 	let { data }: Props = $props();
-	const category = $page.params.category
+	const category = $page.params.category;
 </script>
 
 <svelte:head>
@@ -21,7 +21,7 @@
 
 <Posts posts={data.posts}>
 	{#snippet title()}
-		<div class="container" >
+		<div class="container">
 			<div>
 				<span class="tag">{category}</span>
 			</div>

@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { browser } from '$app/environment'
-	const rootElement = browser ? document.documentElement : null
-	const userTextSize = browser && localStorage.textSize
-	const userTextLength = browser && localStorage.textLength
-	const userTextHeight = browser && localStorage.textHeight
-	let textSize = $state(userTextSize ? userTextSize.replace('px', '') : 18)
-	let textLength = $state(userTextLength ? userTextLength.replace('ch', '') : 70)
-	let textHeight = $state(userTextHeight ? userTextHeight.replace('px', '') : 40)
+	import { browser } from '$app/environment';
+	const rootElement = browser ? document.documentElement : null;
+	const userTextSize = browser && localStorage.textSize;
+	const userTextLength = browser && localStorage.textLength;
+	const userTextHeight = browser && localStorage.textHeight;
+	let textSize = $state(userTextSize ? userTextSize.replace('px', '') : 18);
+	let textLength = $state(userTextLength ? userTextLength.replace('ch', '') : 70);
+	let textHeight = $state(userTextHeight ? userTextHeight.replace('px', '') : 40);
 	function handleFontSizeChange() {
-		localStorage.textSize = `${textSize}px`
-		rootElement.style.setProperty('--post-txt-size', `${textSize}px`)
+		localStorage.textSize = `${textSize}px`;
+		rootElement.style.setProperty('--post-txt-size', `${textSize}px`);
 	}
 	function handleTextLengthChange() {
-		localStorage.textLength = `${textLength}ch`
-		rootElement.style.setProperty('--post-txt-length', `${textLength}ch`)
+		localStorage.textLength = `${textLength}ch`;
+		rootElement.style.setProperty('--post-txt-length', `${textLength}ch`);
 	}
 	function handleTextHeightChange() {
-		localStorage.textHeight = `${textHeight}px`
-		rootElement.style.setProperty('--post-txt-height', `${textHeight}px`)
+		localStorage.textHeight = `${textHeight}px`;
+		rootElement.style.setProperty('--post-txt-height', `${textHeight}px`);
 	}
 </script>
 

@@ -1,19 +1,19 @@
-import type { PageServerLoad } from './$types'
+import type { PageServerLoad } from './$types';
 
-import { getPost } from '$lib/api/posts'
+import { getPost } from '$lib/api/posts';
 
 export const load: PageServerLoad = async ({ params, setHeaders }) => {
-	const { content, frontmatter } = await getPost(params.slug)
+	const { content, frontmatter } = await getPost(params.slug);
 
-	const day = 60 * 60 * 24 * 1000
-	const published = frontmatter.published
-	const time = new Date().getTime() - new Date(published).getTime()
-	const days = time / day
-	const maxage = days > 6 ? 60 * 60 * 24 * 6 : 60
+	const day = 60 * 60 * 24 * 1000;
+	const published = frontmatter.published;
+	const time = new Date().getTime() - new Date(published).getTime();
+	const days = time / day;
+	const maxage = days > 6 ? 60 * 60 * 24 * 6 : 60;
 
 	setHeaders({
-		'Cache-Control': `max-age=0, s-maxage=${maxage}`,
-	})
+		'Cache-Control': `max-age=0, s-maxage=${maxage}`
+	});
 
-	return { content, frontmatter }
-}
+	return { content, frontmatter };
+};

@@ -1,57 +1,50 @@
 <!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (see-more to see_more) making the component unusable -->
 <script lang="ts">
-	
-	import Transition from '$lib/shared/transition/index.svelte'
+	import Transition from '$lib/shared/transition/index.svelte';
 	import { inview } from 'svelte-inview';
 	import type { ObserverEventDetails, Options } from 'svelte-inview';
-	import { views } from '$lib/stores/views'
-	import type { PostType } from '$lib/types'
+	import { views } from '$lib/stores/views';
+	import type { PostType } from '$lib/types';
 	import Icon from '@iconify/svelte';
-	
-	export let posts: PostType[]
 
-	let isInView : any;
+	export let posts: PostType[];
+
+	let isInView: any;
 	const options: Options = {
-    rootMargin: '0px',
-    unobserveOnEnter: true,
+		rootMargin: '0px',
+		unobserveOnEnter: true
 	};
 
 	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) =>
-    (isInView = detail.inView);
-
-
+		(isInView = detail.inView);
 </script>
 
 <section>
 	<slot name="title" />
 
-	<div class="cards" use:inview="{options}" on:inview_change="{handleChange}">
-
+	<div class="cards" use:inview={options} on:inview_change={handleChange}>
 		{#if isInView}
-		{#each posts as post, index}
-			<Transition transition={{ type: 'stagger', duration: index, delay: 400 }}>
-				<a href="/{post.slug}">
-					<article class="card">
-						<span class="views">
-							<Icon icon="ph:eye" width="1.6em" height="1.6em" />
-							
-							{#if $views.length > 0}
-								<span>
-									{$views
-										.find((data) => data.slug === post.slug)
-										?.views.toLocaleString() ?? 0}
-								</span>
-							{/if}
-							
-						</span>
-						<div class="details">
-							<p class="title">{post.title}</p>
-							<p class="description">{post.description}</p>
-						</div>
-					</article>
-				</a>
-			</Transition>
-		{/each}
+			{#each posts as post, index}
+				<Transition transition={{ type: 'stagger', duration: index, delay: 400 }}>
+					<a href="/{post.slug}">
+						<article class="card">
+							<span class="views">
+								<Icon icon="ph:eye" width="1.6em" height="1.6em" />
+
+								{#if $views.length > 0}
+									<span>
+										{$views.find((data) => data.slug === post.slug)?.views.toLocaleString() ?? 0}
+									</span>
+								{/if}
+							</span>
+							<div class="details">
+								<p class="title">{post.title}</p>
+								<p class="description">{post.description}</p>
+							</div>
+						</article>
+					</a>
+				</Transition>
+			{/each}
 		{/if}
 	</div>
 
@@ -61,7 +54,6 @@
 <style>
 	section {
 		margin-top: var(--spacing-64);
-		
 	}
 	.cards {
 		display: grid;
@@ -78,7 +70,6 @@
 	}
 	.cards a::before {
 		content: none;
-		
 	}
 	.card {
 		height: 400px;
@@ -90,13 +81,16 @@
 		border-left: 1px solid var(--clr-menu-border);
 		/*border-radius: var(--rounded-20);*/
 		box-shadow: var(--shadow-sm);
-		transition: transform 0.2s ease-in-out, box-shadow 0.3s ease,
+		transition:
+			transform 0.2s ease-in-out,
+			box-shadow 0.3s ease,
 			outline 0.1s ease;
-		
 	}
 	.card:hover {
 		transform: scale(1.02);
-		box-shadow: var(--shadow-md), 0 0 0 4px var(--clr-primary);
+		box-shadow:
+			var(--shadow-md),
+			0 0 0 4px var(--clr-primary);
 	}
 	.card .views {
 		display: flex;
@@ -115,7 +109,6 @@
 		font-weight: 700;
 		line-height: 48px;
 		margin-top: var(--spacing-16);
-
 	}
 	html[data-font='dyslexic'] .card .title {
 		font-family: var(--font-dyslexic);
@@ -133,7 +126,6 @@
 		gap: var(--spacing-16);
 		margin-top: var(--spacing-32);
 		margin-bottom: var(--spacing-105);
-		
 	}
 
 	@media (max-width: 650px) {
@@ -143,7 +135,6 @@
 			font-weight: 700;
 			line-height: 40px;
 			margin-top: var(--spacing-16);
-
 		}
 		.card .views {
 			display: flex;
@@ -163,11 +154,10 @@
 			border-left: 1px solid var(--clr-menu-border);
 			/*border-radius: var(--rounded-20);*/
 			box-shadow: var(--shadow-sm);
-			transition: transform 0.2s ease-in-out, box-shadow 0.3s ease,
+			transition:
+				transform 0.2s ease-in-out,
+				box-shadow 0.3s ease,
 				outline 0.1s ease;
-			
 		}
-	
-	
-}
+	}
 </style>
