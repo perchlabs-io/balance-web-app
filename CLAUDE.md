@@ -130,7 +130,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [x] Checked third-party Svelte libraries for Svelte 5 compatibility. All are compatible and were exercised in the browser: `svelte-range-slider-pips` 4.1.1 (latest, peer `^5`), `svelte-inview` 4.0.4 (peer `^5`), `bits-ui` 2.18.1 (Svelte 5 native; header popovers), `@iconify/svelte` 4.0.1 (peer `>4`), `@poppanator/sveltekit-svg` 6.0.1 (peer `>=5`), and `svelte-loading-spinners` 0.3.6 (unmaintained, no peer range, but only plain `export let` props, which compile in legacy mode; the `Pulse` navigation spinner works). Optional upgrades and unused packages are in the follow-ups.
 - [x] PR #78 marked ready and merged into `staging` (commit `2cf2076`). Checked the staging preview: every page works.
 - [x] Fixed double view counting (branch `ng_dev_112726`, found on the staging preview). Each article view sent two POSTs to `/api/views/<slug>`. The layout's page transition (`{#key $page.url}`) remounts the page after SvelteKit has already rendered it, so two instances each ran the counter. The article page now counts in `afterNavigate`, which fires once per finished navigation; the short-lived first instance is destroyed before that. Verified exactly one request for a direct load, list to article, and article to article.
-- [ ] PR `ng_dev_112726` into `staging`, verify on the preview, then PR `staging` to `main`
+- [x] PR #79 (`ng_dev_112726`) merged into `staging` and verified on the preview. PR #80 (`staging` to `main`) merged on Nov 27, 2026 (commit `8da8981`), deployed to production and checked on balanceanalytics.io: home, articles, an article, both chartboards and about load without JavaScript errors, `/chartboards/utxo_allocation` returns 404, and an article view sends one view request. **The migration is complete.**
 
 ## Follow-ups (out of scope for the migration)
 
@@ -150,6 +150,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - Replace `$app/stores` (deprecated since SvelteKit 2.12, removed in SvelteKit 3) with `$app/state` in `categories/[category]/+page.svelte`, `lib/shared/transition/index.svelte` and `lib/stores/loading.ts`. Do this before any SvelteKit 3 upgrade.
 - Fix the 22 pre-existing a11y warnings (redundant `alt` text, click handlers on non-interactive elements).
 - Remove dead CSS that has never matched: `themeToggleIcon.svelte` (`.dark`, plus `.top`/`.middle`/`.bottom`/`.open`, which look like leftovers from a hamburger animation), `posts.svelte` (`html[data-font='dyslexic']`, which can't match inside a scoped style; it needs `:global(html[data-font='dyslexic'])` if the dyslexic font option should affect card titles), `preferences/index.svelte` (`.options span`).
+- On phones, the hidden back-to-top button (`+layout.svelte`) widens the page to about 550px, so the page can be dragged sideways. Pre-existing.
 - `DonutCenterTooltip.svelte` has a typo: `fill="var(--clr-txt"` is missing its closing paren.
 
 ## Working agreement
