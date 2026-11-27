@@ -29,7 +29,7 @@ There is no automated test suite. Verify changes with `npm run check`, `npm run 
 
 Locally, `npm run build` needs **Node 18, 20, or 22**: on Node 24, `adapter-vercel` refuses to package the output. This is a local-only check. On Vercel (`VERCEL` env set), the adapter skips it and uses the project's configured Node version. To mimic a Vercel build locally, run `VERCEL=1 npm run build`.
 
-**`npm run check` baseline** (Nov 27, 2026): 112 errors and 81 warnings. Most errors are pre-existing strict-TypeScript issues, not migration breakage: missing `@types/d3-*` declarations, implicit `any`, and possibly-undefined values. Many warnings are `state_referenced_locally` (Svelte 5 warning that `let x = data.x` only captures the initial value) plus a11y warnings. During the migration, fix the Svelte-5-related diagnostics. Track the TypeScript strictness errors as a follow-up.
+**`npm run check` baseline** (Nov 27, 2026, after the pre-migration cleanup): 69 errors and 78 warnings, down from 112 and 81. The remaining errors are pre-existing strict-TypeScript issues, not migration breakage: implicit `any`, possibly-undefined values, an untyped `views` store, and the unified plugin types in `markdown.ts`. Many warnings are `state_referenced_locally` (Svelte 5 warning that `let x = data.x` only captures the initial value) plus a11y warnings. During the migration, fix the Svelte-5-related diagnostics. Track the TypeScript strictness errors as a follow-up.
 
 ## Architecture
 
@@ -78,7 +78,8 @@ All components use runes. Do not introduce Svelte 4 syntax.
 - Don't use `svelte/legacy` helpers (`run`, `preventDefault`, `handlers`, `createBubbler`) in finished code.
 - Prefer `$derived` over `$effect`. Use `$effect` only for DOM or other imperative side effects (e.g. D3 brush or zoom setup).
 - Shared state stays in `svelte/store` for now; `$store` auto-subscription is fine in components.
-- Match surrounding code style: tabs, single quotes, no semicolons in most TS files (Prettier config in `.prettierrc`).
+- Prettier (`.prettierrc`) is the code style source of truth. Run `npm run format` (or `npx prettier --write <files>`) on changed files before committing.
+- Large formatting-only commits go in `.git-blame-ignore-revs`. Enable it locally with `git config blame.ignoreRevsFile .git-blame-ignore-revs`; GitHub applies it automatically.
 
 ## Git workflow
 
@@ -94,7 +95,7 @@ Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
 **Agreed strategy**
 
 - **Full runes migration** before shipping: no Svelte 4 syntax and no `svelte/legacy` helpers left.
-- **Migration only**: preserve behavior and structure. Don't refactor unrelated code; add cleanup ideas to the follow-ups list below.
+- **Migration only**: preserve behavior and structure. Don't refactor unrelated code; add cleanup ideas to the follow-ups list below. One exception was agreed: a pre-migration cleanup pass of behavior-neutral fixes (see Status).
 - **Keep `svelte/store`**: converting shared state to runes is a later effort.
 - **Checkpoint commits**: commit working progress in small steps.
 
@@ -103,11 +104,12 @@ Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
 - [x] Dependencies upgraded (svelte ^5, kit ^2.69, vite-plugin-svelte ^4, svelte-check ^4, eslint-plugin-svelte ^3)
 - [x] Bulk conversion of most components (looks like `sv migrate svelte-5` output)
 - [x] Stake v. Leverage tooltip positioning fixed after the migration
+- [x] Pre-migration cleanup: added `@types/d3` and `@types/lodash.debounce`, renamed `lib/types/index.svelte` to `index.ts`, ignored `.vercel/`, removed live debug `console.log` calls, ran a Prettier formatting pass across `src`
 - [ ] Convert remaining Svelte 4 files:
   - `donut_shop/donut_group_stake/DonutGroupStakeChart.svelte`
   - `donut_shop/donut_group_stake/components/DonutCenterTooltip.svelte`
   - `lib/shared/ui/posts.svelte` (named slots `title` and `see-more`; update its callers)
-- [ ] `LevChart.svelte`: replace `on:click` on `<GroupSearch>` (line ~347) and `on:stop` on the range slider (line ~572)
+- [ ] `LevChart.svelte`: replace `on:click` on `<GroupSearch>` (line ~331) and `on:stop` on the range slider (line ~571)
 - [ ] Remove `svelte/legacy` usage:
   - `run()`: `Donut.svelte`, `UTxODeltaChart.svelte`, `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`, `LevChart.svelte`
   - `preventDefault`: `LevChart.svelte`, `newsletter.svelte`
@@ -123,9 +125,9 @@ Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
 ## Follow-ups (out of scope for the migration)
 
 - `balance.server.ts`: the fetchers are near-duplicates; collapse them into one helper. Remove the redundant `JSON.stringify`/`JSON.parse` round-trip.
-- Replace the many `any` types with real data types. Add `@types/d3-*` packages to clear the missing-declaration errors.
-- Pin the Node version (`.nvmrc` and/or `engines` in `package.json`) to match Vercel's runtime.
-- Remove stray `console.log` calls (e.g. `getPost` logs the full markdown).
+- Replace the many `any` types with real data types; type the `views` store (currently `writable([])`, inferred as `never[]`).
+- Pin the Node version in `package.json` `engines` once the Vercel project's Node setting is confirmed. `.npmrc` has `engine-strict=true`, so a pin also blocks `npm install` on other Node versions, and Vercel lets `engines` override its dashboard setting.
+- Delete commented-out `console.log` lines; most are in the donut files and can go during their migration.
 - `hooks.server.ts` guards `/private` and `/auth`, but neither route exists.
 - `.env` contains unused `PUBLIC_BALANCE_API_TOKEN` and `BLOB_READ_WRITE_TOKEN`. A `PUBLIC_` prefix exposes the value to the browser, so remove it if unused.
 - `/api/groupleverageupdate` isn't scheduled in `vercel.json`. Confirm whether that's intended.
