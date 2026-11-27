@@ -237,6 +237,14 @@ export async function getKeffData() {
 	//const staticdata4 = await staticdata3[0].mavdata
 	//const staticdata5 = await staticdata4
 
+	// The API doesn't guarantee epoch order; the chart's line paths and min/max epoch need it sorted
+	const keffdata = staticdata3[0]?.keffdata ?? {};
+	for (const series of Object.values(keffdata)) {
+		if (Array.isArray(series)) {
+			series.sort((a: any, b: any) => a.epoch - b.epoch);
+		}
+	}
+
 	return staticdata3;
 }
 

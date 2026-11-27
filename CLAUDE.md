@@ -99,6 +99,10 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 
 **PR #77** (`ccg_dev_stake_flow_20250708`, Stake Flow charts by TheStophe) is old, Svelte 4 work. It's out of scope here and will be redone on top of the migration after it merges.
 
+**UTxO Allocation chartboard: do not touch.** It will be archived (removed from the UX) as part of the migration deployment. Don't edit, migrate, or reformat anything under `chartboards/(chartboards)/utxo_allocation/`. How and when it gets removed from the UX is the user's call; don't do it unprompted. It is linked from `lib/api/config.ts` (`chartBoards` nav), the home page (`routes/+page.svelte`, ~lines 260–286), and uses the `getUTxO*` fetchers in `balance.server.ts` and the `utxoCat` store.
+
+**No hotfixes from this branch.** Bug fixes found during the migration (e.g. K-Effective sorting) ship with the migration deployment.
+
 **Agreed strategy**
 
 - **Full runes migration** before shipping: no Svelte 4 syntax and no `svelte/legacy` helpers left.
@@ -116,21 +120,21 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
   - `donut_shop/donut_group_stake/DonutGroupStakeChart.svelte`
   - `donut_shop/donut_group_stake/components/DonutCenterTooltip.svelte`
   - `lib/shared/ui/posts.svelte` (named slots `title` and `see-more`; update its callers)
+- [x] Fixed K-Effective chart (out-of-scope bug fix, likely also broken in production). `rpc/pool_keff_sk` returns series unsorted by epoch, so `getKeffData()` now sorts each `keffdata` series by `epoch`.
 - [x] `LevChart.svelte` and `GroupSearch.svelte` fully migrated and checked in the browser (search, suggestion click, play/pause/reset/prev/next, slider drag, zoom)
 - [ ] Remove `svelte/legacy` usage:
-  - `run()`: `Donut.svelte`, `UTxODeltaChart.svelte`, `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`
+  - `run()`: `Donut.svelte`
   - `preventDefault`: `newsletter.svelte`
-  - `handlers`: `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`
-- [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.)
+  - (UTxO chart files also use `run`/`handlers` but are excluded; that chartboard is being archived)
+- [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.), excluding `utxo_allocation/`
 - [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
 - [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
-- [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, all three chartboards (desktop and ≤650px mobile)
+- [ ] Archive the UTxO Allocation chartboard from the UX (approach to be decided by the user)
+- [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, Decentralization and Donut Shop chartboards (desktop and ≤650px mobile)
 - [ ] Check third-party Svelte libraries for Svelte 5 compatibility (`svelte-range-slider-pips`, `svelte-inview`, `svelte-loading-spinners`, `@iconify/svelte`)
 - [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`
 
 ## Follow-ups (out of scope for the migration)
-
-- **K-Effective chart renders as a filled zigzag (likely also in production).** The `rpc` data behind `getKeffData()` arrives unsorted by epoch: 242 of 461 line steps go backwards. Neither `main` nor this branch sorts it. Fix by sorting `keffData.mav`, `.keff`, and `.keff2` by `epoch`, or fix the ordering in the API. `KeffChart` also derives `minEpoch`/`maxEpoch` from the first and last array elements, which assumes sorted data.
 
 - `balance.server.ts`: the fetchers are near-duplicates; collapse them into one helper. Remove the redundant `JSON.stringify`/`JSON.parse` round-trip.
 - Replace the many `any` types with real data types; type the `views` store (currently `writable([])`, inferred as `never[]`).
@@ -147,3 +151,4 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - Keep diffs focused on the task. Flag unrelated issues and don't fix them silently.
 - Never commit `.env` or print secret values.
 - Update the **Status** checklist in this file as items are completed.
+- End every hand-off with a clear status: what's finished, what's still running (dev servers, background tasks), what's uncommitted, and what's needed from the user next. Stop dev servers after testing unless asked to leave them running.
