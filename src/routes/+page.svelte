@@ -384,10 +384,6 @@
 	.main-image {
 		display: flex;
 		justify-content: center;
-		position: relative;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 	}
 
 	@media (min-width: 960px) {
