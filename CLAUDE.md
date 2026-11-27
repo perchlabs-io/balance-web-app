@@ -64,16 +64,16 @@ src/
 
 All components use runes. Do not introduce Svelte 4 syntax.
 
-| Svelte 4 (don't)               | Svelte 5 (do)                                       |
-| ------------------------------ | --------------------------------------------------- |
-| `export let foo`               | `let { foo }: Props = $props()` with an `interface Props` |
-| `$: x = a + b`                 | `const x = $derived(a + b)`                         |
-| `$: { sideEffect() }`          | `$effect(() => { sideEffect() })`, only for real side effects |
-| `let count = 0` (reactive)     | `let count = $state(0)`                             |
-| `on:click={fn}`                | `onclick={fn}`                                      |
-| `createEventDispatcher`        | Callback props, e.g. `onselect`                     |
-| `<slot />` / named slots       | `children` / snippet props + `{@render ...}`        |
-| `on:submit\|preventDefault`    | `onsubmit={(e) => { e.preventDefault(); ... }}`     |
+| Svelte 4 (don't)            | Svelte 5 (do)                                                 |
+| --------------------------- | ------------------------------------------------------------- |
+| `export let foo`            | `let { foo }: Props = $props()` with an `interface Props`     |
+| `$: x = a + b`              | `const x = $derived(a + b)`                                   |
+| `$: { sideEffect() }`       | `$effect(() => { sideEffect() })`, only for real side effects |
+| `let count = 0` (reactive)  | `let count = $state(0)`                                       |
+| `on:click={fn}`             | `onclick={fn}`                                                |
+| `createEventDispatcher`     | Callback props, e.g. `onselect`                               |
+| `<slot />` / named slots    | `children` / snippet props + `{@render ...}`                  |
+| `on:submit\|preventDefault` | `onsubmit={(e) => { e.preventDefault(); ... }}`               |
 
 - Don't use `svelte/legacy` helpers (`run`, `preventDefault`, `handlers`, `createBubbler`) in finished code.
 - Prefer `$derived` over `$effect`. Use `$effect` only for DOM or other imperative side effects (e.g. D3 brush or zoom setup).
