@@ -295,11 +295,12 @@
 		{#snippet title()}
 			<h2 class="latest">Latest Articles</h2>
 		{/snippet}
-		<!-- @migration-task: migrate this slot by hand, `see-more` is an invalid identifier -->
-		<a slot="see-more" href="/articles">
-			<span>See more articles</span>
-			<!-- <ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" /> -->
-		</a>
+		{#snippet seeMore()}
+			<a class="see-more" href="/articles">
+				<span>See more articles</span>
+				<!-- <ArrowNarrowRightIcon width="24" height="24" aria-hidden="true" /> -->
+			</a>
+		{/snippet}
 	</Posts>
 
 	<section class="info-section">
@@ -399,6 +400,14 @@
 	}
 	.latest {
 		margin-top: var(--spacing-105);
+	}
+
+	.see-more {
+		width: max-content;
+		display: flex;
+		gap: var(--spacing-16);
+		margin-top: var(--spacing-32);
+		margin-bottom: var(--spacing-105);
 	}
 
 	.ba-text {

@@ -1,21 +1,29 @@
-<!-- @migration-task Error while migrating Svelte code: can't migrate `let hoveredDataSubLabel: any;` to `$state` because there's a variable named state.
-     Rename the variable and try again or migrate by hand. -->
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let data: any;
-	export let width: number;
-	export let height: number;
-	export let latestEpoch: any;
-	export let latestEpochMAV: any;
-	export let state: any;
-	export let stateDetailed: any;
-	export let stateCenter: any;
-	export let buttonSelected: string;
+	interface Props {
+		data: any;
+		width: number;
+		height: number;
+		latestEpoch: any;
+		latestEpochMAV: any;
+		hoverState: any;
+		stateDetailed: any;
+		stateCenter: any;
+		buttonSelected: string;
+	}
 
-	// console.log(data,"data tooltip check")
-	// console.log(latestEpoch,"latestEpoch tooltip check")
-	// console.log(latestEpochMAV,"latestEpochMAV tooltip check")
+	let {
+		data,
+		width,
+		height,
+		latestEpoch,
+		latestEpochMAV,
+		hoverState,
+		stateDetailed,
+		stateCenter,
+		buttonSelected
+	}: Props = $props();
 
 	let offsetHeader = 50;
 	let offsetDetail = 40;
@@ -27,48 +35,28 @@
 		minimumFractionDigits: 0
 	});
 
-	// $: console.log(data,"tooltip data")
-	// $: console.log(width,"tooltip width")
-	// $: console.log(height,"tooltip height")
-	// $: console.log(stateCenter, "stateCenter check")
-	// $: console.log(stateDetailed, "stateDetailed check")
-	// $: console.log(state,"state check")
-
 	//scale factor for dynamic font size and spacing based on window size
-	$: scaleFactor = Math.min(width / maxWidth, height / maxHeight);
+	let scaleFactor = $derived(Math.min(width / maxWidth, height / maxHeight));
 
 	//text size scaling notes
 	//***variable text size***//
 	//at max window size, desired font-size for header label, prcstake are 50, 40. The window size is 759. 50*(width/759).
 	//when width is 759, 759/759 = 1. 1*50 is 50. When the window is 379.5/759 or width/759 = 25. this was the text shrinks with window size.
 
-	let hoveredDataSubLabel: any;
-
-	$: {
+	let hoveredDataSubLabel = $derived.by(() => {
 		switch (buttonSelected) {
 			case 'stake':
-				// console.log("stake button test good");
-				hoveredDataSubLabel = `Stake: ₳ ${formatter.format(data?.data?.stake) ?? ''}`;
-				break;
+				return `Stake: ₳ ${formatter.format(data?.data?.stake) ?? ''}`;
 			case 'pledge':
-				// console.log("pledge button test good");
-				hoveredDataSubLabel = `Pledge: ₳ ${formatter.format(data?.data?.pledge) ?? ''}`;
-				break;
+				return `Pledge: ₳ ${formatter.format(data?.data?.pledge) ?? ''}`;
 			case 'pool':
-				// console.log("pool button test good");
-				hoveredDataSubLabel = `Pools: ${formatter.format(data?.data?.poolcount) ?? ''}`;
-				break;
+				return `Pools: ${formatter.format(data?.data?.poolcount) ?? ''}`;
 			case 'delegator':
-				// console.log("delegator button test good");
-				hoveredDataSubLabel = `Delegators: ${formatter.format(data?.data?.delegatecount) ?? ''}`;
-				break;
+				return `Delegators: ${formatter.format(data?.data?.delegatecount) ?? ''}`;
 			default:
-				hoveredDataSubLabel = undefined;
-				break;
+				return undefined;
 		}
-	}
-
-	// console.log(hoveredDataSubLabel, "hoveredDataSubLabel tooltip test");
+	});
 </script>
 
 <!-- tooltip logic -->
@@ -158,7 +146,7 @@
 			fill-opacity="0.5"
 			font-style="italic">BALNC Pool</text
 		>
-	{:else if state}
+	{:else if hoverState}
 		<text
 			class="tooltip-detail"
 			x={width / 2}

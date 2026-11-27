@@ -1,42 +1,40 @@
-<!-- @migration-task Error while migrating Svelte code: can't migrate `let pie_data: any;` to `$state` because there's a variable named state.
-     Rename the variable and try again or migrate by hand. -->
 <script lang="ts">
 	//*** imports ***//
 	import * as d3 from 'd3';
 	import debounceFn from 'lodash.debounce';
-	import { beforeUpdate, onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { donutWidth, donutHeight, colorTheme } from '$lib/stores/mychart';
 	import DonutCenterTooltip from './components/DonutCenterTooltip.svelte';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 	// import {interpolate} from d3-interpolate;
 
-	//*** export variables ***//
-	export let donutData: any;
-	export let curMAVData: any;
-	export let maxEpochData: any;
+	//*** props ***//
+	interface Props {
+		donutData: any;
+		curMAVData: any;
+		maxEpochData: any;
+	}
+
+	let { donutData, curMAVData, maxEpochData }: Props = $props();
 
 	//*** define variables and types ***//
 
-	var width: number;
-	var height: number;
-	let windowResizeCount: number;
 	let pie: any;
 	let piePledge: any;
 	let piePool: any;
 	let pieDelegate: any;
-	let arc: any;
-	let pie_data: any;
-	let hoveredData: any;
-	let state: any = false;
-	let stateDetailed: any = false;
-	let stateCenter: any = false;
+	let hoveredData: any = $state();
+	let hoverState: any = $state(false);
+	let stateDetailed: any = $state(false);
+	let stateCenter: any = $state(false);
 	const padAngle = 0.005;
 	const cornerRadius = 10;
 
 	let debounce = 10000000000;
 	let popOutFactor = 1.05; //[105%] for pie section pop out animation on mouse over
-	let buttonSelected: string = 'stake';
+	let buttonSelected: string = $state('stake');
 
 	$donutWidth = 100;
 
@@ -46,8 +44,8 @@
 		$colorTheme = localStorage.theme;
 	};
 
-	$: latestEpochMAV = curMAVData[maxEpochData][0].mc;
-	$: latestEpoch = maxEpochData;
+	let latestEpochMAV = $derived(curMAVData[maxEpochData][0].mc);
+	let latestEpoch = $derived(maxEpochData);
 
 	// mount and redraw svg in lifecycle
 	onMount(() => {
@@ -84,8 +82,8 @@
 	// "hsla(0, 100%, 55%, 1)"])   //dark red biggest mav
 
 	// max values
-	const max_mav_prctstake = Math.max(
-		...donutData.filter((d: any) => d.mavgroup === 'true').map((d: any) => d.prctstake)
+	const max_mav_prctstake = $derived(
+		Math.max(...donutData.filter((d: any) => d.mavgroup === 'true').map((d: any) => d.prctstake))
 	);
 
 	//*************************/
@@ -118,66 +116,72 @@
 	};
 
 	//create arc function
-	$: arc = d3
-		.arc()
-		.innerRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6 * (1 / popOutFactor))
-		.outerRadius((Math.min($donutWidth, $donutHeight) / 2) * 1.0 * (1 / popOutFactor))
-		.cornerRadius(cornerRadius)
-		.padAngle(padAngle)
-		.padRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6 * (1 / popOutFactor));
+	let arc: any = $derived(
+		d3
+			.arc()
+			.innerRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6 * (1 / popOutFactor))
+			.outerRadius((Math.min($donutWidth, $donutHeight) / 2) * 1.0 * (1 / popOutFactor))
+			.cornerRadius(cornerRadius)
+			.padAngle(padAngle)
+			.padRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6 * (1 / popOutFactor))
+	);
 
 	//draw pop out arc section
-	$: arc_pop_out = d3
-		.arc()
-		.innerRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6)
-		.outerRadius((Math.min($donutWidth, $donutHeight) / 2) * 1.0)
-		.cornerRadius(cornerRadius)
-		.padAngle(padAngle)
-		.padRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6);
+	let arc_pop_out: any = $derived(
+		d3
+			.arc()
+			.innerRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6)
+			.outerRadius((Math.min($donutWidth, $donutHeight) / 2) * 1.0)
+			.cornerRadius(cornerRadius)
+			.padAngle(padAngle)
+			.padRadius((Math.min($donutWidth, $donutHeight) / 2) * 0.6)
+	);
 
-	//create pie data
-	pie_data = pie(donutData);
+	//create pie data for the selected groupby button
+	const pieByButton: Record<string, any> = {
+		stake: pie,
+		pledge: piePledge,
+		pool: piePool,
+		delegator: pieDelegate
+	};
+	let pie_data = $derived(pieByButton[buttonSelected](donutData));
 
 	//create dynamic tweened data based on button select functions below
-	const tData = tweened(pie_data, params);
+	const tData = tweened(
+		untrack(() => pie_data),
+		params
+	);
 
-	$: tData.set(pie_data);
+	$effect(() => {
+		tData.set(pie_data);
+	});
 
-	//button select grab new dataset groupby functions
+	//button select groupby functions
 	const showStake = () => {
-		pie_data = pie(donutData);
 		buttonSelected = 'stake';
 	};
 
 	const showPledge = () => {
-		pie_data = piePledge(donutData);
 		buttonSelected = 'pledge';
 	};
 
 	const showPool = () => {
-		pie_data = piePool(donutData);
 		buttonSelected = 'pool';
 	};
 
 	const showDelegate = () => {
-		pie_data = pieDelegate(donutData);
 		buttonSelected = 'delegator';
 	};
-
-	//console.log("pie_data", donutData)
-	//console.log(pie_data.length,"pie_data.length")
 
 	//*************************/
 	//Chart Info - Expand / Collapse Feature
 	//*************************/
-	import { slide } from 'svelte/transition';
-	import { active } from 'd3';
 
 	//chart info
 	let chartTitle = 'Group Stake Donut Chart';
 	let chartInfo =
 		'The donut charts portray stake pool groups by percentage of the whole, or pie sections, grouped by the selected data below (e.g. by Stake, Pledge, Pool Count, or Delegator Count).';
-	let showContent = '';
+	let showContent = $state('');
 
 	//function to handle chart title box click action for details
 	const handleClick = (payload: any) => {
@@ -191,12 +195,12 @@
 	// Function to handle mouse over pie section
 	const pieSectionMouseOver = (event: MouseEvent, d: any): void => {
 		hoveredData = d;
-		state = true;
+		hoverState = true;
 	};
 
 	// Function to handle mouse click pie section
 	const pieSectionMouseClick = (event: MouseEvent): void => {
-		state = false;
+		hoverState = false;
 		stateDetailed = true;
 	};
 
@@ -204,7 +208,7 @@
 	const pieSectionMouseLeave = (event: MouseEvent): void => {
 		hoveredData = null;
 		stateDetailed = false;
-		state = false;
+		hoverState = false;
 	};
 
 	// Function to handle mouse over pie center
@@ -223,10 +227,10 @@
 	};
 </script>
 
-<svelte:window on:load={onResize} on:resize={debounceFn(onResize, debounce)} />
+<svelte:window onload={onResize} onresize={debounceFn(onResize, debounce)} />
 
 <section class="heroheader">
-	<button class="charttitle" type="button" on:click={() => handleClick(chartTitle)}
+	<button class="charttitle" type="button" onclick={() => handleClick(chartTitle)}
 		><h4 class="heroheadertext">{chartTitle}</h4></button
 	>
 	{#if showContent === chartTitle}
@@ -240,7 +244,7 @@
 	{#if buttonSelected === 'stake'}
 		<button class="donutchartdetailbuttons_stake_active"><h4>By Stake</h4></button>
 	{:else}
-		<button class="donutchartdetailbuttons_stake" type="button" on:click={() => showStake()}
+		<button class="donutchartdetailbuttons_stake" type="button" onclick={showStake}
 			><h4>By Stake</h4></button
 		>
 	{/if}
@@ -248,7 +252,7 @@
 	{#if buttonSelected === 'pledge'}
 		<button class="donutchartdetailbuttons_pledge_active"><h4>By Pledge</h4></button>
 	{:else}
-		<button class="donutchartdetailbuttons_pledge" type="button" on:click={() => showPledge()}
+		<button class="donutchartdetailbuttons_pledge" type="button" onclick={showPledge}
 			><h4>By Pledge</h4></button
 		>
 	{/if}
@@ -256,7 +260,7 @@
 	{#if buttonSelected === 'pool'}
 		<button class="donutchartdetailbuttons_pool_active"><h4>By Pools</h4></button>
 	{:else}
-		<button class="donutchartdetailbuttons_pool" type="button" on:click={() => showPool()}
+		<button class="donutchartdetailbuttons_pool" type="button" onclick={showPool}
 			><h4>By Pools</h4></button
 		>
 	{/if}
@@ -264,7 +268,7 @@
 	{#if buttonSelected === 'delegator'}
 		<button class="donutchartdetailbuttons_delegate_active"><h4>By Delegators</h4></button>
 	{:else}
-		<button class="donutchartdetailbuttons_delegate" type="button" on:click={() => showDelegate()}
+		<button class="donutchartdetailbuttons_delegate" type="button" onclick={showDelegate}
 			><h4>By Delegators</h4></button
 		>
 	{/if}
@@ -287,17 +291,11 @@
 										: 'hsla(128, 100%, 67%, 1)'}
 							stroke={'hsla(0% 0% 0% 0%)'}
 							stroke-width=".1%"
-							on:mouseover={() => {
-								pieSectionMouseOver(Event, d);
-							}}
-							on:mouseleave={() => {
-								pieSectionMouseLeave(Event);
-							}}
-							on:focus={() => {}}
-							on:click={() => {
-								pieSectionMouseClick(Event);
-							}}
-							on:keypress={() => {}}
+							onmouseover={(e) => pieSectionMouseOver(e, d)}
+							onmouseleave={(e) => pieSectionMouseLeave(e)}
+							onfocus={() => {}}
+							onclick={(e) => pieSectionMouseClick(e)}
+							onkeypress={() => {}}
 						/>
 					{:else}
 						<path
@@ -311,17 +309,11 @@
 										: colorsNight(Math.pow(d.data.prctstake / max_mav_prctstake, 1))}
 							stroke={'hsla(0% 0% 0% 0%)'}
 							stroke-width=".1%"
-							on:mouseover={() => {
-								pieSectionMouseOver(Event, d);
-							}}
-							on:mouseleave={() => {
-								pieSectionMouseLeave(Event);
-							}}
-							on:focus={() => {}}
-							on:click={() => {
-								pieSectionMouseClick(Event);
-							}}
-							on:keypress={() => {}}
+							onmouseover={(e) => pieSectionMouseOver(e, d)}
+							onmouseleave={(e) => pieSectionMouseLeave(e)}
+							onfocus={() => {}}
+							onclick={(e) => pieSectionMouseClick(e)}
+							onkeypress={() => {}}
 						/>
 					{/if}
 				{/each}
@@ -333,7 +325,7 @@
 				height={$donutHeight}
 				{latestEpoch}
 				{latestEpochMAV}
-				{state}
+				{hoverState}
 				{stateDetailed}
 				{stateCenter}
 				{buttonSelected}
@@ -345,17 +337,11 @@
 				cy={$donutHeight / 2}
 				r={(Math.min($donutWidth, $donutHeight) / 2) * 0.4}
 				fill="transparent"
-				on:mouseover={() => {
-					pieCenterMouseOver(Event);
-				}}
-				on:mouseleave={() => {
-					pieCenterMouseLeave(Event);
-				}}
-				on:focus={() => {}}
-				on:click={() => {
-					pieCenterMouseClick(Event);
-				}}
-				on:keypress={() => {}}
+				onmouseover={(e) => pieCenterMouseOver(e)}
+				onmouseleave={(e) => pieCenterMouseLeave(e)}
+				onfocus={() => {}}
+				onclick={(e) => pieCenterMouseClick(e)}
+				onkeypress={() => {}}
 			/>
 		</svg>
 	</div>

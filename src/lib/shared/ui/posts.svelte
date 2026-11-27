@@ -1,5 +1,5 @@
-<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (see-more to see_more) making the component unusable -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Transition from '$lib/shared/transition/index.svelte';
 	import { inview } from 'svelte-inview';
 	import type { ObserverEventDetails, Options } from 'svelte-inview';
@@ -7,9 +7,15 @@
 	import type { PostType } from '$lib/types';
 	import Icon from '@iconify/svelte';
 
-	export let posts: PostType[];
+	interface Props {
+		posts: PostType[];
+		title?: Snippet;
+		seeMore?: Snippet;
+	}
 
-	let isInView: any;
+	let { posts, title, seeMore }: Props = $props();
+
+	let isInView: any = $state();
 	const options: Options = {
 		rootMargin: '0px',
 		unobserveOnEnter: true
@@ -20,9 +26,9 @@
 </script>
 
 <section>
-	<slot name="title" />
+	{@render title?.()}
 
-	<div class="cards" use:inview={options} on:inview_change={handleChange}>
+	<div class="cards" use:inview={options} oninview_change={handleChange}>
 		{#if isInView}
 			{#each posts as post, index}
 				<Transition transition={{ type: 'stagger', duration: index, delay: 400 }}>
@@ -48,7 +54,7 @@
 		{/if}
 	</div>
 
-	<slot name="see-more" />
+	{@render seeMore?.()}
 </section>
 
 <style>
@@ -120,14 +126,6 @@
 		margin-top: var(--spacing-16);
 		color: var(--clr-card-txt);
 	}
-	:global([slot='see-more']) {
-		width: max-content;
-		display: flex;
-		gap: var(--spacing-16);
-		margin-top: var(--spacing-32);
-		margin-bottom: var(--spacing-105);
-	}
-
 	@media (max-width: 650px) {
 		.card .title {
 			font-family: var(font-sans);
