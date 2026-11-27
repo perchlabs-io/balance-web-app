@@ -27,7 +27,7 @@ npm run format    # prettier --write
 
 There is no automated test suite. Verify changes with `npm run check`, `npm run build`, and by checking each affected page in the browser.
 
-`npm run build` needs **Node 18, 20, or 22**. On Node 24 the Vite build succeeds, but `adapter-vercel` refuses to package the output.
+Locally, `npm run build` needs **Node 18, 20, or 22**: on Node 24, `adapter-vercel` refuses to package the output. This is a local-only check. On Vercel (`VERCEL` env set), the adapter skips it and uses the project's configured Node version. To mimic a Vercel build locally, run `VERCEL=1 npm run build`.
 
 **`npm run check` baseline** (Nov 27, 2026): 112 errors and 81 warnings. Most errors are pre-existing strict-TypeScript issues, not migration breakage: missing `@types/d3-*` declarations, implicit `any`, and possibly-undefined values. Many warnings are `state_referenced_locally` (Svelte 5 warning that `let x = data.x` only captures the initial value) plus a11y warnings. During the migration, fix the Svelte-5-related diagnostics. Track the TypeScript strictness errors as a follow-up.
 
@@ -114,8 +114,8 @@ Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
   - `handlers`: `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`
   - `createBubbler`: `GroupSearch.svelte` (switch to an `onclick` callback prop)
 - [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.)
-- [x] Vite build compiles (checked on Node 24; Vercel adapter step still needs Node ≤22)
-- [ ] `npm run build` succeeds end-to-end on Node 22
+- [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
+- [ ] Confirm the Vercel project's Node.js version setting (Settings → Build and Deployment) is 22 or 24
 - [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, all three chartboards (desktop and ≤650px mobile)
 - [ ] Check third-party Svelte libraries for Svelte 5 compatibility (`svelte-range-slider-pips`, `svelte-inview`, `svelte-loading-spinners`, `@iconify/svelte`)
 - [ ] PR to `staging`, verify the Vercel preview, then PR to `main`
