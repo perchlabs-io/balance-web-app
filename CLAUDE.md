@@ -77,6 +77,9 @@ All components use runes. Do not introduce Svelte 4 syntax.
 
 - Don't use `svelte/legacy` helpers (`run`, `preventDefault`, `handlers`, `createBubbler`) in finished code.
 - Prefer `$derived` over `$effect`. Use `$effect` only for DOM or other imperative side effects (e.g. D3 brush or zoom setup).
+- If a value follows other state but must also be settable locally (e.g. zoom scales reset on resize but overridden by D3 zoom), use a **writable `$derived`** (assign to it directly). Don't use `$state` plus an effect that copies the value.
+- If state should reset in response to a user action, do it in the event handler, not in an effect that watches state.
+- Exception: `svelte-range-slider-pips` (4.1.1, latest) still emits legacy events, so `on:stop` / `on:change` on `<RangeSlider>` is correct.
 - Shared state stays in `svelte/store` for now; `$store` auto-subscription is fine in components.
 - Prettier (`.prettierrc`) is the code style source of truth. Run `npm run format` (or `npx prettier --write <files>`) on changed files before committing.
 - Large formatting-only commits go in `.git-blame-ignore-revs`. Enable it locally with `git config blame.ignoreRevsFile .git-blame-ignore-revs`; GitHub applies it automatically.
@@ -113,12 +116,11 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
   - `donut_shop/donut_group_stake/DonutGroupStakeChart.svelte`
   - `donut_shop/donut_group_stake/components/DonutCenterTooltip.svelte`
   - `lib/shared/ui/posts.svelte` (named slots `title` and `see-more`; update its callers)
-- [ ] `LevChart.svelte`: replace `on:click` on `<GroupSearch>` (line ~331) and `on:stop` on the range slider (line ~571)
+- [x] `LevChart.svelte` and `GroupSearch.svelte` fully migrated and checked in the browser (search, suggestion click, play/pause/reset/prev/next, slider drag, zoom)
 - [ ] Remove `svelte/legacy` usage:
-  - `run()`: `Donut.svelte`, `UTxODeltaChart.svelte`, `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`, `LevChart.svelte`
-  - `preventDefault`: `LevChart.svelte`, `newsletter.svelte`
+  - `run()`: `Donut.svelte`, `UTxODeltaChart.svelte`, `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`
+  - `preventDefault`: `newsletter.svelte`
   - `handlers`: `UTxOStackChart.svelte`, `UTxOTotalChart.svelte`
-  - `createBubbler`: `GroupSearch.svelte` (switch to an `onclick` callback prop)
 - [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.)
 - [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
 - [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
@@ -127,6 +129,8 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`
 
 ## Follow-ups (out of scope for the migration)
+
+- **K-Effective chart renders as a filled zigzag (likely also in production).** The `rpc` data behind `getKeffData()` arrives unsorted by epoch: 242 of 461 line steps go backwards. Neither `main` nor this branch sorts it. Fix by sorting `keffData.mav`, `.keff`, and `.keff2` by `epoch`, or fix the ordering in the API. `KeffChart` also derives `minEpoch`/`maxEpoch` from the first and last array elements, which assumes sorted data.
 
 - `balance.server.ts`: the fetchers are near-duplicates; collapse them into one helper. Remove the redundant `JSON.stringify`/`JSON.parse` round-trip.
 - Replace the many `any` types with real data types; type the `views` store (currently `writable([])`, inferred as `never[]`).

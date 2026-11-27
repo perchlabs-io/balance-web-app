@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run, preventDefault } from 'svelte/legacy';
-
 	import RangeSlider from 'svelte-range-slider-pips';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
@@ -26,13 +24,7 @@
 		minEpochData: any;
 	}
 
-	let {
-		curMAVData,
-		selectedData,
-		poolGroupData = $bindable(),
-		maxEpochData,
-		minEpochData
-	}: Props = $props();
+	let { curMAVData, selectedData, poolGroupData, maxEpochData, minEpochData }: Props = $props();
 
 	selectedEpoch.set(maxEpochData);
 
@@ -42,8 +34,9 @@
 
 	let ticker = '';
 	let levChart: any = $state();
-	let epoch2 = $state(maxEpochData);
-	let epoch = $state([maxEpochData]);
+	// Writable deriveds: follow the store, but play/next/prev and the slider can override locally
+	let epoch2 = $derived($selectedEpoch);
+	let epoch = $derived([epoch2]);
 	let waiting = false;
 	let interval: any = $state();
 	//let width = 1100;
@@ -54,9 +47,6 @@
 	let chartTitle = 'Group Stake v. Leverage';
 	let chartInfo =
 		'This chart portrays the stake pool grouping landscape of stake versus leverage throughout epochs of time. Use the slider and press play to see how the MAV and Network Average (red dot) change over time.';
-	let xScaleZoom: any = $state();
-	let xScaleZoomMobile: any = $state();
-	let yScaleZoom: any = $state();
 	let rScaleZoom: any = $state(1);
 
 	const filterOnEpoch = () => {
@@ -129,6 +119,9 @@
 			});
 		}
 		filteredGroups = storageArr;
+		if (!inputValue) {
+			hiLiteIndex = null;
+		}
 	};
 
 	/* HANDLING THE INPUT */
@@ -138,6 +131,8 @@
 
 	const clearInput = () => {
 		inputValue = '';
+		filteredGroups = [];
+		hiLiteIndex = null;
 		searchInput.focus();
 	};
 
@@ -220,17 +215,8 @@
 		);
 	});
 
-	run(() => {
-		epoch2 = $selectedEpoch;
-	});
-	run(() => {
-		epoch = [epoch2];
-	});
 	let innerWidth = $derived(width - margin.left - margin.right);
 	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
-	run(() => {
-		poolGroupData = poolGroupData;
-	});
 	let curMAVData2 = $derived.by(() => curMAVData[$selectedEpoch2][0].mc);
 	let selectedData2 = $derived.by(() => selectedData[$selectedEpoch2]);
 	let maxEpochData2 = $derived(maxEpochData);
@@ -253,28 +239,17 @@
 			//.range([height - margin.top - margin.bottom, 0]);
 			.range([innerHeight, 0])
 	);
-	run(() => {
+	// Writable deriveds: reset to the base scale on resize, overridden by the d3 zoom handler
+	let xScaleZoom: any = $derived(xScale);
+	let xScaleZoomMobile: any = $derived(xScaleMobile);
+	let yScaleZoom: any = $derived(yScale);
+	$effect(() => {
 		if (selectedData2) {
 			tData.set(selectedData2);
 		}
 	});
-	run(() => {
-		if (!inputValue) {
-			filteredGroups = [];
-			hiLiteIndex = null;
-		}
-	});
 	//$: console.log(hiLiteIndex);
 	let hiLitedCountry = $derived(filteredGroups[hiLiteIndex]);
-	run(() => {
-		xScaleZoom = xScale;
-	});
-	run(() => {
-		xScaleZoomMobile = xScaleMobile;
-	});
-	run(() => {
-		yScaleZoom = yScale;
-	});
 </script>
 
 <svelte:window
@@ -308,7 +283,12 @@
 		<Icon icon="fa:pie-chart" style="color:rgb(131, 106, 249, 0.75);" width="17" />
 	</div>
 	<div class="poolsearch">
-		<form onsubmit={preventDefault(submitValue)}>
+		<form
+			onsubmit={(e) => {
+				e.preventDefault();
+				submitValue();
+			}}
+		>
 			<input
 				type="text"
 				placeholder="Group Search"
@@ -328,7 +308,7 @@
 					<GroupSearch
 						itemLabel={group}
 						highlighted={i === hiLiteIndex}
-						on:click={() => setInputVal(group)}
+						onclick={() => setInputVal(group)}
 					/>
 				</div>
 			{/each}

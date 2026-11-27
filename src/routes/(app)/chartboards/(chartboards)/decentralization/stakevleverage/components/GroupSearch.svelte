@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
 	interface Props {
 		itemLabel: any;
 		highlighted: any;
+		onclick?: () => void;
 	}
 
-	let { itemLabel, highlighted }: Props = $props();
+	let { itemLabel, highlighted, onclick }: Props = $props();
 </script>
 
-<button class="autocomplete-items" class:autocomplete-active={highlighted} onclick={bubble('click')}
+<button class="autocomplete-items" class:autocomplete-active={highlighted} {onclick}
 	>{@html itemLabel}</button
 >
 
