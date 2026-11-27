@@ -4,7 +4,7 @@
 
 **BALANCE** ([balanceanalytics.io](https://www.balanceanalytics.io/)) is a blockchain-intelligence site for the Cardano ecosystem, built by Perch Labs. It has two halves:
 
-- **Chartboards**: interactive D3 visualizations of Cardano decentralization data (stake vs. leverage, k-effective, group-stake donut, UTxO allocation).
+- **Chartboards**: interactive D3 visualizations of Cardano decentralization data (stake vs. leverage, k-effective, group-stake donut).
 - **Articles**: markdown posts pulled at request time from the separate GitHub repo `perchlabs-io/balance-media`.
 
 ## Stack
@@ -41,7 +41,7 @@ src/
     posts.ts, markdown.ts    Articles from GitHub (GH_TOKEN) -> unified/remark/rehype -> HTML
     config.ts                Site metadata, post categories, chartBoards nav list
   lib/database/index.ts      Supabase client + views helpers
-  lib/stores/                svelte/store writables (windowWidth, selectedEpoch, utxoCat, ...)
+  lib/stores/                svelte/store writables (windowWidth, selectedEpoch, colorTheme, ...)
   lib/shared/ui/             Header, footer, preferences, posts list, newsletter
   routes/(app)/
     chartboards/(chartboards)/<board>/
@@ -101,7 +101,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 
 **PR #77** (`ccg_dev_stake_flow_20250708`, Stake Flow charts by TheStophe) is old, Svelte 4 work. It's out of scope here and will be redone on top of the migration after it merges.
 
-**UTxO Allocation chartboard: do not touch.** It will be archived (removed from the UX) as part of the migration deployment. Don't edit, migrate, or reformat anything under `chartboards/(chartboards)/utxo_allocation/`. How and when it gets removed from the UX is the user's call; don't do it unprompted. It is linked from `lib/api/config.ts` (`chartBoards` nav), the home page (`routes/+page.svelte`, ~lines 260–286), and uses the `getUTxO*` fetchers in `balance.server.ts` and the `utxoCat` store.
+**UTxO Allocation chartboard: removed.** It's archived as part of the migration deployment: the route, its nav entry, the home page section, the `getUTxO*` fetchers, the `utxoCat` store and its two home page images are deleted. `/chartboards/utxo_allocation` now returns 404. The code is still in git history (before the removal commit) if it's ever revived.
 
 **No hotfixes from this branch.** Bug fixes found during the migration (e.g. K-Effective sorting) ship with the migration deployment.
 
@@ -125,7 +125,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [x] Resolved all `state_referenced_locally` warnings outside `utxo_allocation/` and checked them in the browser. The article page's view counter is now an `$effect` keyed on the slug, so it also counts in-app navigation from one article to another (SvelteKit reuses the page component). `npm run check`: 51 errors, 48 warnings. The warnings left outside UTxO are pre-existing a11y issues and dead CSS (see follow-ups).
 - [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
 - [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
-- [ ] Archive the UTxO Allocation chartboard from the UX (approach to be decided by the user)
+- [x] Archived the UTxO Allocation chartboard: deleted the route, nav entry, home page section, fetchers, store and images. Checked the home page and nav in the browser, and the Vercel build succeeds. `npm run check`: 40 errors, 36 warnings, all pre-existing (strict TypeScript, a11y, dead CSS).
 - [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, Decentralization and Donut Shop chartboards (desktop and ≤650px mobile)
 - [ ] Check third-party Svelte libraries for Svelte 5 compatibility (`svelte-range-slider-pips`, `svelte-inview`, `svelte-loading-spinners`, `@iconify/svelte`)
 - [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`

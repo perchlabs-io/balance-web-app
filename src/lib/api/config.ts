@@ -27,8 +27,7 @@ export const categories = {
 
 export const chartBoards = {
 	decentralization: 'Decentralization',
-	donut_shop: 'Donut Shop',
-	utxo_allocation: 'UTxO Allocation'
+	donut_shop: 'Donut Shop'
 	// stake_flow: "Stake Flow"
 };
 

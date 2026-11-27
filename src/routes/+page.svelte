@@ -34,14 +34,12 @@
 	let isInView1: any = $state();
 	let isInView2: any = $state();
 	let isInView3: any = $state();
-	let isInView4: any = $state();
 	let resetObserver: any;
 
 	const resetInView = () => {
 		isInView1 = undefined;
 		isInView2 = undefined;
 		isInView3 = undefined;
-		isInView4 = undefined;
 	};
 
 	onMount(() => {
@@ -60,8 +58,6 @@
 		(isInView2 = detail.inView);
 	const handleChange3 = ({ detail }: CustomEvent<ObserverEventDetails>) =>
 		(isInView3 = detail.inView);
-	const handleChange4 = ({ detail }: CustomEvent<ObserverEventDetails>) =>
-		(isInView4 = detail.inView);
 
 	const onResize = () => {
 		$windowWidth = window.innerWidth;
@@ -244,46 +240,6 @@
 					{:else if $colorTheme == 'light'}
 						<a href="/chartboards/donut_shop"
 							><img src="/images/ba_gsd_image_light.png" alt="main-image-light " /></a
-						>
-					{/if}
-				</Transition>
-			{/if}
-		</div>
-	</section>
-
-	<section class="chart-section-reverse">
-		<div class="chart-text-reverse" use:inview={options} oninview_change={handleChange4}>
-			{#if isInView4}
-				<Transition transition={{ type: 'slide-right', duration: 1, delay: 400 }}>
-					<div>
-						<h3 class="ba-text-header">
-							<a href="/chartboards/utxo_allocation">UTxO Allocation</a>
-						</h3>
-						<p class="ba-text">
-							UTxO Allocation provides insights regarding portion of ADA in circulation that is not
-							delegated. Much is known about delegated ADA, but few facts exist for ADA that is not
-							delegated. The UTxO Allocation charts work to address this by providing ADA delegation
-							history across 5 delegation categories. Explore the historical allocation data for
-							each category and perform compare & contrast analysis of delta values to identify
-							possible correlations.
-						</p>
-					</div>
-				</Transition>
-			{/if}
-		</div>
-
-		<div class="chart-divider-reverse"></div>
-
-		<div class="chart-image-reverse" use:inview={options} oninview_change={handleChange4}>
-			{#if isInView4}
-				<Transition transition={{ type: 'slide-left', duration: 1, delay: 400 }}>
-					{#if $colorTheme == 'dark'}
-						<a href="/chartboards/utxo_allocation"
-							><img src="/images/ba_utxo_image_dark.png" alt="main-image-dark" /></a
-						>
-					{:else if $colorTheme == 'light'}
-						<a href="/chartboards/utxo_allocation"
-							><img src="/images/ba_utxo_image_light.png" alt="main-image-light " /></a
 						>
 					{/if}
 				</Transition>

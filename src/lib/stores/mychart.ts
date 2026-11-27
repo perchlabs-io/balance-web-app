@@ -15,5 +15,3 @@ export const grpStakeData = writable();
 
 export const windowWidth = writable(0);
 export const windowHeight = writable(0);
-
-export const utxoCat = writable('delegated');
