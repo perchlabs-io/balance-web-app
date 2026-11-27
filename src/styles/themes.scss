@@ -22,11 +22,7 @@ html[data-theme='dark'] {
 
 	/* Menu */
 	--clr-menu-text: hsl(0 0% 78%);
-	--clr-menu-bg: linear-gradient(
-		180deg,
-		hsl(180 7% 14%) 0%,
-		hsl(216 7% 14%) 100%
-	);
+	--clr-menu-bg: linear-gradient(180deg, hsl(180 7% 14%) 0%, hsl(216 7% 14%) 100%);
 	--ba-clr-menu-bg: hsl(230, 28%, 11%);
 	--clr-menu-arrow-bg: hsl(180 7% 14%);
 	--clr-menu-border: hsl(0 0% 25%);
@@ -38,11 +34,7 @@ html[data-theme='dark'] {
 
 	/* Hero */
 	--clr-hero-txt: hsl(174 27% 73%);
-	--clr-hero-bg: linear-gradient(
-		270deg,
-		hsl(210, 15%, 13%) 43%,
-		hsl(176 19% 15%) 66%
-	);
+	--clr-hero-bg: linear-gradient(270deg, hsl(210, 15%, 13%) 43%, hsl(176 19% 15%) 66%);
 	--ba-clr-hero-bg: hsl(210, 15%, 13%);
 	--clr-hero-divider-bg: hsl(0 0% 21%);
 	--clr-input-txt: hsl(177 100% 15%);
@@ -51,12 +43,8 @@ html[data-theme='dark'] {
 	--clr-input-border: hsl(0 0% 21%);
 
 	/* Card */
-	--clr-card-bg: linear-gradient(
-		180deg,
-		hsl(180 7% 14%) 0%,
-		hsl(216 7% 14%) 100%
-	);
-	--ba-clr-card-bg: linear-gradient(180deg, rgba(39,39,48,1) 0%, rgba(25,31,48,1) 84%);
+	--clr-card-bg: linear-gradient(180deg, hsl(180 7% 14%) 0%, hsl(216 7% 14%) 100%);
+	--ba-clr-card-bg: linear-gradient(180deg, rgba(39, 39, 48, 1) 0%, rgba(25, 31, 48, 1) 84%);
 
 	--clr-card-bg2: hsl(180 7% 14%);
 	--clr-card-txt: hsl(0 0% 78%);
@@ -116,7 +104,7 @@ html[data-theme='light'] {
 	--ba-header-bg: hsl(224, 38%, 76%);
 
 	/* Slider */
-	--clr-txt-sldr:  hsl(0 0% 98%);
+	--clr-txt-sldr: hsl(0 0% 98%);
 	--clr-bar-sldr: hsl(220 10% 40%);
 	--clr-piplbl-sldr: hsl(220 10% 40%);
 
@@ -145,7 +133,7 @@ html[data-theme='light'] {
 	--clr-card-bg: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(0 0% 94%) 100%);
 	--clr-card-bg2: hsl(0 0% 98%);
 	--clr-card-txt: hsl(220 10% 20%);
-	--ba-clr-card-bg: linear-gradient(180deg, rgba(236,243,255,1) 0%, rgba(208,218,242,1) 84%);
+	--ba-clr-card-bg: linear-gradient(180deg, rgba(236, 243, 255, 1) 0%, rgba(208, 218, 242, 1) 84%);
 
 	/* Title */
 	--ba-clr-title-bg: hsl(222, 70%, 92%);

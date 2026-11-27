@@ -1,34 +1,34 @@
-import { unified } from 'unified'
-import fromMarkdown from 'remark-parse'
-import fromMarkdownToHtml from 'remark-rehype'
-import parseHtmlAndMarkdown from 'rehype-raw'
-import toHtml from 'rehype-stringify'
-import matter from 'gray-matter'
+import { unified } from 'unified';
+import fromMarkdown from 'remark-parse';
+import fromMarkdownToHtml from 'remark-rehype';
+import parseHtmlAndMarkdown from 'rehype-raw';
+import toHtml from 'rehype-stringify';
+import matter from 'gray-matter';
 
 // plugins
-import remarkGfm from 'remark-gfm'
-import remarkHeadings from 'remark-autolink-headings'
-import remarkSlug from 'remark-slug'
-import remarkSmartypants from 'remark-smartypants'
-import remarkTableofContents from 'remark-toc'
-import rehypePrism from 'rehype-prism-plus'
-import rehypeCodeTitles from 'rehype-code-titles'
-import { rehypeCopyCode, rehypeUnwrapImages } from './plugins'
+import remarkGfm from 'remark-gfm';
+import remarkHeadings from 'remark-autolink-headings';
+import remarkSlug from 'remark-slug';
+import remarkSmartypants from 'remark-smartypants';
+import remarkTableofContents from 'remark-toc';
+import rehypePrism from 'rehype-prism-plus';
+import rehypeCodeTitles from 'rehype-code-titles';
+import { rehypeCopyCode, rehypeUnwrapImages } from './plugins';
 
-import { branch } from './config'
-import { imagesUrl } from './config'
-import type { FrontMatterType } from '$lib/types'
+import { branch } from './config';
+import { imagesUrl } from './config';
+import type { FrontMatterType } from '$lib/types';
 
 type ContentType = {
-	content: string
-	frontmatter: FrontMatterType
-}
+	content: string;
+	frontmatter: FrontMatterType;
+};
 
 function searchAndReplace(content: string, slug: string): string {
-	const embed = /{% embed src="(.*?)" title="(.*?)" %}/g
-	const video = /{% video src="(.*?)" %}/g
-	const image = /{% img src="(.*?)" alt="(.*?)" %}/g
-	const youtube = /{% youtube id="(.*?)" title="(.*?)" %}/g
+	const embed = /{% embed src="(.*?)" title="(.*?)" %}/g;
+	const video = /{% video src="(.*?)" %}/g;
+	const image = /{% img src="(.*?)" alt="(.*?)" %}/g;
+	const youtube = /{% youtube id="(.*?)" title="(.*?)" %}/g;
 
 	return content
 		.replace(embed, (_, src, title) => {
@@ -38,7 +38,7 @@ function searchAndReplace(content: string, slug: string): string {
           src="${src}"
           loading="lazy"
         ></iframe>
-      `.trim()
+      `.trim();
 		})
 		.replace(video, (_, src) => {
 			return `
@@ -48,7 +48,7 @@ function searchAndReplace(content: string, slug: string): string {
             type="video/mp4"
           />
         </video>
-      `.trim()
+      `.trim();
 		})
 		.replace(image, (_, src, alt) => {
 			return `
@@ -58,17 +58,17 @@ function searchAndReplace(content: string, slug: string): string {
         loading="lazy"
 		style="max-height: 600px"
       />
-  `.trim()
+  `.trim();
 		})
 		.replace(youtube, (_, id, title) => {
 			return `
 				<lite-youtube videoid="${id}" playlabel="${title}"></lite-youtube>
-			`.trim()
-		})
+			`.trim();
+		});
 }
 
 export async function markdownToHTML(markdown: string): Promise<ContentType> {
-	const { content, data } = matter(markdown)
+	const { content, data } = matter(markdown);
 
 	// I could use `compile` from mdsvex to get
 	// Svelte components working inside Markdown
@@ -89,7 +89,7 @@ export async function markdownToHTML(markdown: string): Promise<ContentType> {
 
 			// Generates table of contents from headings
 			// `tight` removes <p> from <li> when nested
-			[remarkTableofContents, { tight: true, maxDepth: 3 }],
+			[remarkTableofContents, { tight: true, maxDepth: 3 }]
 		])
 		// To be able to parse a mix of Markdown and HTML
 		// `remark-rehype` is required with `rehype-raw`
@@ -112,11 +112,11 @@ export async function markdownToHTML(markdown: string): Promise<ContentType> {
 		.use(rehypeCopyCode)
 
 		.use(toHtml)
-		.process(searchAndReplace(content, data.slug))
-	const processedMarkdown = result.value
+		.process(searchAndReplace(content, data.slug));
+	const processedMarkdown = result.value;
 
 	return {
 		content: processedMarkdown as string,
-		frontmatter: data as FrontMatterType,
-	}
+		frontmatter: data as FrontMatterType
+	};
 }

@@ -10,15 +10,12 @@
 	margin-top: var(--spacing-64);
 	margin-bottom: var(--spacing-24);
 	color: var(--clr-primary);
-	
-	
 }
 
 .prose h3 {
 	margin-top: var(--spacing-18);
 	margin-bottom: var(--spacing-16);
 	color: var(--clr-primary);
-	
 }
 
 .prose h4 {
@@ -28,8 +25,6 @@
 	color: var(--clr-primary);
 	line-height: 33px;
 }
-
-
 
 .prose p > a {
 	text-decoration: underline;
@@ -66,7 +61,6 @@
 .prose blockquote,
 .prose details {
 	margin-bottom: var(--spacing-32);
-	
 }
 
 .prose li > ul {

@@ -1,7 +1,7 @@
-import type { RequestHandler } from '@sveltejs/kit'
+import type { RequestHandler } from '@sveltejs/kit';
 
-import { getPostsData } from '$lib/api/posts'
-import { categories, siteUrl } from '$lib/api/config'
+import { getPostsData } from '$lib/api/posts';
+import { categories, siteUrl } from '$lib/api/config';
 
 export const GET: RequestHandler = async () => {
 	const pages = [
@@ -10,8 +10,8 @@ export const GET: RequestHandler = async () => {
 		'faq',
 		'about',
 		...Object.keys(categories).map((category) => `categories/${category}`),
-		...(await getPostsData()).map((post) => post.slug),
-	]
+		...(await getPostsData()).map((post) => post.slug)
+	];
 
 	const sitemap = `
     <?xml version="1.0" encoding="UTF-8" ?>
@@ -30,16 +30,16 @@ export const GET: RequestHandler = async () => {
               <loc>${siteUrl}${page}</loc>
               <lastmod>${new Date().toISOString()}</lastmod>
             </url>
-          `
+          `;
 				})
 				.join('')}
     </urlset>
-  `.trim()
+  `.trim();
 
 	return new Response(sitemap, {
 		headers: {
 			'Content-Type': 'application/xml',
-			'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`,
-		},
-	})
-}
+			'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`
+		}
+	});
+};

@@ -1,32 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="/images/favicon4.svg" sizes="any" type="image/svg+xml"/>
+		<link rel="icon" href="/images/favicon4.svg" sizes="any" type="image/svg+xml" />
 		<link rel="manifest" href="/manifest.json" />
 		<script>
-			const htmlElement = document.documentElement
-			const userTheme = localStorage.theme
+			const htmlElement = document.documentElement;
+			const userTheme = localStorage.theme;
 
-			
 			if (userTheme) {
-				htmlElement.dataset.theme = userTheme
+				htmlElement.dataset.theme = userTheme;
 			}
 
 			if (userTheme === 'light') {
-				htmlElement.dataset.theme = 'light'
-				localStorage.theme = 'light'
+				htmlElement.dataset.theme = 'light';
+				localStorage.theme = 'light';
 			}
 
 			if (!userTheme) {
-				htmlElement.dataset.theme = 'dark'
-				localStorage.theme = 'dark'
+				htmlElement.dataset.theme = 'dark';
+				localStorage.theme = 'dark';
 			}
-
 		</script>
 		%sveltekit.head%
-		
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
