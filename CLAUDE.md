@@ -95,7 +95,7 @@ All components use runes. Do not introduce Svelte 4 syntax.
 
 ## Current effort: Svelte 4 to Svelte 5 migration
 
-Branch: `ng_dev_070526`, tracked in draft PR #78 into `staging`. Started July 2026, resumed November 2026. This branch's scope is only the migration. New work goes on separate feature branches cut from `staging` after this merges.
+Branch: `ng_dev_070526`, PR #78, merged into `staging` on Nov 27, 2026. Follow-up fixes found on the staging preview are on `ng_dev_112726`. Started July 2026, resumed November 2026. This branch's scope is only the migration. New work goes on separate feature branches cut from `staging` after this merges.
 
 Vercel builds a preview deployment for every push. Use it for browser checks.
 
@@ -128,7 +128,9 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [x] Archived the UTxO Allocation chartboard: deleted the route, nav entry, home page section, fetchers, store and images. Checked the home page and nav in the browser, and the Vercel build succeeds. `npm run check`: 40 errors, 36 warnings, all pre-existing (strict TypeScript, a11y, dead CSS).
 - [x] Checked every page in the browser at desktop (1920px) and mobile (390px) width: home, articles, an article, all four categories, about, FAQ, newsletter, confirmation, Decentralization and Donut Shop chartboards (plus the unlinked Stake Flow placeholder). No JavaScript errors, broken images or horizontal overflow; cards match result counts; mobile chart layouts fit the screen. Testing note: Cursor's embedded browser stops rendering frames when unfocused, which delays `IntersectionObserver` callbacks, so `svelte-inview` content (article cards, home page sections) can look missing in automated checks. Take a screenshot (forces a frame) or confirm `requestAnimationFrame` is firing before treating that as a bug.
 - [x] Checked third-party Svelte libraries for Svelte 5 compatibility. All are compatible and were exercised in the browser: `svelte-range-slider-pips` 4.1.1 (latest, peer `^5`), `svelte-inview` 4.0.4 (peer `^5`), `bits-ui` 2.18.1 (Svelte 5 native; header popovers), `@iconify/svelte` 4.0.1 (peer `>4`), `@poppanator/sveltekit-svg` 6.0.1 (peer `>=5`), and `svelte-loading-spinners` 0.3.6 (unmaintained, no peer range, but only plain `export let` props, which compile in legacy mode; the `Pulse` navigation spinner works). Optional upgrades and unused packages are in the follow-ups.
-- [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`
+- [x] PR #78 marked ready and merged into `staging` (commit `2cf2076`). Checked the staging preview: every page works.
+- [x] Fixed double view counting (branch `ng_dev_112726`, found on the staging preview). Each article view sent two POSTs to `/api/views/<slug>`. The layout's page transition (`{#key $page.url}`) remounts the page after SvelteKit has already rendered it, so two instances each ran the counter. The article page now counts in `afterNavigate`, which fires once per finished navigation; the short-lived first instance is destroyed before that. Verified exactly one request for a direct load, list to article, and article to article.
+- [ ] PR `ng_dev_112726` into `staging`, verify on the preview, then PR `staging` to `main`
 
 ## Follow-ups (out of scope for the migration)
 
@@ -139,6 +141,9 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - `hooks.server.ts` guards `/private` and `/auth`, but neither route exists.
 - `.env` contains unused `PUBLIC_BALANCE_API_TOKEN` and `BLOB_READ_WRITE_TOKEN`. A `PUBLIC_` prefix exposes the value to the browser, so remove it if unused.
 - `/api/groupleverageupdate` isn't scheduled in `vercel.json`. Confirm whether that's intended.
+- The Decentralization chartboard's data load takes 13–18s (Balance API response time, the same on production). Consider caching it in Supabase like the MAV data.
+- `/api/views.json` is cached on the CDN for an hour (`s-maxage=3600`), so displayed view counts lag. Preview deployments share the production Supabase, so views from preview testing count.
+- Every navigation mounts the page component twice because of the layout's `{#key $page.url}` transition. Moving the layout to `$app/state` (see the `$app/stores` follow-up) may fix it; check that only one instance mounts.
 - Possibly convert `svelte/store` to runes-based shared state (`.svelte.ts` modules).
 - Remove unused packages: `@supabase/auth-helpers-sveltekit` (deprecated by Supabase; the app uses `@supabase/ssr`) and `@sveltejs/adapter-auto` (only referenced in a commented-out line in `svelte.config.js`).
 - Optional dependency upgrades: `@iconify/svelte` 5 (Svelte 5 native, same `<Icon icon=...>` API), `@vercel/analytics` 2 (adds a SvelteKit-specific `injectAnalytics`). `svelte-loading-spinners` is unmaintained; `+layout.svelte` imports five spinners but only renders `Pulse`, so it could be replaced with a small local component.
