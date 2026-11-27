@@ -90,7 +90,11 @@ All components use runes. Do not introduce Svelte 4 syntax.
 
 ## Current effort: Svelte 4 to Svelte 5 migration
 
-Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
+Branch: `ng_dev_070526`, tracked in draft PR #78 into `staging`. Started July 2026, resumed November 2026. This branch's scope is only the migration. New work goes on separate feature branches cut from `staging` after this merges.
+
+Vercel builds a preview deployment for every push. Use it for browser checks.
+
+**PR #77** (`ccg_dev_stake_flow_20250708`, Stake Flow charts by TheStophe) is old, Svelte 4 work. It's out of scope here and will be redone on top of the migration after it merges.
 
 **Agreed strategy**
 
@@ -117,10 +121,10 @@ Branch: `ng_dev_070526`. Started July 2026, resumed November 2026.
   - `createBubbler`: `GroupSearch.svelte` (switch to an `onclick` callback prop)
 - [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.)
 - [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
-- [ ] Confirm the Vercel project's Node.js version setting (Settings → Build and Deployment) is 22 or 24
+- [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
 - [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, all three chartboards (desktop and ≤650px mobile)
 - [ ] Check third-party Svelte libraries for Svelte 5 compatibility (`svelte-range-slider-pips`, `svelte-inview`, `svelte-loading-spinners`, `@iconify/svelte`)
-- [ ] PR to `staging`, verify the Vercel preview, then PR to `main`
+- [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`
 
 ## Follow-ups (out of scope for the migration)
 
