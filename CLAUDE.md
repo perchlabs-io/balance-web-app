@@ -127,7 +127,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
 - [x] Archived the UTxO Allocation chartboard: deleted the route, nav entry, home page section, fetchers, store and images. Checked the home page and nav in the browser, and the Vercel build succeeds. `npm run check`: 40 errors, 36 warnings, all pre-existing (strict TypeScript, a11y, dead CSS).
 - [ ] Check every page in the browser: home, articles, article, categories, about, FAQ, newsletter, Decentralization and Donut Shop chartboards (desktop and ≤650px mobile)
-- [ ] Check third-party Svelte libraries for Svelte 5 compatibility (`svelte-range-slider-pips`, `svelte-inview`, `svelte-loading-spinners`, `@iconify/svelte`)
+- [x] Checked third-party Svelte libraries for Svelte 5 compatibility. All are compatible and were exercised in the browser: `svelte-range-slider-pips` 4.1.1 (latest, peer `^5`), `svelte-inview` 4.0.4 (peer `^5`), `bits-ui` 2.18.1 (Svelte 5 native; header popovers), `@iconify/svelte` 4.0.1 (peer `>4`), `@poppanator/sveltekit-svg` 6.0.1 (peer `>=5`), and `svelte-loading-spinners` 0.3.6 (unmaintained, no peer range, but only plain `export let` props, which compile in legacy mode; the `Pulse` navigation spinner works). Optional upgrades and unused packages are in the follow-ups.
 - [ ] Mark PR #78 ready, merge to `staging`, verify, then PR `staging` to `main`
 
 ## Follow-ups (out of scope for the migration)
@@ -140,6 +140,9 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - `.env` contains unused `PUBLIC_BALANCE_API_TOKEN` and `BLOB_READ_WRITE_TOKEN`. A `PUBLIC_` prefix exposes the value to the browser, so remove it if unused.
 - `/api/groupleverageupdate` isn't scheduled in `vercel.json`. Confirm whether that's intended.
 - Possibly convert `svelte/store` to runes-based shared state (`.svelte.ts` modules).
+- Remove unused packages: `@supabase/auth-helpers-sveltekit` (deprecated by Supabase; the app uses `@supabase/ssr`) and `@sveltejs/adapter-auto` (only referenced in a commented-out line in `svelte.config.js`).
+- Optional dependency upgrades: `@iconify/svelte` 5 (Svelte 5 native, same `<Icon icon=...>` API), `@vercel/analytics` 2 (adds a SvelteKit-specific `injectAnalytics`). `svelte-loading-spinners` is unmaintained; `+layout.svelte` imports five spinners but only renders `Pulse`, so it could be replaced with a small local component.
+- Replace `$app/stores` (deprecated since SvelteKit 2.12, removed in SvelteKit 3) with `$app/state` in `categories/[category]/+page.svelte`, `lib/shared/transition/index.svelte` and `lib/stores/loading.ts`. Do this before any SvelteKit 3 upgrade.
 - Fix the 22 pre-existing a11y warnings (redundant `alt` text, click handlers on non-interactive elements).
 - Remove dead CSS that has never matched: `themeToggleIcon.svelte` (`.dark`, plus `.top`/`.middle`/`.bottom`/`.open`, which look like leftovers from a hamburger animation), `posts.svelte` (`html[data-font='dyslexic']`, which can't match inside a scoped style; it needs `:global(html[data-font='dyslexic'])` if the dyslexic font option should affect card titles), `preferences/index.svelte` (`.options span`).
 - `DonutCenterTooltip.svelte` has a typo: `fill="var(--clr-txt"` is missing its closing paren.
