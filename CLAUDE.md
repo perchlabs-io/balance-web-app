@@ -29,7 +29,7 @@ There is no automated test suite. Verify changes with `npm run check`, `npm run 
 
 Locally, `npm run build` needs **Node 18, 20, or 22**: on Node 24, `adapter-vercel` refuses to package the output. This is a local-only check. On Vercel (`VERCEL` env set), the adapter skips it and uses the project's configured Node version. To mimic a Vercel build locally, run `VERCEL=1 npm run build`.
 
-**`npm run check` baseline** (Nov 27, 2026, after the pre-migration cleanup): 69 errors and 78 warnings, down from 112 and 81. The remaining errors are pre-existing strict-TypeScript issues, not migration breakage: implicit `any`, possibly-undefined values, an untyped `views` store, and the unified plugin types in `markdown.ts`. Many warnings are `state_referenced_locally` (Svelte 5 warning that `let x = data.x` only captures the initial value) plus a11y warnings. During the migration, fix the Svelte-5-related diagnostics. Track the TypeScript strictness errors as a follow-up.
+**`npm run check` baseline** (Nov 27, 2026, after the Svelte 5 migration): 40 errors and 36 warnings, down from 112 and 81 before it. All are pre-existing: strict-TypeScript errors (implicit `any`, possibly-undefined values, an untyped `views` store, the unified plugin types in `markdown.ts`), a11y warnings and dead CSS (see the backlog). A change shouldn't raise these counts.
 
 ## Architecture
 
@@ -64,16 +64,16 @@ src/
 
 All components use runes. Do not introduce Svelte 4 syntax.
 
-| Svelte 4 (don't)               | Svelte 5 (do)                                       |
-| ------------------------------ | --------------------------------------------------- |
-| `export let foo`               | `let { foo }: Props = $props()` with an `interface Props` |
-| `$: x = a + b`                 | `const x = $derived(a + b)`                         |
-| `$: { sideEffect() }`          | `$effect(() => { sideEffect() })`, only for real side effects |
-| `let count = 0` (reactive)     | `let count = $state(0)`                             |
-| `on:click={fn}`                | `onclick={fn}`                                      |
-| `createEventDispatcher`        | Callback props, e.g. `onselect`                     |
-| `<slot />` / named slots       | `children` / snippet props + `{@render ...}`        |
-| `on:submit\|preventDefault`    | `onsubmit={(e) => { e.preventDefault(); ... }}`     |
+| Svelte 4 (don't)            | Svelte 5 (do)                                                 |
+| --------------------------- | ------------------------------------------------------------- |
+| `export let foo`            | `let { foo }: Props = $props()` with an `interface Props`     |
+| `$: x = a + b`              | `const x = $derived(a + b)`                                   |
+| `$: { sideEffect() }`       | `$effect(() => { sideEffect() })`, only for real side effects |
+| `let count = 0` (reactive)  | `let count = $state(0)`                                       |
+| `on:click={fn}`             | `onclick={fn}`                                                |
+| `createEventDispatcher`     | Callback props, e.g. `onselect`                               |
+| `<slot />` / named slots    | `children` / snippet props + `{@render ...}`                  |
+| `on:submit\|preventDefault` | `onsubmit={(e) => { e.preventDefault(); ... }}`               |
 
 - Don't use `svelte/legacy` helpers (`run`, `preventDefault`, `handlers`, `createBubbler`) in finished code.
 - Prefer `$derived` over `$effect`. Use `$effect` only for DOM or other imperative side effects (e.g. D3 brush or zoom setup).
@@ -93,46 +93,28 @@ All components use runes. Do not introduce Svelte 4 syntax.
 - `main` is production (Vercel deploys from it)
 - Commit in small, logical steps with descriptive messages
 
-## Current effort: Svelte 4 to Svelte 5 migration
-
-Branch: `ng_dev_070526`, PR #78, merged into `staging` on Nov 27, 2026. Follow-up fixes found on the staging preview are on `ng_dev_112726`. Started July 2026, resumed November 2026. This branch's scope is only the migration. New work goes on separate feature branches cut from `staging` after this merges.
-
 Vercel builds a preview deployment for every push. Use it for browser checks.
 
-**PR #77** (`ccg_dev_stake_flow_20250708`, Stake Flow charts by TheStophe) is old, Svelte 4 work. It's out of scope here and will be redone on top of the migration after it merges.
+## Testing notes
 
-**UTxO Allocation chartboard: removed.** It's archived as part of the migration deployment: the route, its nav entry, the home page section, the `getUTxO*` fetchers, the `utxoCat` store and its two home page images are deleted. `/chartboards/utxo_allocation` now returns 404. The code is still in git history (before the removal commit) if it's ever revived.
+- **Safari:** layout can differ from Chrome (e.g. relative `top: 50%` on grid items). To check WebKit (the engine behind iPhone Safari), use Playwright's WebKit build with its `devices['iPhone 13']`, `devices['iPad Mini']` and `devices['Desktop Safari']` profiles, installed outside the repo.
+- **Cursor's embedded browser** stops rendering frames when unfocused, which delays `IntersectionObserver` callbacks, so `svelte-inview` content (article cards, home page sections) can look missing in automated checks. Take a screenshot (forces a frame) or confirm `requestAnimationFrame` is firing before treating that as a bug.
+- **View counts:** preview deployments and local builds use the production Supabase, so visiting an article on a preview or local production build (`npm run build` + `vite preview`) adds a real view. Stub `window.fetch` for `/api/views/` when testing. The dev server (`npm run dev`) never counts views.
 
-**No hotfixes from this branch.** Bug fixes found during the migration (e.g. K-Effective sorting) ship with the migration deployment.
+## Completed: Svelte 4 to Svelte 5 migration (released Nov 27, 2026)
 
-**Agreed strategy**
+Started July 2026, resumed November 2026. Released to production via PR #78 (migration), #79 (double view-count fix), #80 (release) and #81/#82 (Safari home page image fix).
 
-- **Full runes migration** before shipping: no Svelte 4 syntax and no `svelte/legacy` helpers left.
-- **Migration only**: preserve behavior and structure. Don't refactor unrelated code; add cleanup ideas to the follow-ups list below. One exception was agreed: a pre-migration cleanup pass of behavior-neutral fixes (see Status).
-- **Keep `svelte/store`**: converting shared state to runes is a later effort.
-- **Checkpoint commits**: commit working progress in small steps.
+- Every component uses runes; no Svelte 4 syntax or `svelte/legacy` helpers remain (except the `<RangeSlider>` legacy events noted above). Shared state stayed in `svelte/store`.
+- Dependencies: svelte ^5, kit ^2.69, vite-plugin-svelte ^4, svelte-check ^4, eslint-plugin-svelte ^3. All third-party Svelte libraries were confirmed compatible (`svelte-loading-spinners` is unmaintained but works).
+- **UTxO Allocation chartboard archived:** route, nav entry, home page section, `getUTxO*` fetchers, `utxoCat` store and images deleted; `/chartboards/utxo_allocation` returns 404. The code is in git history before the removal commit if it's ever revived.
+- Bug fixes shipped with it:
+  - K-Effective chart: `rpc/pool_keff_sk` returns series unsorted by epoch, so `getKeffData()` sorts them.
+  - Article views were counted twice; the article page now counts in `afterNavigate`.
+  - The home page main image sat too high in Safari; the `translate(-50%, -50%)` centering hack was removed.
+- **PR #77** (`ccg_dev_stake_flow_20250708`, Stake Flow charts by TheStophe) is old Svelte 4 work and needs to be redone on Svelte 5.
 
-**Status**
-
-- [x] Dependencies upgraded (svelte ^5, kit ^2.69, vite-plugin-svelte ^4, svelte-check ^4, eslint-plugin-svelte ^3)
-- [x] Bulk conversion of most components (looks like `sv migrate svelte-5` output)
-- [x] Stake v. Leverage tooltip positioning fixed after the migration
-- [x] Pre-migration cleanup: added `@types/d3` and `@types/lodash.debounce`, renamed `lib/types/index.svelte` to `index.ts`, ignored `.vercel/`, removed live debug `console.log` calls, ran a Prettier formatting pass across `src`
-- [x] Converted the remaining Svelte 4 files and checked them in the browser: the Donut Shop chart (`DonutGroupStakeChart.svelte`, `DonutCenterTooltip.svelte`, `donut_shop/+page.svelte`), `posts.svelte` (named slots became the `title` and `seeMore` snippets), and `newsletter.svelte` (no more `svelte/legacy` `preventDefault`). The "See more articles" link style moved from `posts.svelte`'s `:global([slot='see-more'])` to a scoped `.see-more` class on the home page, because snippets don't render a `slot` attribute. `npm run check`: 56 errors, 72 warnings.
-- [x] Fixed K-Effective chart (out-of-scope bug fix, likely also broken in production). `rpc/pool_keff_sk` returns series unsorted by epoch, so `getKeffData()` now sorts each `keffdata` series by `epoch`.
-- [x] `LevChart.svelte` and `GroupSearch.svelte` fully migrated and checked in the browser (search, suggestion click, play/pause/reset/prev/next, slider drag, zoom)
-- [x] Removed `svelte/legacy` usage outside `utxo_allocation/` (that chartboard is being archived). Deleted the unused, already broken `donut_group_stake/components/Donut.svelte`.
-- [x] Resolved all `state_referenced_locally` warnings outside `utxo_allocation/` and checked them in the browser. The article page's view counter is now an `$effect` keyed on the slug, so it also counts in-app navigation from one article to another (SvelteKit reuses the page component). `npm run check`: 51 errors, 48 warnings. The warnings left outside UTxO are pre-existing a11y issues and dead CSS (see follow-ups).
-- [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
-- [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
-- [x] Archived the UTxO Allocation chartboard: deleted the route, nav entry, home page section, fetchers, store and images. Checked the home page and nav in the browser, and the Vercel build succeeds. `npm run check`: 40 errors, 36 warnings, all pre-existing (strict TypeScript, a11y, dead CSS).
-- [x] Checked every page in the browser at desktop (1920px) and mobile (390px) width: home, articles, an article, all four categories, about, FAQ, newsletter, confirmation, Decentralization and Donut Shop chartboards (plus the unlinked Stake Flow placeholder). No JavaScript errors, broken images or horizontal overflow; cards match result counts; mobile chart layouts fit the screen. Testing note: Cursor's embedded browser stops rendering frames when unfocused, which delays `IntersectionObserver` callbacks, so `svelte-inview` content (article cards, home page sections) can look missing in automated checks. Take a screenshot (forces a frame) or confirm `requestAnimationFrame` is firing before treating that as a bug.
-- [x] Checked third-party Svelte libraries for Svelte 5 compatibility. All are compatible and were exercised in the browser: `svelte-range-slider-pips` 4.1.1 (latest, peer `^5`), `svelte-inview` 4.0.4 (peer `^5`), `bits-ui` 2.18.1 (Svelte 5 native; header popovers), `@iconify/svelte` 4.0.1 (peer `>4`), `@poppanator/sveltekit-svg` 6.0.1 (peer `>=5`), and `svelte-loading-spinners` 0.3.6 (unmaintained, no peer range, but only plain `export let` props, which compile in legacy mode; the `Pulse` navigation spinner works). Optional upgrades and unused packages are in the follow-ups.
-- [x] PR #78 marked ready and merged into `staging` (commit `2cf2076`). Checked the staging preview: every page works.
-- [x] Fixed double view counting (branch `ng_dev_112726`, found on the staging preview). Each article view sent two POSTs to `/api/views/<slug>`. The layout's page transition (`{#key $page.url}`) remounts the page after SvelteKit has already rendered it, so two instances each ran the counter. The article page now counts in `afterNavigate`, which fires once per finished navigation; the short-lived first instance is destroyed before that. Verified exactly one request for a direct load, list to article, and article to article.
-- [x] PR #79 (`ng_dev_112726`) merged into `staging` and verified on the preview. PR #80 (`staging` to `main`) merged on Nov 27, 2026 (commit `8da8981`), deployed to production and checked on balanceanalytics.io: home, articles, an article, both chartboards and about load without JavaScript errors, `/chartboards/utxo_allocation` returns 404, and an article view sends one view request. **The migration is complete.**
-
-## Follow-ups (out of scope for the migration)
+## Backlog
 
 - `balance.server.ts`: the fetchers are near-duplicates; collapse them into one helper. Remove the redundant `JSON.stringify`/`JSON.parse` round-trip.
 - Replace the many `any` types with real data types; type the `views` store (currently `writable([])`, inferred as `never[]`).
@@ -143,7 +125,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - `/api/groupleverageupdate` isn't scheduled in `vercel.json`. Confirm whether that's intended.
 - The Decentralization chartboard's data load takes 13–18s (Balance API response time, the same on production). Consider caching it in Supabase like the MAV data.
 - `/api/views.json` is cached on the CDN for an hour (`s-maxage=3600`), so displayed view counts lag. Preview deployments share the production Supabase, so views from preview testing count.
-- Every navigation mounts the page component twice because of the layout's `{#key $page.url}` transition. Moving the layout to `$app/state` (see the `$app/stores` follow-up) may fix it; check that only one instance mounts.
+- Every navigation mounts the page component twice because of the layout's `{#key $page.url}` transition. Moving the layout to `$app/state` (see the `$app/stores` item below) may fix it; check that only one instance mounts.
 - Possibly convert `svelte/store` to runes-based shared state (`.svelte.ts` modules).
 - Remove unused packages: `@supabase/auth-helpers-sveltekit` (deprecated by Supabase; the app uses `@supabase/ssr`) and `@sveltejs/adapter-auto` (only referenced in a commented-out line in `svelte.config.js`).
 - Optional dependency upgrades: `@iconify/svelte` 5 (Svelte 5 native, same `<Icon icon=...>` API), `@vercel/analytics` 2 (adds a SvelteKit-specific `injectAnalytics`). `svelte-loading-spinners` is unmaintained; `+layout.svelte` imports five spinners but only renders `Pulse`, so it could be replaced with a small local component.
@@ -158,5 +140,6 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - Before each change, explain what is changing and why, framed for learning (Svelte 4 vs. 5 concepts), then apply it.
 - Keep diffs focused on the task. Flag unrelated issues and don't fix them silently.
 - Never commit `.env` or print secret values.
-- Update the **Status** checklist in this file as items are completed.
+- Keep this file current: remove backlog items when they're done and add new ones as they're found.
+- Session continuity: the user runs `/session-handoff` to end a session and `/session-resume` to start one (skills in `.cursor/skills/`). The hand-off writes `.cursor/handoff.md` (gitignored); a `sessionStart` hook (`.cursor/hooks.json`) adds that file to every new chat's context. The hook only fires when a chat is created, not when one is resumed or summarized (Cursor has no hook that can add context then), so run `/session-resume` when returning to an older chat. Lasting knowledge goes in this file, short-lived state in the hand-off file.
 - End every hand-off with a clear status: what's finished, what's still running (dev servers, background tasks), what's uncommitted, and what's needed from the user next. Stop dev servers after testing unless asked to leave them running.
