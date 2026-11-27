@@ -155,7 +155,6 @@
 
 	const submitValue = () => {
 		if (inputValue) {
-			console.log(`${inputValue} is submitted!`);
 			groupSelect = inputValue;
 			setTimeout(clearInput, 1000);
 		} else {

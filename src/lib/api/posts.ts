@@ -167,7 +167,6 @@ export async function getPost(slug: string): Promise<PostMarkdownType> {
 
 	const postMarkdown = await response.text()
 
-	console.log(postMarkdown);
 	const { content, frontmatter } = await markdownToHTML(postMarkdown)
 
 	return { content, frontmatter, postMarkdown }

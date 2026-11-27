@@ -35,8 +35,6 @@
 		//location.reload();
 
 		colorTheme.set(selectedTheme.name)
-
-		console.log('a', localStorage.theme)
 		
 		
 	}

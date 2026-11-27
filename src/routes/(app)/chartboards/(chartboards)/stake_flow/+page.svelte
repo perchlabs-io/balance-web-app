@@ -27,7 +27,6 @@
 	let maxEpochData = data.epochData[data.epochData.length - 1].epoch;
 	let stakeFlowData = data.stakeFlowData;
 	
-	console.log('stake flow', stakeFlowData)
 	// console.log(donutData,"donutData +page check")
 	// console.log(curMAVData,"curMAVData +page check")
 
