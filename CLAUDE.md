@@ -150,6 +150,7 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - Replace `$app/stores` (deprecated since SvelteKit 2.12, removed in SvelteKit 3) with `$app/state` in `categories/[category]/+page.svelte`, `lib/shared/transition/index.svelte` and `lib/stores/loading.ts`. Do this before any SvelteKit 3 upgrade.
 - Fix the 22 pre-existing a11y warnings (redundant `alt` text, click handlers on non-interactive elements).
 - Remove dead CSS that has never matched: `themeToggleIcon.svelte` (`.dark`, plus `.top`/`.middle`/`.bottom`/`.open`, which look like leftovers from a hamburger animation), `posts.svelte` (`html[data-font='dyslexic']`, which can't match inside a scoped style; it needs `:global(html[data-font='dyslexic'])` if the dyslexic font option should affect card titles), `preferences/index.svelte` (`.options span`).
+- On phones, the hidden back-to-top button (`+layout.svelte`) widens the page to about 550px, so the page can be dragged sideways. Pre-existing.
 - `DonutCenterTooltip.svelte` has a typo: `fill="var(--clr-txt"` is missing its closing paren.
 
 ## Working agreement
