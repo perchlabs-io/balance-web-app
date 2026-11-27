@@ -19,10 +19,10 @@
 	//*************************/
 
 	// data preprocessing setup
-	let donutData = data.groupStakeDonutData[0].chartdata;
-	let curMAVData = data.mavData;
-	let maxEpochData = data.epochData[data.epochData.length - 1].epoch;
-	let stakeFlowData = data.stakeFlowData;
+	let donutData = $derived(data.groupStakeDonutData[0].chartdata);
+	let curMAVData = $derived(data.mavData);
+	let maxEpochData = $derived(data.epochData[data.epochData.length - 1].epoch);
+	let stakeFlowData = $derived(data.stakeFlowData);
 
 	// console.log(donutData,"donutData +page check")
 	// console.log(curMAVData,"curMAVData +page check")

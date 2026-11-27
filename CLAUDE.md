@@ -79,6 +79,8 @@ All components use runes. Do not introduce Svelte 4 syntax.
 - Prefer `$derived` over `$effect`. Use `$effect` only for DOM or other imperative side effects (e.g. D3 brush or zoom setup).
 - If a value follows other state but must also be settable locally (e.g. zoom scales reset on resize but overridden by D3 zoom), use a **writable `$derived`** (assign to it directly). Don't use `$state` plus an effect that copies the value.
 - If state should reset in response to a user action, do it in the event handler, not in an effect that watches state.
+- If a prop is intentionally read only once (initial store value, a tween's starting value, a `$state` default), wrap the read in `untrack(() => ...)`. That makes the intent explicit and silences `state_referenced_locally`.
+- Snippets don't render a `slot` attribute, so style snippet content with a class in the file that defines the snippet, not with `:global([slot=...])` in the child.
 - Exception: `svelte-range-slider-pips` (4.1.1, latest) still emits legacy events, so `on:stop` / `on:change` on `<RangeSlider>` is correct.
 - Shared state stays in `svelte/store` for now; `$store` auto-subscription is fine in components.
 - Prettier (`.prettierrc`) is the code style source of truth. Run `npm run format` (or `npx prettier --write <files>`) on changed files before committing.
@@ -116,17 +118,11 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - [x] Bulk conversion of most components (looks like `sv migrate svelte-5` output)
 - [x] Stake v. Leverage tooltip positioning fixed after the migration
 - [x] Pre-migration cleanup: added `@types/d3` and `@types/lodash.debounce`, renamed `lib/types/index.svelte` to `index.ts`, ignored `.vercel/`, removed live debug `console.log` calls, ran a Prettier formatting pass across `src`
-- [ ] Convert remaining Svelte 4 files:
-  - `donut_shop/donut_group_stake/DonutGroupStakeChart.svelte`
-  - `donut_shop/donut_group_stake/components/DonutCenterTooltip.svelte`
-  - `lib/shared/ui/posts.svelte` (named slots `title` and `see-more`; update its callers)
+- [x] Converted the remaining Svelte 4 files and checked them in the browser: the Donut Shop chart (`DonutGroupStakeChart.svelte`, `DonutCenterTooltip.svelte`, `donut_shop/+page.svelte`), `posts.svelte` (named slots became the `title` and `seeMore` snippets), and `newsletter.svelte` (no more `svelte/legacy` `preventDefault`). The "See more articles" link style moved from `posts.svelte`'s `:global([slot='see-more'])` to a scoped `.see-more` class on the home page, because snippets don't render a `slot` attribute. `npm run check`: 56 errors, 72 warnings.
 - [x] Fixed K-Effective chart (out-of-scope bug fix, likely also broken in production). `rpc/pool_keff_sk` returns series unsorted by epoch, so `getKeffData()` now sorts each `keffdata` series by `epoch`.
 - [x] `LevChart.svelte` and `GroupSearch.svelte` fully migrated and checked in the browser (search, suggestion click, play/pause/reset/prev/next, slider drag, zoom)
-- [ ] Remove `svelte/legacy` usage:
-  - `run()`: `Donut.svelte`
-  - `preventDefault`: `newsletter.svelte`
-  - (UTxO chart files also use `run`/`handlers` but are excluded; that chartboard is being archived)
-- [ ] Resolve Svelte 5 diagnostics from `npm run check` (`state_referenced_locally` etc.), excluding `utxo_allocation/`
+- [x] Removed `svelte/legacy` usage outside `utxo_allocation/` (that chartboard is being archived). Deleted the unused, already broken `donut_group_stake/components/Donut.svelte`.
+- [x] Resolved all `state_referenced_locally` warnings outside `utxo_allocation/` and checked them in the browser. The article page's view counter is now an `$effect` keyed on the slug, so it also counts in-app navigation from one article to another (SvelteKit reuses the page component). `npm run check`: 51 errors, 48 warnings. The warnings left outside UTxO are pre-existing a11y issues and dead CSS (see follow-ups).
 - [x] Full build including the Vercel adapter succeeds (`VERCEL=1 npm run build` on Node 24, which outputs the `nodejs24.x` runtime)
 - [x] Vercel preview builds succeed on this branch (so the Vercel project's Node setting works with this build)
 - [ ] Archive the UTxO Allocation chartboard from the UX (approach to be decided by the user)
@@ -139,11 +135,14 @@ Vercel builds a preview deployment for every push. Use it for browser checks.
 - `balance.server.ts`: the fetchers are near-duplicates; collapse them into one helper. Remove the redundant `JSON.stringify`/`JSON.parse` round-trip.
 - Replace the many `any` types with real data types; type the `views` store (currently `writable([])`, inferred as `never[]`).
 - Pin the Node version in `package.json` `engines` once the Vercel project's Node setting is confirmed. `.npmrc` has `engine-strict=true`, so a pin also blocks `npm install` on other Node versions, and Vercel lets `engines` override its dashboard setting.
-- Delete commented-out `console.log` lines; most are in the donut files and can go during their migration.
+- Delete the remaining commented-out `console.log` lines (the donut files are already clean).
 - `hooks.server.ts` guards `/private` and `/auth`, but neither route exists.
 - `.env` contains unused `PUBLIC_BALANCE_API_TOKEN` and `BLOB_READ_WRITE_TOKEN`. A `PUBLIC_` prefix exposes the value to the browser, so remove it if unused.
 - `/api/groupleverageupdate` isn't scheduled in `vercel.json`. Confirm whether that's intended.
 - Possibly convert `svelte/store` to runes-based shared state (`.svelte.ts` modules).
+- Fix the 22 pre-existing a11y warnings (redundant `alt` text, click handlers on non-interactive elements).
+- Remove dead CSS that has never matched: `themeToggleIcon.svelte` (`.dark`, plus `.top`/`.middle`/`.bottom`/`.open`, which look like leftovers from a hamburger animation), `posts.svelte` (`html[data-font='dyslexic']`, which can't match inside a scoped style; it needs `:global(html[data-font='dyslexic'])` if the dyslexic font option should affect card titles), `preferences/index.svelte` (`.options span`).
+- `DonutCenterTooltip.svelte` has a typo: `fill="var(--clr-txt"` is missing its closing paren.
 
 ## Working agreement
 

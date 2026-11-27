@@ -4,7 +4,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { selectedEpoch, selectedEpoch2 } from '$lib/stores/mychart';
 	import { zoom, zoomIdentity } from 'd3-zoom';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { select } from 'd3-selection';
 	import { windowWidth, windowHeight, colorTheme } from '$lib/stores/mychart';
 	import debounceFn from 'lodash.debounce';
@@ -26,7 +26,7 @@
 
 	let { curMAVData, selectedData, poolGroupData, maxEpochData, minEpochData }: Props = $props();
 
-	selectedEpoch.set(maxEpochData);
+	selectedEpoch.set(untrack(() => maxEpochData));
 
 	//*************************/
 	//Group Stake v. Leverage
@@ -220,7 +220,10 @@
 	let curMAVData2 = $derived.by(() => curMAVData[$selectedEpoch2][0].mc);
 	let selectedData2 = $derived.by(() => selectedData[$selectedEpoch2]);
 	let maxEpochData2 = $derived(maxEpochData);
-	const tData = tweened(selectedData[String(maxEpochData)] ?? [], params);
+	const tData = tweened(
+		untrack(() => selectedData[String(maxEpochData)] ?? []),
+		params
+	);
 	let xScale = $derived(
 		scaleLog()
 			.domain([1, 1300])

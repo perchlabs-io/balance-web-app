@@ -15,8 +15,6 @@
 	});
 
 	let yTicks: any = $derived(yScaleZoom ? yScaleZoom.ticks(7) : yScale.ticks(7));
-
-	const firstDigitStr = String(yTicks)[0];
 </script>
 
 {#each yTicks as tick}

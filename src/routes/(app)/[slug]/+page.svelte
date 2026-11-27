@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser, dev } from '$app/environment';
+	import { dev } from '$app/environment';
 	import type { PageServerData } from './$types';
 	import Card from './card.svelte';
 	import Clipboard from './clipboard.svelte';
@@ -10,11 +10,13 @@
 	}
 
 	let { data }: Props = $props();
-	let editUrl = `${fileUrl}/${data.frontmatter.slug}/${data.frontmatter.slug}.md`;
-	let image = `${postImage}${encodeURIComponent(data.frontmatter.title)}.png`;
-	if (!dev && browser) {
-		updateViews(data.frontmatter.slug);
-	}
+	let editUrl = $derived(`${fileUrl}/${data.frontmatter.slug}/${data.frontmatter.slug}.md`);
+	let image = $derived(`${postImage}${encodeURIComponent(data.frontmatter.title)}.png`);
+	$effect(() => {
+		if (!dev) {
+			updateViews(data.frontmatter.slug);
+		}
+	});
 	//if (dev && browser) {
 	//	updateViews(data.frontmatter.slug)
 	//}

@@ -9,6 +9,7 @@
 	import HoverEvents_Keff from './components/HoverEvents.svelte';
 	import Tooltip_Keff from './components/Tooltip.svelte';
 	import { fade, scale, slide } from 'svelte/transition';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		keffData: any;
@@ -29,8 +30,8 @@
 	let innerWidth = $derived(width - margin.left - margin.right);
 	let innerWidthMobile = $derived(width - marginMobile.left - marginMobile.right);
 
-	const minEpoch = keffData.mav[0].epoch;
-	const maxEpoch = keffData.mav[keffData.mav.length - 1].epoch;
+	let minEpoch = $derived(keffData.mav[0].epoch);
+	let maxEpoch = $derived(keffData.mav[keffData.mav.length - 1].epoch);
 	const yScale = $derived(scaleLinear().domain([1, 70]).range([innerHeight, 0]));
 	let xScale = $derived(scaleLinear().domain([minEpoch, maxEpoch]).range([10, innerWidth]));
 
@@ -40,7 +41,7 @@
 	const MAV_COLOR = '#FF6166';
 	const KEFF_COLOR = '#32BAFF';
 	const KEFF2_COLOR = '#FFCA64';
-	let hoveredEpoch = $state(maxEpoch);
+	let hoveredEpoch = $state(untrack(() => maxEpoch));
 	let isHovered = $state(false);
 
 	let showContent = $state('');
